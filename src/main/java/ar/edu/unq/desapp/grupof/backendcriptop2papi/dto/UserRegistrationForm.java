@@ -15,11 +15,11 @@ public class UserRegistrationForm {
     private String email;
     @Size(min=10,max=30)
     private String address;
-    //@Pattern(regexp=)
+    @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\\-]]).{6,}$", message="Must contain 1 lowercase, 1 uppercase 1 special character and at least 6 characters")
     private String password;
-    @Size(min=22,max=22) // Agregar regex para que sean numericos
+    @Pattern(regexp= "^\\d{22}$", message="Must enter 22 digits")
     private String mercadoPagoCVU;
-    @Size(min=8,max=8) // Agregar regex para que sean numericos
+    @Pattern(regexp= "^\\d{8}$", message="Must enter 8 digits")
     private String cryptoWalletAddress;
 
 }
