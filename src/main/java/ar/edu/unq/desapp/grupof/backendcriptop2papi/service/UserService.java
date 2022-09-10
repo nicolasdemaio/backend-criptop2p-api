@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    InvestorRepository investorRepository;
-    ModelMapper modelMapper;
+    private final InvestorRepository investorRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public UserService(InvestorRepository investorRepository, ModelMapper modelMapper){
