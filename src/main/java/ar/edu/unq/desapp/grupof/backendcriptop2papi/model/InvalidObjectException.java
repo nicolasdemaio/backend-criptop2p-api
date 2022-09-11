@@ -1,12 +1,24 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import javax.validation.ConstraintViolation;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class InvalidObjectException extends RuntimeException {
 
-    private final Map<String, String> constraintViolations;
+    private final Map<String, String> brokenConstraints;
 
-    public InvalidObjectException(Map<String, String> constraintViolations) {
-        this.constraintViolations = constraintViolations;
+    public InvalidObjectException(Set<ConstraintViolation<ValidatableEntity>> constraintViolations) {
+        var brokenConstraints = new HashMap<String, String>();
+        constraintViolations.stream().toList().forEach(constraintViolation -> addConstraintTo(brokenConstraints, constraintViolation));
+        this.brokenConstraints = brokenConstraints;
+    }
+
+    private void addConstraintTo(HashMap<String, String> brokenConstraints, ConstraintViolation<ValidatableEntity> constraintViolation) {
+        brokenConstraints.put(
+                constraintViolation.getPropertyPath().toString(),
+                constraintViolation.getMessage()
+        );
     }
 }
