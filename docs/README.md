@@ -15,4 +15,4 @@ https://crypto-p2p.herokuapp.com/swagger-ui/
 https://sonarcloud.io/project/overview?id=nicolasdemaio_backend-criptop2p-api
 
 
-_to see this documentation via web, run 'docsify serve ./docs' on root directory_
+_to see this documentation via web, install 'npm i docsify-cli -g' and then run 'docsify serve ./docs' on root directory_
