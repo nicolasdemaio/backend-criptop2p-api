@@ -43,6 +43,9 @@ public class MarketOrder {
     }
 
     public void isTakenBy(InvestmentAccount anInvestmentAccount) {
+        if (isTaken){
+            throw new OrderAlreadyTakenException("This order is already taken");
+        }
         isTaken = true;
         // Generate operation and give it to both accounts.
         Operation operation = new Operation(this, emitter, anInvestmentAccount);
