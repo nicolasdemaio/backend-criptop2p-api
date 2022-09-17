@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorTestResource.*;
@@ -227,7 +228,22 @@ public class InvestorTest {
         assertBrokenConstraintWith(exception,"cryptoWalletAddress");
     }
 
+    @Test
+    public void anInvestorCannotBeCreatedWithNullFields() {
+        Assertions.assertThatThrownBy(() ->
+        new Investor(
+                null,
+                "Trejo",
+                "trejo@gmail.com",
+                "Fake 123",
+                "p4ssw0rd",
+                "1234567891234567891234",
+                "12345678"
+        )).isInstanceOf(InvalidObjectException.class);
+    }
+
     private void assertBrokenConstraintWith(InvalidObjectException exception, String attribute) {
         assertTrue(exception.getBrokenConstraints().containsKey(attribute));
     }
+
 }
