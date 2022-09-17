@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
 import lombok.Getter;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 // 1. se toma por una cuenta
@@ -10,12 +11,18 @@ import java.time.LocalDateTime;
 // 4. la orden no se usa mas, queda Tomada por esa cuenta.
 
 @Getter
+@Entity
 public class MarketOrder {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private final String cryptoCurrency;
+    @ManyToOne
     private final InvestmentAccount emitter;
     private final Double nominalQuantity;
     private final Double desiredPrice;
+    @ManyToOne
     private final OrderType orderType;
     private final Double actualPrice;
     private final LocalDateTime dateTime;
