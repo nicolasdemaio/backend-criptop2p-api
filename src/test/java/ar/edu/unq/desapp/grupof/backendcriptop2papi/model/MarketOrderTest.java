@@ -80,9 +80,9 @@ public class MarketOrderTest {
         LocalDateTime aDateTime = LocalDateTime.now();
 
         MarketOrder marketOrder = new MarketOrder("BNBUSDT", investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
-        marketOrder.isTakenBy(anotherInvestmentAccount);
+        marketOrder.beginAnOperationBy(anotherInvestmentAccount);
         assertThatThrownBy(
-                () -> marketOrder.isTakenBy(yetAnotherInvestmentAccount))
+                () -> marketOrder.beginAnOperationBy(yetAnotherInvestmentAccount))
                 .isInstanceOf(OrderAlreadyTakenException.class)
                 .hasMessage("This order is already taken");
     }

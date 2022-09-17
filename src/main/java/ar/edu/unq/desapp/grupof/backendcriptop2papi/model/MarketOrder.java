@@ -42,7 +42,7 @@ public class MarketOrder {
         isTaken = false;
     }
 
-    public void isTakenBy(InvestmentAccount anInvestmentAccount) {
+    public Operation beginAnOperationBy(InvestmentAccount anInvestmentAccount) {
         if (isTaken){
             throw new OrderAlreadyTakenException("This order is already taken");
         }
@@ -51,6 +51,8 @@ public class MarketOrder {
         Operation operation = new Operation(this, emitter, anInvestmentAccount);
         emitter.addOperation(operation);
         anInvestmentAccount.addOperation(operation);
+
+        return operation;
     }
 
     private void validateThatPriceFluctuationIsAllowed(Double desiredPrice, Double actualPrice) {

@@ -31,7 +31,7 @@ public class InvestmentAccount implements Account {
     }
 
     public void applyFor(MarketOrder aMarketOrder) {
-        aMarketOrder.isTakenBy(this);
+        aMarketOrder.beginAnOperationBy(this);
     }
 
     public void addOperation(Operation anOperation) {
