@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserRegistrationForm;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.EmailAlreadyInUseException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Investor;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestorRepository;
 import org.modelmapper.ModelMapper;
@@ -19,8 +20,15 @@ public class UserService {
     }
 
     public void registerUser(UserRegistrationForm form){
+        checkDuplicateEmail(form);
         Investor newInvestor = modelMapper.map(form,Investor.class);
         investorRepository.save(newInvestor);
+    }
+
+    private void checkDuplicateEmail(UserRegistrationForm form) {
+        if (investorRepository.existsInvestorByEmail(form.getEmail())){
+            throw new EmailAlreadyInUseException("Email is already in use");
+        }
     }
 
 }
