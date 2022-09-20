@@ -1,5 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.OperationStatus;
 import lombok.Getter;
 
 import javax.persistence.*;

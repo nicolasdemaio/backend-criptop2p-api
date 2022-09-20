@@ -24,7 +24,7 @@ public class UserService {
     }
 
     public void registerUser(UserRegistrationForm form){
-        checkDuplicateEmail(form);
+        validateThatEmailIsNotInUse(form.getEmail());
         Investor newInvestor = modelMapper.map(form,Investor.class);
         InvestmentAccount newAccount = new InvestmentAccount(newInvestor);
 
@@ -32,10 +32,8 @@ public class UserService {
         accountRepository.save(newAccount);
     }
 
-    private void checkDuplicateEmail(UserRegistrationForm form) {
-        if (investorRepository.existsInvestorByEmail(form.getEmail())){
-            throw new EmailAlreadyInUseException("Email is already in use");
-        }
+    private void validateThatEmailIsNotInUse(String anEmail) {
+        if (investorRepository.existsInvestorByEmail(anEmail)) throw new EmailAlreadyInUseException();
     }
 
 }

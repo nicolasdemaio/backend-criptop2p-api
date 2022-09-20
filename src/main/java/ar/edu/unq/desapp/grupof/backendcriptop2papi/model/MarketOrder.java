@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -29,8 +30,9 @@ public class MarketOrder {
     private final Double ACCEPTED_PRICE_FLUCTUATION = 0.05d;
     private Boolean isTaken;
 
-    // actualPrice probablemente no se guarda.
+
     public MarketOrder(String cryptoCurrency, InvestmentAccount emitter, Double nominalQuantity, Double desiredPrice, OrderType orderType, Double actualPrice, LocalDateTime dateTime) {
+        // Nico: extraería la validación a un objeto quiza
         validateThatPriceFluctuationIsAllowed(desiredPrice, actualPrice);
         this.cryptoCurrency = cryptoCurrency;
         this.emitter = emitter;
@@ -43,9 +45,7 @@ public class MarketOrder {
     }
 
     public Operation beginAnOperationBy(InvestmentAccount anInvestmentAccount) {
-        if (isTaken){
-            throw new OrderAlreadyTakenException("This order is already taken");
-        }
+        if (isTaken) throw new OrderAlreadyTakenException();
         isTaken = true;
         // Generate operation and give it to both accounts.
         Operation operation = new Operation(this, emitter, anInvestmentAccount);

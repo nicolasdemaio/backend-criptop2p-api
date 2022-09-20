@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 @RequestMapping(path = "/api/users")
@@ -26,6 +27,6 @@ public class UserController {
     @PostMapping
     public ResponseEntity registerUser(@RequestBody UserRegistrationForm form){
         userService.registerUser(form);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User successfully created");
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.entry("message", "User successfully created"));
     }
 }
