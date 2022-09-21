@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserRegistrationForm;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.EmailAlreadyInUseException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.EmailAlreadyInUseException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Investor;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestmentAccountRepository;

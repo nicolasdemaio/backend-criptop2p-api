@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvalidCancellationException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidCancellationException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.MarketOrder;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;

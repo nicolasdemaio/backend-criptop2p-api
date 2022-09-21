@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
+package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions;
 
 public class EmailAlreadyInUseException extends RuntimeException {
     public EmailAlreadyInUseException() {

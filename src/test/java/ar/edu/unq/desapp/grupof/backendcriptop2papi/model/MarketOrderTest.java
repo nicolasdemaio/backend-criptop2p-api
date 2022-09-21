@@ -1,5 +1,8 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrderPriceException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OrderAlreadyTakenException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

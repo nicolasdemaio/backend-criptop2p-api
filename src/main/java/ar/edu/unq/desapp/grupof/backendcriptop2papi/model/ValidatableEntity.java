@@ -1,5 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidObjectException;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;

@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
+package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions;
 
 
 public class OperationNotCancellableException extends RuntimeException {

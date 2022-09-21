@@ -1,13 +1,12 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidCancellationException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OperationNotCancellableException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.jmx.export.metadata.ManagedOperation;
-
-import java.time.LocalDateTime;
 
 import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorTestResource.anyInvestor;
 import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.MarketOrderTestResource.anyMarketOrderIssuedBy;
