@@ -7,8 +7,10 @@ import lombok.Getter;
 public class Transaction {
 
     private final Account partyAccount;
+    private final String action;
 
-    public Transaction(InvestmentAccount anAccount) {
-        partyAccount = anAccount;
+    public Transaction(InvestmentAccount anAccount, String action) {
+        this.partyAccount = anAccount;
+        this.action = action;
     }
 }

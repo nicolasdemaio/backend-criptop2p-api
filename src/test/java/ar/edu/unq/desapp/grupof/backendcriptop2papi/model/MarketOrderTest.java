@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.MarketOrderTestResource.anyMarketOrderIssuedBy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorTestResource.*;
@@ -74,17 +75,24 @@ public class MarketOrderTest {
         InvestmentAccount anotherInvestmentAccount = new InvestmentAccount(anyInvestor());
         InvestmentAccount yetAnotherInvestmentAccount = new InvestmentAccount(anyInvestor());
 
-        Double desiredPrice = 10d;
-        Double actualPrice = 10.5d;
-        SalesOrder orderType = new SalesOrder();
-        LocalDateTime aDateTime = LocalDateTime.now();
-
-        MarketOrder marketOrder = new MarketOrder("BNBUSDT", investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
+        MarketOrder marketOrder = anyMarketOrderIssuedBy(investmentAccount);
         marketOrder.beginAnOperationBy(anotherInvestmentAccount);
         assertThatThrownBy(
                 () -> marketOrder.beginAnOperationBy(yetAnotherInvestmentAccount))
                 .isInstanceOf(OrderAlreadyTakenException.class)
                 .hasMessage("This order is already taken");
+    }
+
+    @Test
+    @DisplayName("A market order cannot be taken by its issuer")
+    void testCannotBeTakenByIssuer(){
+        InvestmentAccount investmentAccount = new InvestmentAccount(anyInvestor());
+        MarketOrder marketOrder = anyMarketOrderIssuedBy(investmentAccount);
+
+        assertThatThrownBy(
+                () -> marketOrder.beginAnOperationBy(investmentAccount))
+                .isInstanceOf(InvalidOperationException.class)
+                .hasMessage("An order cannot be taken by its emitter");
     }
 
 

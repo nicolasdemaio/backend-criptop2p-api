@@ -46,6 +46,7 @@ public class MarketOrder {
 
     public Operation beginAnOperationBy(InvestmentAccount anInvestmentAccount) {
         if (isTaken) throw new OrderAlreadyTakenException();
+        if (isEmitter(anInvestmentAccount)) throw new InvalidOperationException("An order cannot be taken by its emitter");
         isTaken = true;
         // Generate operation and give it to both accounts.
         Operation operation = new Operation(this, emitter, anInvestmentAccount);
@@ -67,6 +68,10 @@ public class MarketOrder {
 
     private boolean isAboveAllowedPrice(Double desiredPrice, Double actualPrice) {
         return desiredPrice >= (actualPrice + actualPrice * ACCEPTED_PRICE_FLUCTUATION);
+    }
+
+    private boolean isEmitter(InvestmentAccount anInvestmentAccount){
+        return anInvestmentAccount.equals(this.emitter);
     }
 }
 

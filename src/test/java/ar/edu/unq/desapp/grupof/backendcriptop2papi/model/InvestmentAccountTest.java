@@ -86,4 +86,16 @@ public class InvestmentAccountTest {
         assertThat(investmentAccount.getOperations().isEmpty()).isTrue();
     }
 
+    @Test
+    @DisplayName("When an account is created, it has 0 points")
+    void testCreatedAccountDoesNotContainPoints() {
+        assertThat(investmentAccount.getPoints()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("When an account is created, it has 0 reputation")
+    void testCreatedAccountDoesNotContainReputation() {
+        assertThat(investmentAccount.getReputation()).isEqualTo(0);
+    }
+
 }

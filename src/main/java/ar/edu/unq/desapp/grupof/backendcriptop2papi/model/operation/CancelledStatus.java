@@ -4,7 +4,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.OperationNotCancellableException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
 
-public class CompletedStatus extends OperationStatus {
+public class CancelledStatus extends OperationStatus {
     @Override
     public Transaction processTransactionFor(Operation anOperation) {
         // Debe romper?
@@ -13,12 +13,6 @@ public class CompletedStatus extends OperationStatus {
 
     @Override
     public Transaction cancel(Operation anOperation, InvestmentAccount anAccount) {
-        // Debe romper?
         throw new OperationNotCancellableException();
-    }
-
-    @Override
-    public boolean isCompleted(){
-        return true;
     }
 }

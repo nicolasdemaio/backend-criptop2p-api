@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvalidCancellationException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.MarketOrder;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
@@ -42,8 +43,24 @@ public class Operation {
         return processedTransaction;
     }
 
+    public Transaction cancelBy(InvestmentAccount account){
+        if (isThirdParty(account)) throw new InvalidCancellationException();
+        Transaction processedTransaction = status.cancel(this, account); //cambiar estado a cancel
+        transactions.add(processedTransaction);
+        account.discountPointsForCancellation();
+        return processedTransaction;
+    }
+
     // Default access modifier - It can be invoked only by class and another classes on same package.
     void changeStatusTo(OperationStatus aStatus) {
         status = aStatus;
+    }
+
+    public boolean isCompleted(){
+        return status.isCompleted();
+    }
+
+    private boolean isThirdParty(InvestmentAccount account){
+        return (account != this.party) && (account != this.counterparty);
     }
 }
