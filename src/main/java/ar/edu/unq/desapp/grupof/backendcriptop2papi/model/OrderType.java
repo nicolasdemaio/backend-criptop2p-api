@@ -9,10 +9,14 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class OrderType {
+public abstract class OrderType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 
+    public abstract String firstActionOfTransaction();
+    public abstract String secondActionOfTransaction();
+
+    public abstract String destinationAddressFrom(InvestmentAccount anAccount);
 }

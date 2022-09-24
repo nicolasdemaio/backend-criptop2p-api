@@ -18,10 +18,13 @@ public class Transaction {
     private InvestmentAccount partyAccount;
     private String action;
 
+    private String destinationAddress;
+
     protected Transaction() { }
 
-    public Transaction(InvestmentAccount anAccount, String action) {
+    public Transaction(InvestmentAccount anAccount, String action, String destinationAddress) {
         this.partyAccount = anAccount;
         this.action = action;
+        this.destinationAddress = destinationAddress;
     }
 }

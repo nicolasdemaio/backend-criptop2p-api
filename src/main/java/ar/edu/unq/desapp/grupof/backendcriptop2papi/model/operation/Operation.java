@@ -41,7 +41,7 @@ public class Operation {
     }
 
     public Transaction transact() {
-        Transaction processedTransaction = status.processTransactionFor(this);
+        Transaction processedTransaction = status.processTransactionFor(this, sourceOfOrigin.getOrderType());
         transactions.add(processedTransaction);
         return processedTransaction;
     }
