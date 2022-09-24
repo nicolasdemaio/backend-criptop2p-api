@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.CryptoQuotation;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -19,4 +20,6 @@ public abstract class OrderType {
     public abstract String secondActionOfTransaction();
 
     public abstract String destinationAddressFrom(InvestmentAccount anAccount);
+
+    public abstract boolean isSuitablePrice(CryptoQuotation currentQuotation, Double desiredPrice);
 }

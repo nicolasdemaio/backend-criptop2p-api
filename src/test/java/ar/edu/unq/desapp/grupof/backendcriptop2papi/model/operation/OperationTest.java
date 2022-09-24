@@ -9,6 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorTestResource.anyInvestor;
 import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.MarketOrderTestResource.anyMarketOrderIssuedBy;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,6 +22,7 @@ public class OperationTest {
     private InvestmentAccount counterPartyAccount;
     private MarketOrder aMarketOrder;
     private Operation anOperation;
+    private CryptoQuotation aQuotation;
 
 
     @BeforeEach
@@ -26,14 +30,15 @@ public class OperationTest {
         partyAccount = new InvestmentAccount(anyInvestor());
         counterPartyAccount = new InvestmentAccount(anyInvestor());
         aMarketOrder = anyMarketOrderIssuedBy(partyAccount);
-        anOperation = aMarketOrder.beginAnOperationBy(counterPartyAccount);
+        aQuotation = new CryptoQuotation("USDT",1d,20.5d, LocalDateTime.now());
+        anOperation = aMarketOrder.beginAnOperationBy(counterPartyAccount, aQuotation);
     }
 
     @Test
     @DisplayName("Constructor test")
     void constructorTest(){
         MarketOrder marketOrder = anyMarketOrderIssuedBy(partyAccount);
-        Operation anOperation = marketOrder.beginAnOperationBy(counterPartyAccount);
+        Operation anOperation = marketOrder.beginAnOperationBy(counterPartyAccount, aQuotation);
 
         assertThat(anOperation.getParty()).isEqualTo(partyAccount);
         assertThat(anOperation.getCounterparty()).isEqualTo(counterPartyAccount);
@@ -50,7 +55,7 @@ public class OperationTest {
     @Test
     @DisplayName("When an operation is transacted by counter party, its status is changed to InProgressStatus")
     void testFirstTransaction() {
-        Transaction generatedTransaction = anOperation.transact(null, null);
+        Transaction generatedTransaction = anOperation.transact(counterPartyAccount, aQuotation);
 
         assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.IN_PROGRESS);
         assertThat(generatedTransaction.getPartyAccount()).isEqualTo(counterPartyAccount);
@@ -59,9 +64,9 @@ public class OperationTest {
     @Test
     @DisplayName("When an operation is transacted by party, its status is completed")
     void testSecondTransaction() {
-        anOperation.transact(null, null);
+        anOperation.transact(counterPartyAccount, aQuotation);
 
-        Transaction generatedTransaction = anOperation.transact(null, null);
+        Transaction generatedTransaction = anOperation.transact(partyAccount, aQuotation);
 
         assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.COMPLETED);
         assertThat(generatedTransaction.getPartyAccount()).isEqualTo(partyAccount);
@@ -154,7 +159,7 @@ public class OperationTest {
     @Test
     @DisplayName("When an operation was originated by sales order, the first transaction has as destination address the counterparty's crypto wallet")
     void testSalesOrderDestinationAddress() {
-        Transaction transaction = anOperation.transact(null, null);
+        Transaction transaction = anOperation.transact(counterPartyAccount, aQuotation);
 
         assertThat(transaction.getDestinationAddress()).isEqualTo(anOperation.getCounterparty().getInvestor().getCryptoWalletAddress());
     }
@@ -163,7 +168,7 @@ public class OperationTest {
     @DisplayName("When an operation was originated by purchase order, the first transaction has as destination address the counterparty's mercado pago cvu")
     void testPurchaseOrderDestinationAddress() {
         aMarketOrder.setOrderType(new PurchaseOrder());
-        Transaction transaction = anOperation.transact(null, null);
+        Transaction transaction = anOperation.transact(counterPartyAccount, aQuotation);
 
         assertThat(transaction.getDestinationAddress()).isEqualTo(anOperation.getCounterparty().getInvestor().getMercadoPagoCVU());
     }
@@ -171,9 +176,9 @@ public class OperationTest {
     @Test
     @DisplayName("The second transaction's destination address is not applicable")
     void testDestinationAddressOfSecondTransaction() {
-        anOperation.transact(null, null);
+        anOperation.transact(counterPartyAccount, aQuotation);
 
-        Transaction transaction = anOperation.transact(null, null);
+        Transaction transaction = anOperation.transact(partyAccount, aQuotation);
 
         assertThat(transaction.getDestinationAddress()).isEqualTo("N/A");
     }
@@ -182,12 +187,12 @@ public class OperationTest {
     @DisplayName("A completed operation cannot be transacted")
     void testCannotTransactACompletedOperation() {
         // Arrange
-        anOperation.transact(null, null);
-        anOperation.transact(null, null);
+        anOperation.transact(counterPartyAccount, aQuotation);
+        anOperation.transact(partyAccount, aQuotation);
 
         // Act & Assert
 
-        Assertions.assertThatThrownBy(() -> anOperation.transact(null, null))
+        Assertions.assertThatThrownBy(() -> anOperation.transact(counterPartyAccount, aQuotation))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The operation cannot be transacted because its status is COMPLETED");
     }
@@ -200,7 +205,7 @@ public class OperationTest {
 
         // Act & Assert
 
-        Assertions.assertThatThrownBy(() -> anOperation.transact(null, null))
+        Assertions.assertThatThrownBy(() -> anOperation.transact(partyAccount, aQuotation))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The operation cannot be transacted because its status is CANCELLED");
     }
@@ -210,7 +215,7 @@ public class OperationTest {
     void testCanNotBeTransactedByThirdParty() {
         var thirdPartyAccount = new InvestmentAccount(anyInvestor());
 
-        Assertions.assertThatThrownBy(()->anOperation.transact(thirdPartyAccount, null))
+        Assertions.assertThatThrownBy(()->anOperation.transact(thirdPartyAccount, aQuotation))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The operation cannot be transacted by a third party");
     }
@@ -219,17 +224,43 @@ public class OperationTest {
     @DisplayName("An operation cannot be transacted by party when its status is New Operation Status")
     void testCanNotBeTransactedByPartyWhenNew() {
 
-        Assertions.assertThatThrownBy(() -> anOperation.transact(partyAccount,null))
+        Assertions.assertThatThrownBy(() -> anOperation.transact(partyAccount,aQuotation))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The party cannot transact until the counter party transacts");
     }
     @Test
     @DisplayName("An operation cannot be transacted by counterparty when its status is In Progress Status")
     void testCanNotBeTransactedByCounterPartyWhenInProgress() {
-        anOperation.transact(counterPartyAccount,null);
-        Assertions.assertThatThrownBy(() -> anOperation.transact(counterPartyAccount,null))
+        anOperation.transact(counterPartyAccount,aQuotation);
+        Assertions.assertThatThrownBy(() -> anOperation.transact(counterPartyAccount,aQuotation))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The counterparty cannot transact once it has already transacted");
+    }
+
+    @Test
+    @DisplayName("An operation can be canceled by system")
+    void testCancelBySystem() {
+        anOperation.systemCancel();
+
+        assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.CANCELLED);
+    }
+
+    @Test
+    @DisplayName("An operation can not be cancelled by system when its status is completed")
+    void testCanNotCancelBySystemWhenIsCompleted() {
+        anOperation.changeStatusTo(OperationStatus.COMPLETED);
+
+        Assertions.assertThatThrownBy(() -> anOperation.systemCancel())
+                .isInstanceOf(OperationNotCancellableException.class);
+    }
+
+    @Test
+    @DisplayName("An operation can not be cancelled by system when its status is cancelled")
+    void testCanNotCancelBySystemWhenIsCancelled() {
+        anOperation.changeStatusTo(OperationStatus.CANCELLED);
+
+        Assertions.assertThatThrownBy(() -> anOperation.systemCancel())
+                .isInstanceOf(OperationNotCancellableException.class);
     }
 
 }

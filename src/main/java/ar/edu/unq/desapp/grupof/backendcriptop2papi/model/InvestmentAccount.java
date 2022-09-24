@@ -1,8 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.OperationStatus;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -44,7 +42,7 @@ public class InvestmentAccount implements Account {
     }
 
     public void applyFor(MarketOrder aMarketOrder) {
-        aMarketOrder.beginAnOperationBy(this);
+        aMarketOrder.beginAnOperationBy(this, null);
     }
 
     public void addOperation(Operation anOperation) {

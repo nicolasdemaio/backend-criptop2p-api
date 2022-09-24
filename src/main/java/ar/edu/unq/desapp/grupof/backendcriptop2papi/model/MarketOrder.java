@@ -2,11 +2,11 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrderPriceException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.NotSuitablePriceException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OrderAlreadyTakenException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.CryptoQuotation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -51,9 +51,10 @@ public class MarketOrder {
 
     protected MarketOrder() { }
 
-    public Operation beginAnOperationBy(InvestmentAccount anInvestmentAccount) {
+    public Operation beginAnOperationBy(InvestmentAccount anInvestmentAccount, CryptoQuotation currentQuotation) {
         if (isTaken) throw new OrderAlreadyTakenException();
         if (isEmitter(anInvestmentAccount)) throw new InvalidOperationException("An order cannot be taken by its emitter");
+        validateIfPriceIsAccordingToDesired(anInvestmentAccount, currentQuotation);
         isTaken = true;
         // Generate operation and give it to both accounts.
         Operation operation = new Operation(this, emitter, anInvestmentAccount);
@@ -61,6 +62,16 @@ public class MarketOrder {
         anInvestmentAccount.addOperation(operation);
 
         return operation;
+    }
+
+    private void validateIfPriceIsAccordingToDesired(InvestmentAccount anInvestmentAccount, CryptoQuotation currentQuotation) {
+        if (! orderType.isSuitablePrice(currentQuotation, desiredPrice)){
+            Operation operation = new Operation(this, emitter, anInvestmentAccount);
+            emitter.addOperation(operation);
+            anInvestmentAccount.addOperation(operation);
+            operation.systemCancel();
+            throw new NotSuitablePriceException("The current price of the asset does not fulfil the expectations from the emitter");
+        }
     }
 
     private void validateThatPriceFluctuationIsAllowed(Double desiredPrice, Double actualPrice) {

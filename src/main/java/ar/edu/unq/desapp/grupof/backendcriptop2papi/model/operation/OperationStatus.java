@@ -33,4 +33,7 @@ public abstract class OperationStatus {
         return false;
     }
 
+    public void cancelBySystem(Operation anOperation) {
+        anOperation.changeStatusTo(OperationStatus.CANCELLED);
+    }
 }

@@ -68,4 +68,8 @@ public class Operation {
     private boolean isThirdParty(InvestmentAccount account){
         return (account != this.party) && (account != this.counterparty);
     }
+
+    public void systemCancel() {
+        status.cancelBySystem(this);
+    }
 }

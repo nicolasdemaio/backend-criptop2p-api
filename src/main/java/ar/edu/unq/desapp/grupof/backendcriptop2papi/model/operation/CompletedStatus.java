@@ -23,4 +23,9 @@ public class CompletedStatus extends OperationStatus {
     public boolean isCompleted(){
         return true;
     }
+
+    @Override
+    public void cancelBySystem(Operation anOperation) {
+        throw new OperationNotCancellableException();
+    }
 }

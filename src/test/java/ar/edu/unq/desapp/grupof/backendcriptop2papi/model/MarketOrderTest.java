@@ -2,13 +2,15 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrderPriceException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.NotSuitablePriceException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OrderAlreadyTakenException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.CryptoQuotation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.MarketOrderTestResource.anyMarketOrderIssuedBy;
+import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.MarketOrderTestResource.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorTestResource.*;
@@ -79,9 +81,9 @@ public class MarketOrderTest {
         InvestmentAccount yetAnotherInvestmentAccount = new InvestmentAccount(anyInvestor());
 
         MarketOrder marketOrder = anyMarketOrderIssuedBy(investmentAccount);
-        marketOrder.beginAnOperationBy(anotherInvestmentAccount);
+        marketOrder.beginAnOperationBy(anotherInvestmentAccount, null);
         assertThatThrownBy(
-                () -> marketOrder.beginAnOperationBy(yetAnotherInvestmentAccount))
+                () -> marketOrder.beginAnOperationBy(yetAnotherInvestmentAccount, null))
                 .isInstanceOf(OrderAlreadyTakenException.class)
                 .hasMessage("This order is already taken");
     }
@@ -93,9 +95,39 @@ public class MarketOrderTest {
         MarketOrder marketOrder = anyMarketOrderIssuedBy(investmentAccount);
 
         assertThatThrownBy(
-                () -> marketOrder.beginAnOperationBy(investmentAccount))
+                () -> marketOrder.beginAnOperationBy(investmentAccount, null))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("An order cannot be taken by its emitter");
+    }
+
+    @Test
+    @DisplayName("When an account wants to begin sales operation and the current price is below the desired price a Cancelled Operation is issued for emitter and transactor")
+    void testBeginSalesOperationWithNotSuitablePrice(){
+        InvestmentAccount investmentAccount = new InvestmentAccount(anyInvestor());
+        InvestmentAccount anotherInvestmentAccount = new InvestmentAccount(anyInvestor());
+        MarketOrder marketOrder = anySalesMarketOrderIssuedByWithDesiredPrice(investmentAccount,20d);
+
+        CryptoQuotation quotationOutOfRange = new CryptoQuotation("BSNDT", 0.05d, 19d,LocalDateTime.now());
+
+        assertThatThrownBy(
+                () -> marketOrder.beginAnOperationBy(anotherInvestmentAccount, quotationOutOfRange))
+                .isInstanceOf(NotSuitablePriceException.class)
+                .hasMessage("The current price of the asset does not fulfil the expectations from the emitter");
+    }
+
+    @Test
+    @DisplayName("When an account wants to begin purchase operation and the current price is above the desired price a Cancelled Operation is issued for emitter and transactor")
+    void testBeginPurchaseOperationWithNotSuitablePrice(){
+        InvestmentAccount investmentAccount = new InvestmentAccount(anyInvestor());
+        InvestmentAccount anotherInvestmentAccount = new InvestmentAccount(anyInvestor());
+        MarketOrder marketOrder = anyPurchaseMarketOrderIssuedByWithDesiredPrice(investmentAccount,20d);
+
+        CryptoQuotation quotationOutOfRange = new CryptoQuotation("BSNDT", 0.06d, 21d,LocalDateTime.now());
+
+        assertThatThrownBy(
+                () -> marketOrder.beginAnOperationBy(anotherInvestmentAccount, quotationOutOfRange))
+                .isInstanceOf(NotSuitablePriceException.class)
+                .hasMessage("The current price of the asset does not fulfil the expectations from the emitter");
     }
 
 

@@ -17,4 +17,9 @@ public class CancelledStatus extends OperationStatus {
     public Transaction cancel(Operation anOperation, InvestmentAccount anAccount) {
         throw new OperationNotCancellableException();
     }
+
+    @Override
+    public void cancelBySystem(Operation anOperation) {
+        throw new OperationNotCancellableException();
+    }
 }

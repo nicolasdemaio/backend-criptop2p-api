@@ -1,5 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.CryptoQuotation;
+
 public class PurchaseOrder extends OrderType {
     @Override
     public String firstActionOfTransaction() {
@@ -14,6 +16,11 @@ public class PurchaseOrder extends OrderType {
     @Override
     public String destinationAddressFrom(InvestmentAccount anAccount) {
         return anAccount.getInvestor().getMercadoPagoCVU();
+    }
+
+    @Override
+    public boolean isSuitablePrice(CryptoQuotation currentQuotation, Double desiredPrice) {
+        return currentQuotation.getPriceInPesos() <= desiredPrice;
     }
 
 }
