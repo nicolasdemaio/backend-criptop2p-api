@@ -2,14 +2,16 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.OperationStatus;
+import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
+@Data
 @Entity
 public class InvestmentAccount implements Account {
 
@@ -17,15 +19,17 @@ public class InvestmentAccount implements Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @OneToMany
-    private final List<MarketOrder> marketOrders;
+    private List<MarketOrder> marketOrders;
     @OneToOne
-    private final Investor investor;
+    private Investor investor;
     @OneToMany
-    private final List<Operation> operations;
+    private List<Operation> operations;
 
     private int points;
 
-    private int POINTS_LOST_FOR_CANCELLING = 20;
+    private static final int POINTS_LOST_FOR_CANCELLING = 20;
+
+    protected InvestmentAccount() { }
 
     public InvestmentAccount(Investor anInvestor) {
         marketOrders = new ArrayList<MarketOrder>();
