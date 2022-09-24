@@ -21,7 +21,7 @@ public abstract class OperationStatus {
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
 
-    public abstract Transaction processTransactionFor(Operation anOperation, OrderType orderType);
+    public abstract Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor);
 
     public Transaction cancel(Operation anOperation, InvestmentAccount anAccount) {
         Transaction transaction = new Transaction(anAccount, "Cancel", "N/A");

@@ -4,6 +4,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidCanc
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.MarketOrder;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -40,8 +41,9 @@ public class Operation {
         transactions = new ArrayList();
     }
 
-    public Transaction transact() {
-        Transaction processedTransaction = status.processTransactionFor(this, sourceOfOrigin.getOrderType());
+    public Transaction transact(InvestmentAccount transactor, CryptoQuotation quotation) {
+        if (isThirdParty(transactor)) throw new InvalidOperationException("The operation cannot be transacted by a third party");
+        Transaction processedTransaction = status.processTransactionFor(this, sourceOfOrigin.getOrderType(), transactor);
         transactions.add(processedTransaction);
         return processedTransaction;
     }
