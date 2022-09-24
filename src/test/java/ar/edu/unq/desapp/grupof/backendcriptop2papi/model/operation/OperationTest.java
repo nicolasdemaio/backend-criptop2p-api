@@ -177,4 +177,31 @@ public class OperationTest {
 
         assertThat(transaction.getDestinationAddress()).isEqualTo("N/A");
     }
+
+    @Test
+    @DisplayName("A completed operation cannot be transacted")
+    void testCannotTransactACompletedOperation() {
+        // Arrange
+        anOperation.transact();
+        anOperation.transact();
+
+        // Act & Assert
+
+        Assertions.assertThatThrownBy(() -> anOperation.transact())
+                .isInstanceOf(InvalidOperationException.class)
+                .hasMessage("The operation cannot be transacted because its status is COMPLETED");
+    }
+
+    @Test
+    @DisplayName("A cancelled operation cannot be transacted")
+    void testCannotTransactACancelledOperation() {
+        // Arrange
+        anOperation.cancelBy(counterPartyAccount);
+
+        // Act & Assert
+
+        Assertions.assertThatThrownBy(() -> anOperation.transact())
+                .isInstanceOf(InvalidOperationException.class)
+                .hasMessage("The operation cannot be transacted because its status is CANCELLED");
+    }
 }

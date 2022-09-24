@@ -1,9 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.OperationNotCancellableException;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.OrderType;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
 
 import javax.persistence.Entity;
 
@@ -11,13 +8,11 @@ import javax.persistence.Entity;
 public class CompletedStatus extends OperationStatus {
     @Override
     public Transaction processTransactionFor(Operation anOperation, OrderType orderType) {
-        // Debe romper?
-        return null;
+        throw new InvalidOperationException("The operation cannot be transacted because its status is COMPLETED");
     }
 
     @Override
     public Transaction cancel(Operation anOperation, InvestmentAccount anAccount) {
-        // Debe romper?
         throw new OperationNotCancellableException();
     }
 
