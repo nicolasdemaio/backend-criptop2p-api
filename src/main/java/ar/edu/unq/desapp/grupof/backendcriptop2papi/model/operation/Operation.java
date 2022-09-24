@@ -18,16 +18,19 @@ public class Operation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @OneToOne
-    private final MarketOrder sourceOfOrigin;
+    private MarketOrder sourceOfOrigin;
     @ManyToOne
-    private final InvestmentAccount party;
+    private InvestmentAccount party;
     @ManyToOne
-    private final InvestmentAccount counterparty;
+    private InvestmentAccount counterparty;
 
     @OneToMany
-    private final List<Transaction> transactions;
+    private List<Transaction> transactions;
 
+    @ManyToOne
     private OperationStatus status;
+
+    protected Operation() { }
 
     public Operation(MarketOrder anOrder, InvestmentAccount aParty, InvestmentAccount aCounterParty) {
         sourceOfOrigin = anOrder;
@@ -38,7 +41,7 @@ public class Operation {
     }
 
     public Transaction transact() {
-        Transaction processedTransaction = status.processTransactionFor(this);
+        Transaction processedTransaction = status.processTransactionFor(this, sourceOfOrigin.getOrderType());
         transactions.add(processedTransaction);
         return processedTransaction;
     }

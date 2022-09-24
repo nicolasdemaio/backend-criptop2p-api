@@ -1,14 +1,14 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OperationNotCancellableException;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
 
+import javax.persistence.Entity;
+
+@Entity
 public class CompletedStatus extends OperationStatus {
     @Override
-    public Transaction processTransactionFor(Operation anOperation) {
-        // Debe romper?
-        return null;
+    public Transaction processTransactionFor(Operation anOperation, OrderType orderType) {
+        throw new InvalidOperationException("The operation cannot be transacted because its status is COMPLETED");
     }
 
     @Override

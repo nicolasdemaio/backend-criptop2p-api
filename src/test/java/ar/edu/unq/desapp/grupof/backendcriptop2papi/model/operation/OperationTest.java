@@ -150,4 +150,57 @@ public class OperationTest {
         Assertions.assertThat(anOperation.isCompleted()).isFalse();
     }
 
+    @Test
+    @DisplayName("When an operation was originated by sales order, the first transaction has as destination address the counterparty's crypto wallet")
+    void testSalesOrderDestinationAddress() {
+        Transaction transaction = anOperation.transact();
+
+        assertThat(transaction.getDestinationAddress()).isEqualTo(anOperation.getCounterparty().getInvestor().getCryptoWalletAddress());
+    }
+
+    @Test
+    @DisplayName("When an operation was originated by purchase order, the first transaction has as destination address the counterparty's mercado pago cvu")
+    void testPurchaseOrderDestinationAddress() {
+        aMarketOrder.setOrderType(new PurchaseOrder());
+        Transaction transaction = anOperation.transact();
+
+        assertThat(transaction.getDestinationAddress()).isEqualTo(anOperation.getCounterparty().getInvestor().getMercadoPagoCVU());
+    }
+
+    @Test
+    @DisplayName("The second transaction's destination address is not applicable")
+    void testDestinationAddressOfSecondTransaction() {
+        anOperation.transact();
+
+        Transaction transaction = anOperation.transact();
+
+        assertThat(transaction.getDestinationAddress()).isEqualTo("N/A");
+    }
+
+    @Test
+    @DisplayName("A completed operation cannot be transacted")
+    void testCannotTransactACompletedOperation() {
+        // Arrange
+        anOperation.transact();
+        anOperation.transact();
+
+        // Act & Assert
+
+        Assertions.assertThatThrownBy(() -> anOperation.transact())
+                .isInstanceOf(InvalidOperationException.class)
+                .hasMessage("The operation cannot be transacted because its status is COMPLETED");
+    }
+
+    @Test
+    @DisplayName("A cancelled operation cannot be transacted")
+    void testCannotTransactACancelledOperation() {
+        // Arrange
+        anOperation.cancelBy(counterPartyAccount);
+
+        // Act & Assert
+
+        Assertions.assertThatThrownBy(() -> anOperation.transact())
+                .isInstanceOf(InvalidOperationException.class)
+                .hasMessage("The operation cannot be transacted because its status is CANCELLED");
+    }
 }

@@ -4,7 +4,9 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOper
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrderPriceException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OrderAlreadyTakenException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
+import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,23 +16,23 @@ import java.time.LocalDateTime;
 // 3. se crea la operacion en las cuentas parte y contraparte
 // 4. la orden no se usa mas, queda Tomada por esa cuenta.
 
-@Getter
+@Data
 @Entity
 public class MarketOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private final String cryptoCurrency;
+    private String cryptoCurrency;
     @ManyToOne
-    private final InvestmentAccount emitter;
-    private final Double nominalQuantity;
-    private final Double desiredPrice;
+    private InvestmentAccount emitter;
+    private Double nominalQuantity;
+    private Double desiredPrice;
     @ManyToOne
-    private final OrderType orderType;
-    private final Double actualPrice;
-    private final LocalDateTime dateTime;
-    private final Double ACCEPTED_PRICE_FLUCTUATION = 0.05d;
+    private OrderType orderType;
+    private Double actualPrice;
+    private LocalDateTime dateTime;
+    private Double ACCEPTED_PRICE_FLUCTUATION = 0.05d;
     private Boolean isTaken;
 
 
@@ -46,6 +48,8 @@ public class MarketOrder {
         this.dateTime = dateTime;
         isTaken = false;
     }
+
+    protected MarketOrder() { }
 
     public Operation beginAnOperationBy(InvestmentAccount anInvestmentAccount) {
         if (isTaken) throw new OrderAlreadyTakenException();
