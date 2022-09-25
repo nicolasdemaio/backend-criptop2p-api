@@ -1,7 +1,5 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.CryptoQuotation;
-
 public class SalesOrder extends OrderType {
     @Override
     public String firstActionOfTransaction() {

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorTestResource.anyInvestor;
@@ -30,7 +29,7 @@ public class OperationTest {
         partyAccount = new InvestmentAccount(anyInvestor());
         counterPartyAccount = new InvestmentAccount(anyInvestor());
         aMarketOrder = anyMarketOrderIssuedBy(partyAccount);
-        aQuotation = new CryptoQuotation("USDT",1d,20.5d, LocalDateTime.now());
+        aQuotation = new CryptoQuotation(CryptoCurrency.BTCUSDT,1d,20.5d, LocalDateTime.now());
         anOperation = aMarketOrder.beginAnOperationBy(counterPartyAccount, aQuotation);
     }
 
@@ -55,7 +54,7 @@ public class OperationTest {
     @Test
     @DisplayName("When an operation is transacted by counter party, its status is changed to InProgressStatus")
     void testFirstTransaction() {
-        Transaction generatedTransaction = anOperation.transact(counterPartyAccount, aQuotation);
+        Transaction generatedTransaction = anOperation.transact(counterPartyAccount, LocalDateTime.now());
 
         assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.IN_PROGRESS);
         assertThat(generatedTransaction.getPartyAccount()).isEqualTo(counterPartyAccount);
@@ -64,9 +63,9 @@ public class OperationTest {
     @Test
     @DisplayName("When an operation is transacted by party, its status is completed")
     void testSecondTransaction() {
-        anOperation.transact(counterPartyAccount, aQuotation);
+        anOperation.transact(counterPartyAccount, LocalDateTime.now());
 
-        Transaction generatedTransaction = anOperation.transact(partyAccount, aQuotation);
+        Transaction generatedTransaction = anOperation.transact(partyAccount, LocalDateTime.now());
 
         assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.COMPLETED);
         assertThat(generatedTransaction.getPartyAccount()).isEqualTo(partyAccount);
@@ -159,7 +158,7 @@ public class OperationTest {
     @Test
     @DisplayName("When an operation was originated by sales order, the first transaction has as destination address the counterparty's crypto wallet")
     void testSalesOrderDestinationAddress() {
-        Transaction transaction = anOperation.transact(counterPartyAccount, aQuotation);
+        Transaction transaction = anOperation.transact(counterPartyAccount, LocalDateTime.now());
 
         assertThat(transaction.getDestinationAddress()).isEqualTo(anOperation.getCounterparty().getInvestor().getCryptoWalletAddress());
     }
@@ -168,7 +167,7 @@ public class OperationTest {
     @DisplayName("When an operation was originated by purchase order, the first transaction has as destination address the counterparty's mercado pago cvu")
     void testPurchaseOrderDestinationAddress() {
         aMarketOrder.setOrderType(new PurchaseOrder());
-        Transaction transaction = anOperation.transact(counterPartyAccount, aQuotation);
+        Transaction transaction = anOperation.transact(counterPartyAccount, LocalDateTime.now());
 
         assertThat(transaction.getDestinationAddress()).isEqualTo(anOperation.getCounterparty().getInvestor().getMercadoPagoCVU());
     }
@@ -176,9 +175,9 @@ public class OperationTest {
     @Test
     @DisplayName("The second transaction's destination address is not applicable")
     void testDestinationAddressOfSecondTransaction() {
-        anOperation.transact(counterPartyAccount, aQuotation);
+        anOperation.transact(counterPartyAccount, LocalDateTime.now());
 
-        Transaction transaction = anOperation.transact(partyAccount, aQuotation);
+        Transaction transaction = anOperation.transact(partyAccount, LocalDateTime.now());
 
         assertThat(transaction.getDestinationAddress()).isEqualTo("N/A");
     }
@@ -187,12 +186,12 @@ public class OperationTest {
     @DisplayName("A completed operation cannot be transacted")
     void testCannotTransactACompletedOperation() {
         // Arrange
-        anOperation.transact(counterPartyAccount, aQuotation);
-        anOperation.transact(partyAccount, aQuotation);
+        anOperation.transact(counterPartyAccount, LocalDateTime.now());
+        anOperation.transact(partyAccount, LocalDateTime.now());
 
         // Act & Assert
 
-        Assertions.assertThatThrownBy(() -> anOperation.transact(counterPartyAccount, aQuotation))
+        Assertions.assertThatThrownBy(() -> anOperation.transact(counterPartyAccount, LocalDateTime.now()))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The operation cannot be transacted because its status is COMPLETED");
     }
@@ -205,7 +204,7 @@ public class OperationTest {
 
         // Act & Assert
 
-        Assertions.assertThatThrownBy(() -> anOperation.transact(partyAccount, aQuotation))
+        Assertions.assertThatThrownBy(() -> anOperation.transact(partyAccount, LocalDateTime.now()))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The operation cannot be transacted because its status is CANCELLED");
     }
@@ -215,7 +214,7 @@ public class OperationTest {
     void testCanNotBeTransactedByThirdParty() {
         var thirdPartyAccount = new InvestmentAccount(anyInvestor());
 
-        Assertions.assertThatThrownBy(()->anOperation.transact(thirdPartyAccount, aQuotation))
+        Assertions.assertThatThrownBy(()->anOperation.transact(thirdPartyAccount, LocalDateTime.now()))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The operation cannot be transacted by a third party");
     }
@@ -224,15 +223,15 @@ public class OperationTest {
     @DisplayName("An operation cannot be transacted by party when its status is New Operation Status")
     void testCanNotBeTransactedByPartyWhenNew() {
 
-        Assertions.assertThatThrownBy(() -> anOperation.transact(partyAccount,aQuotation))
+        Assertions.assertThatThrownBy(() -> anOperation.transact(partyAccount, LocalDateTime.now()))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The party cannot transact until the counter party transacts");
     }
     @Test
     @DisplayName("An operation cannot be transacted by counterparty when its status is In Progress Status")
     void testCanNotBeTransactedByCounterPartyWhenInProgress() {
-        anOperation.transact(counterPartyAccount,aQuotation);
-        Assertions.assertThatThrownBy(() -> anOperation.transact(counterPartyAccount,aQuotation))
+        anOperation.transact(counterPartyAccount, LocalDateTime.now());
+        Assertions.assertThatThrownBy(() -> anOperation.transact(counterPartyAccount, LocalDateTime.now()))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The counterparty cannot transact once it has already transacted");
     }
@@ -262,5 +261,30 @@ public class OperationTest {
         Assertions.assertThatThrownBy(() -> anOperation.systemCancel())
                 .isInstanceOf(OperationNotCancellableException.class);
     }
+
+    @Test
+    @DisplayName("When an operation is completed within the first 30 minutes, both accounts gain 10 points")
+    void testOperationCompletedBefore30Minutes() {
+        LocalDateTime dateTime = LocalDateTime.now();
+        anOperation.transact(counterPartyAccount, dateTime);
+
+        anOperation.transact(partyAccount, dateTime);
+
+        Assertions.assertThat(partyAccount.getPoints()).isEqualTo(10);
+        Assertions.assertThat(counterPartyAccount.getPoints()).isEqualTo(10);
+    }
+
+    @Test
+    @DisplayName("When an operation is completed 30 minutes after being originated, both accounts gain 5 points")
+    void testOperationCompletedAfter30Minutes() {
+        LocalDateTime dateTime = LocalDateTime.now();
+        anOperation.transact(counterPartyAccount, dateTime);
+
+        anOperation.transact(partyAccount, dateTime.plusMinutes(31));
+
+        Assertions.assertThat(partyAccount.getPoints()).isEqualTo(5);
+        Assertions.assertThat(counterPartyAccount.getPoints()).isEqualTo(5);
+    }
+
 
 }

@@ -24,7 +24,7 @@ public class InvestmentAccount implements Account {
     @OneToMany
     private List<Operation> operations;
 
-    private int points;
+    private Integer points;
 
     private static final int POINTS_LOST_FOR_CANCELLING = 20;
 
@@ -41,8 +41,8 @@ public class InvestmentAccount implements Account {
         marketOrders.add(aMarketOrder);
     }
 
-    public void applyFor(MarketOrder aMarketOrder) {
-        aMarketOrder.beginAnOperationBy(this, null);
+    public Operation applyFor(MarketOrder aMarketOrder, CryptoQuotation currentQuotation) {
+        return aMarketOrder.beginAnOperationBy(this, currentQuotation);
     }
 
     public void addOperation(Operation anOperation) {
@@ -64,5 +64,9 @@ public class InvestmentAccount implements Account {
             reputation = Math.round(this.points / completedOperations);
         }
         return reputation;
+    }
+
+    public void addPoints(Integer anAmountOfPoints) {
+        points += anAmountOfPoints;
     }
 }

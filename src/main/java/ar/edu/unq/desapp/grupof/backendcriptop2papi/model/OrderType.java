@@ -1,6 +1,5 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.CryptoQuotation;
 import lombok.Data;
 
 import javax.persistence.Entity;

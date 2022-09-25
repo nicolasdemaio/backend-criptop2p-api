@@ -4,17 +4,11 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOper
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrderPriceException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.NotSuitablePriceException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OrderAlreadyTakenException;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.CryptoQuotation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
-// 1. se toma por una cuenta
-// 2. esa cuenta transacciona contra la orden
-// 3. se crea la operacion en las cuentas parte y contraparte
-// 4. la orden no se usa mas, queda Tomada por esa cuenta.
 
 @Data
 @Entity
@@ -23,7 +17,8 @@ public class MarketOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String cryptoCurrency;
+    @Enumerated(EnumType.STRING)
+    private CryptoCurrency cryptoCurrency;
     @ManyToOne
     private InvestmentAccount emitter;
     private Double nominalQuantity;
@@ -36,7 +31,7 @@ public class MarketOrder {
     private Boolean isTaken;
 
 
-    public MarketOrder(String cryptoCurrency, InvestmentAccount emitter, Double nominalQuantity, Double desiredPrice, OrderType orderType, Double actualPrice, LocalDateTime dateTime) {
+    public MarketOrder(CryptoCurrency cryptoCurrency, InvestmentAccount emitter, Double nominalQuantity, Double desiredPrice, OrderType orderType, Double actualPrice, LocalDateTime dateTime) {
         // Nico: extraería la validación a un objeto quiza
         validateThatPriceFluctuationIsAllowed(desiredPrice, actualPrice);
         this.cryptoCurrency = cryptoCurrency;
@@ -57,7 +52,7 @@ public class MarketOrder {
         validateIfPriceIsAccordingToDesired(anInvestmentAccount, currentQuotation);
         isTaken = true;
         // Generate operation and give it to both accounts.
-        Operation operation = new Operation(this, emitter, anInvestmentAccount);
+        Operation operation = new Operation(this, emitter, anInvestmentAccount, currentQuotation);
         emitter.addOperation(operation);
         anInvestmentAccount.addOperation(operation);
 
@@ -66,7 +61,7 @@ public class MarketOrder {
 
     private void validateIfPriceIsAccordingToDesired(InvestmentAccount anInvestmentAccount, CryptoQuotation currentQuotation) {
         if (! orderType.isSuitablePrice(currentQuotation, desiredPrice)){
-            Operation operation = new Operation(this, emitter, anInvestmentAccount);
+            Operation operation = new Operation(this, emitter, anInvestmentAccount, currentQuotation);
             emitter.addOperation(operation);
             anInvestmentAccount.addOperation(operation);
             operation.systemCancel();

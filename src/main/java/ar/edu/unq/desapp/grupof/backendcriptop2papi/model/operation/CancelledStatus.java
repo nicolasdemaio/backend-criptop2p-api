@@ -5,11 +5,12 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOper
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OperationNotCancellableException;
 
 import javax.persistence.Entity;
+import java.time.LocalDateTime;
 
 @Entity
 public class CancelledStatus extends OperationStatus {
     @Override
-    public Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor) {
+    public Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor, LocalDateTime transactionDateTime) {
         throw new InvalidOperationException("The operation cannot be transacted because its status is CANCELLED");
     }
 

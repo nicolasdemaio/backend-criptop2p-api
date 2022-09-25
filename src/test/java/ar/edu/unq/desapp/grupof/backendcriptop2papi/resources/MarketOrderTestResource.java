@@ -12,7 +12,7 @@ public class MarketOrderTestResource {
         OrderType orderType = new SalesOrder();
         LocalDateTime aDateTime = LocalDateTime.now();
 
-        return new MarketOrder("BNBUSDT", investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
+        return new MarketOrder(CryptoCurrency.ATOMUSDT, investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
     }
 
     public static MarketOrder anySalesMarketOrderIssuedByWithDesiredPrice(InvestmentAccount investmentAccount, Double desiredPrice) {
@@ -20,7 +20,7 @@ public class MarketOrderTestResource {
         OrderType orderType = new SalesOrder();
         LocalDateTime aDateTime = LocalDateTime.now();
 
-        return new MarketOrder("BNBUSDT", investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
+        return new MarketOrder(CryptoCurrency.BTCUSDT, investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
     }
 
     public static MarketOrder anyPurchaseMarketOrderIssuedByWithDesiredPrice(InvestmentAccount investmentAccount, Double desiredPrice) {
@@ -28,6 +28,6 @@ public class MarketOrderTestResource {
         OrderType orderType = new PurchaseOrder();
         LocalDateTime aDateTime = LocalDateTime.now();
 
-        return new MarketOrder("BNBUSDT", investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
+        return new MarketOrder(CryptoCurrency.ADAUSDT, investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
     }
 }

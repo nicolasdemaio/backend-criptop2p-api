@@ -5,17 +5,17 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOper
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OperationNotCancellableException;
 
 import javax.persistence.Entity;
+import java.time.LocalDateTime;
 
 @Entity
 public class CompletedStatus extends OperationStatus {
     @Override
-    public Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor) {
+    public Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor, LocalDateTime transactionDateTime) {
         throw new InvalidOperationException("The operation cannot be transacted because its status is COMPLETED");
     }
 
     @Override
     public Transaction cancel(Operation anOperation, InvestmentAccount anAccount) {
-        // Debe romper?
         throw new OperationNotCancellableException();
     }
 

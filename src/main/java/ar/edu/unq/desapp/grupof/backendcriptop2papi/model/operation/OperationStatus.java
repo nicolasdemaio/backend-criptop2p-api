@@ -6,6 +6,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -21,10 +22,10 @@ public abstract class OperationStatus {
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
 
-    public abstract Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor);
+    public abstract Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor, LocalDateTime transactionDateTime);
 
     public Transaction cancel(Operation anOperation, InvestmentAccount anAccount) {
-        Transaction transaction = new Transaction(anAccount, "Cancel", "N/A");
+        Transaction transaction = new Transaction(anAccount, "Cancel", "N/A", anOperation.getCryptoQuotation(), LocalDateTime.now());
         anOperation.changeStatusTo(OperationStatus.CANCELLED);
         return transaction;
     }

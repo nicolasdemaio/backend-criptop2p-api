@@ -1,9 +1,9 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
 import lombok.Data;
-import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 // Puede ser como un registro, transaccion de quien a quien. de cuanto, en que fecha ...
 @Entity
@@ -18,13 +18,17 @@ public class Transaction {
     private InvestmentAccount partyAccount;
     private String action;
 
+    @ManyToOne
+    private CryptoQuotation cryptoQuotation;
+
     private String destinationAddress;
 
     protected Transaction() { }
 
-    public Transaction(InvestmentAccount anAccount, String action, String destinationAddress) {
+    public Transaction(InvestmentAccount anAccount, String action, String destinationAddress, CryptoQuotation aCryptoQuotation, LocalDateTime transactionDateTime) {
         this.partyAccount = anAccount;
         this.action = action;
         this.destinationAddress = destinationAddress;
+        this.cryptoQuotation = aCryptoQuotation;
     }
 }

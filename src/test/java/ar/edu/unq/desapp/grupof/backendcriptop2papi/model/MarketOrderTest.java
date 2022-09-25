@@ -4,7 +4,6 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOper
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrderPriceException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.NotSuitablePriceException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OrderAlreadyTakenException;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.CryptoQuotation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -30,9 +29,9 @@ public class MarketOrderTest {
         SalesOrder orderType = new SalesOrder();
         LocalDateTime aDateTime = LocalDateTime.now();
 
-        MarketOrder marketOrder = new MarketOrder("BNBUSDT", investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
+        MarketOrder marketOrder = new MarketOrder(CryptoCurrency.AAVEUSDT, investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
 
-        assertThat(marketOrder.getCryptoCurrency()).isEqualTo("BNBUSDT");
+        assertThat(marketOrder.getCryptoCurrency()).isEqualTo(CryptoCurrency.AAVEUSDT);
         assertThat(marketOrder.getNominalQuantity()).isEqualTo(0.1d);
         assertThat(marketOrder.getEmitter()).isEqualTo(investmentAccount);
         assertThat(marketOrder.getDesiredPrice()).isEqualTo(desiredPrice);
@@ -52,7 +51,7 @@ public class MarketOrderTest {
         LocalDateTime aDateTime = LocalDateTime.now();
 
         assertThatThrownBy(
-                () -> new MarketOrder("BNBUSDT", investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime))
+                () -> new MarketOrder(CryptoCurrency.ADAUSDT, investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime))
                 .isInstanceOf(InvalidOrderPriceException.class)
                 .hasMessage("Desired price should be in the range of +/- 5% from current price");
     }
@@ -68,7 +67,7 @@ public class MarketOrderTest {
         LocalDateTime aDateTime = LocalDateTime.now();
 
         assertThatThrownBy(
-                () -> new MarketOrder("BNBUSDT", investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime))
+                () -> new MarketOrder(CryptoCurrency.BNBUSDT, investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime))
                 .isInstanceOf(InvalidOrderPriceException.class)
                 .hasMessage("Desired price should be in the range of +/- 5% from current price");
     }
@@ -81,9 +80,9 @@ public class MarketOrderTest {
         InvestmentAccount yetAnotherInvestmentAccount = new InvestmentAccount(anyInvestor());
 
         MarketOrder marketOrder = anyMarketOrderIssuedBy(investmentAccount);
-        marketOrder.beginAnOperationBy(anotherInvestmentAccount, null);
+        marketOrder.beginAnOperationBy(anotherInvestmentAccount, anySuitableQuotationFor(marketOrder));
         assertThatThrownBy(
-                () -> marketOrder.beginAnOperationBy(yetAnotherInvestmentAccount, null))
+                () -> marketOrder.beginAnOperationBy(yetAnotherInvestmentAccount, anySuitableQuotationFor(marketOrder)))
                 .isInstanceOf(OrderAlreadyTakenException.class)
                 .hasMessage("This order is already taken");
     }
@@ -107,7 +106,7 @@ public class MarketOrderTest {
         InvestmentAccount anotherInvestmentAccount = new InvestmentAccount(anyInvestor());
         MarketOrder marketOrder = anySalesMarketOrderIssuedByWithDesiredPrice(investmentAccount,20d);
 
-        CryptoQuotation quotationOutOfRange = new CryptoQuotation("BSNDT", 0.05d, 19d,LocalDateTime.now());
+        CryptoQuotation quotationOutOfRange = new CryptoQuotation(CryptoCurrency.ADAUSDT, 0.05d, 19d,LocalDateTime.now());
 
         assertThatThrownBy(
                 () -> marketOrder.beginAnOperationBy(anotherInvestmentAccount, quotationOutOfRange))
@@ -122,7 +121,7 @@ public class MarketOrderTest {
         InvestmentAccount anotherInvestmentAccount = new InvestmentAccount(anyInvestor());
         MarketOrder marketOrder = anyPurchaseMarketOrderIssuedByWithDesiredPrice(investmentAccount,20d);
 
-        CryptoQuotation quotationOutOfRange = new CryptoQuotation("BSNDT", 0.06d, 21d,LocalDateTime.now());
+        CryptoQuotation quotationOutOfRange = new CryptoQuotation(CryptoCurrency.BTCUSDT, 0.06d, 21d,LocalDateTime.now());
 
         assertThatThrownBy(
                 () -> marketOrder.beginAnOperationBy(anotherInvestmentAccount, quotationOutOfRange))
@@ -130,5 +129,8 @@ public class MarketOrderTest {
                 .hasMessage("The current price of the asset does not fulfil the expectations from the emitter");
     }
 
+    private CryptoQuotation anySuitableQuotationFor(MarketOrder aMarketOrder) {
+        return new CryptoQuotation(aMarketOrder.getCryptoCurrency(), aMarketOrder.getDesiredPrice(),aMarketOrder.getDesiredPrice(), LocalDateTime.now());
+    }
 
 }

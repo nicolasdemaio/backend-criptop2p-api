@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ public class InvestmentAccountTest {
         SalesOrder orderType = new SalesOrder();
         LocalDateTime aDateTime = LocalDateTime.now();
 
-        return new MarketOrder("BNBUSDT", investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
+        return new MarketOrder(CryptoCurrency.BNBUSDT, investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
     }
 
     @Test
@@ -63,7 +64,7 @@ public class InvestmentAccountTest {
         MarketOrder aMarketOrder = anyMarketOrderIssuedBy(investmentAccount);
         investmentAccount.placeMarketOrder(aMarketOrder);
 
-        anotherInvestmentAccount.applyFor(aMarketOrder);
+        anotherInvestmentAccount.applyFor(aMarketOrder, anySuitableQuotationFor(aMarketOrder));
 
         assertThat(aMarketOrder.getIsTaken()).isTrue();
     }
@@ -74,7 +75,7 @@ public class InvestmentAccountTest {
         MarketOrder aMarketOrder = anyMarketOrderIssuedBy(investmentAccount);
         investmentAccount.placeMarketOrder(aMarketOrder);
 
-        anotherInvestmentAccount.applyFor(aMarketOrder);
+        anotherInvestmentAccount.applyFor(aMarketOrder, anySuitableQuotationFor(aMarketOrder));
 
         assertThat(investmentAccount.getOperations().size()).isEqualTo(1);
         assertThat(anotherInvestmentAccount.getOperations().size()).isEqualTo(1);
@@ -96,6 +97,39 @@ public class InvestmentAccountTest {
     @DisplayName("When an account is created, it has 0 reputation")
     void testCreatedAccountDoesNotContainReputation() {
         assertThat(investmentAccount.getReputation()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("When an account completes two operations, its reputation is the amount of gained points divided by two")
+    void testAccountReputationCalculationWithTwoCompletedOperations() {
+        // Arrange
+        LocalDateTime dateTime = LocalDateTime.now();
+
+        MarketOrder aMarketOrder = anyMarketOrderIssuedBy(investmentAccount);
+        investmentAccount.placeMarketOrder(aMarketOrder);
+        Operation firstOperation =  anotherInvestmentAccount.applyFor(aMarketOrder, anySuitableQuotationFor(aMarketOrder));
+
+        MarketOrder anotherMarketOrder = anyMarketOrderIssuedBy(investmentAccount);
+        investmentAccount.placeMarketOrder(anotherMarketOrder);
+        Operation secondOperation =  anotherInvestmentAccount.applyFor(anotherMarketOrder, anySuitableQuotationFor(anotherMarketOrder));
+
+        // Act
+        firstOperation.transact(anotherInvestmentAccount, dateTime);
+        firstOperation.transact(investmentAccount, dateTime);
+
+        secondOperation.transact(anotherInvestmentAccount, dateTime);
+        secondOperation.transact(investmentAccount, dateTime.plusMinutes(31));
+
+        // Assert
+        Integer completedOperations = 2;
+        Integer gainedPoints = 15;
+        Integer expectedReputation = Math.round(gainedPoints / completedOperations);
+        assertThat(investmentAccount.getReputation()).isEqualTo(expectedReputation);
+        assertThat(anotherInvestmentAccount.getReputation()).isEqualTo(expectedReputation);
+    }
+
+    private CryptoQuotation anySuitableQuotationFor(MarketOrder aMarketOrder) {
+        return new CryptoQuotation(aMarketOrder.getCryptoCurrency(), aMarketOrder.getDesiredPrice(),aMarketOrder.getDesiredPrice(), LocalDateTime.now());
     }
 
 }
