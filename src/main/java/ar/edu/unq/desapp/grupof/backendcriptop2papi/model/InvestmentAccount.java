@@ -21,9 +21,9 @@ public class InvestmentAccount implements Account {
     private final List<Operation> operations;
 
     public InvestmentAccount(Investor anInvestor) {
-        marketOrders = new ArrayList<MarketOrder>();
+        marketOrders = new ArrayList<>();
         investor = anInvestor;
-        operations = new ArrayList<Operation>();
+        operations = new ArrayList<>();
     }
 
     public void placeMarketOrder(MarketOrder aMarketOrder) {

@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorTestResource.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class InvestorTest {
+class InvestorTest {
     @Test
-    public void anInvestorCanHaveANameWithALengthBetween3And30Characters(){
+    void anInvestorCanHaveANameWithALengthBetween3And30Characters() {
         String nameBetween3And30Characters = "Jhon";
         Investor investorWithNameBetween3And30Characters = anyInvestorWithName(nameBetween3And30Characters);
 
@@ -16,7 +16,7 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorCanHaveANameWith3Characters(){
+    void anInvestorCanHaveANameWith3Characters() {
         String nameWith3Characters = "Bob";
         Investor investorWithNameWith3Characters = anyInvestorWithName(nameWith3Characters);
 
@@ -24,7 +24,7 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorCanHaveANameWith30Characters(){
+    void anInvestorCanHaveANameWith30Characters() {
         String nameWith30Characters = "IAmANameWith30CharactersOkay??";
         Investor investorWithNameWith30Characters = anyInvestorWithName(nameWith30Characters);
 
@@ -32,25 +32,25 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorCanNotHaveANameWithMoreThan30Characters(){
+    void anInvestorCanNotHaveANameWithMoreThan30Characters() {
         String nameWithMoreThan30Characters = "IAmANameWithMoreThan30CharactersOkay?";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
-                Investor investorWithANameWithMoreThan30Characters = anyInvestorWithName(nameWithMoreThan30Characters);
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
+            Investor investorWithANameWithMoreThan30Characters = anyInvestorWithName(nameWithMoreThan30Characters);
         });
-        assertBrokenConstraintWith(exception,"name");
+        assertBrokenConstraintWith(exception, "name");
     }
 
     @Test
-    public void anInvestorCanNotHaveANameWithLessThan3Characters(){
+    void anInvestorCanNotHaveANameWithLessThan3Characters() {
         String nameWithLessThan3Characters = "NO";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
             Investor investorWithANameWithLessThan3Characters = anyInvestorWithName(nameWithLessThan3Characters);
         });
-        assertBrokenConstraintWith(exception,"name");
+        assertBrokenConstraintWith(exception, "name");
     }
 
     @Test
-    public void anInvestorCanHaveASurnameWithALengthBetween3And30Characters(){
+    void anInvestorCanHaveASurnameWithALengthBetween3And30Characters() {
         String surnameBetween3And30Characters = "Jhon";
         Investor investorWithSurnameBetween3And30Characters = anyInvestorWithSurname(surnameBetween3And30Characters);
 
@@ -58,7 +58,7 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorCanHaveASurnameWith3Characters(){
+    void anInvestorCanHaveASurnameWith3Characters() {
         String surnameWith3Characters = "Bob";
         Investor investorWithSurnameWith3Characters = anyInvestorWithSurname(surnameWith3Characters);
 
@@ -66,7 +66,7 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorCanHaveASurnameWith30Characters(){
+    void anInvestorCanHaveASurnameWith30Characters() {
         String surnameWith30Characters = "IAmANameWith30CharactersOkay??";
         Investor investorWithSurnameWith30Characters = anyInvestorWithSurname(surnameWith30Characters);
 
@@ -74,25 +74,25 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorCanNotHaveASurnameWithMoreThan30Characters(){
+    void anInvestorCanNotHaveASurnameWithMoreThan30Characters() {
         String surnameWithMoreThan30Characters = "IAmANameWithMoreThan30CharactersOkay?";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
             Investor investorWithASurnameWithMoreThan30Characters = anyInvestorWithSurname(surnameWithMoreThan30Characters);
         });
-        assertBrokenConstraintWith(exception,"surname");
+        assertBrokenConstraintWith(exception, "surname");
     }
 
     @Test
-    public void anInvestorCanNotHaveASurnameWithLessThan3Characters(){
+    void anInvestorCanNotHaveASurnameWithLessThan3Characters() {
         String surnameWithLessThan3Characters = "NO";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
             Investor investorWithASurnameWithLessThan3Characters = anyInvestorWithSurname(surnameWithLessThan3Characters);
         });
-        assertBrokenConstraintWith(exception,"surname");
+        assertBrokenConstraintWith(exception, "surname");
     }
 
     @Test
-    public void anInvestorShouldHaveAValidEmail(){
+    void anInvestorShouldHaveAValidEmail() {
         String validEmail = "Jhon98@gmail.com";
         Investor investorWithValidEmail = anyInvestorWithEmail(validEmail);
 
@@ -100,16 +100,16 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorCanNotHaveAnInvalidEmail(){
+    void anInvestorCanNotHaveAnInvalidEmail() {
         String invalidEmail = "IAmAnInvalidEmail";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
             Investor investorWithInvalidEmail = anyInvestorWithEmail(invalidEmail);
         });
-        assertBrokenConstraintWith(exception,"email");
+        assertBrokenConstraintWith(exception, "email");
     }
 
     @Test
-    public void anInvestorCanHaveAnAddressWithALengthBetween10And30Characters(){
+    void anInvestorCanHaveAnAddressWithALengthBetween10And30Characters() {
         String addressBetween10And30Characters = "Don Bosco 1998";
         Investor investorWithAddressBetween10And30Characters = anyInvestorWithAddress(addressBetween10And30Characters);
 
@@ -117,7 +117,7 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorCanHaveAnAddressWith10Characters(){
+    void anInvestorCanHaveAnAddressWith10Characters() {
         String addressWith10Characters = "TenCharact";
         Investor investorWithAddressWith10Characters = anyInvestorWithAddress(addressWith10Characters);
 
@@ -125,7 +125,7 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorCanHaveAnAddressWith30Characters(){
+    void anInvestorCanHaveAnAddressWith30Characters() {
         String addressWith30Characters = "IAmAAddrWith30CharactersOkay??";
         Investor investorWithAddressWith30Characters = anyInvestorWithAddress(addressWith30Characters);
 
@@ -133,61 +133,61 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorCanNotHaveAnAddressWithMoreThan30Characters(){
+    void anInvestorCanNotHaveAnAddressWithMoreThan30Characters() {
         String addressWithMoreThan30Characters = "IAmAAddressWithMoreThan30CharactersOkay?";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
             Investor investorWithAnAddressWithMoreThan30Characters = anyInvestorWithAddress(addressWithMoreThan30Characters);
         });
-        assertBrokenConstraintWith(exception,"address");
+        assertBrokenConstraintWith(exception, "address");
     }
 
     @Test
-    public void anInvestorCanNotHaveAnAddressWithLessThan10Characters(){
+    void anInvestorCanNotHaveAnAddressWithLessThan10Characters() {
         String addressWithLessThan10Characters = "NotEnough";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
             Investor investorWithAnAddressWithLessThan10Characters = anyInvestorWithAddress(addressWithLessThan10Characters);
         });
-        assertBrokenConstraintWith(exception,"address");
+        assertBrokenConstraintWith(exception, "address");
     }
 
     @Test
-    public void anInvestorCanNotHaveAPasswordWithLessThanSixCharacters(){
+    void anInvestorCanNotHaveAPasswordWithLessThanSixCharacters() {
         String passwordWithLessThanSixCharac = "Less";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
             Investor investorWithAPassWithLessThan6Characters = anyInvestorWithPassword(passwordWithLessThanSixCharac);
         });
-        assertBrokenConstraintWith(exception,"password");
+        assertBrokenConstraintWith(exception, "password");
     }
 
     @Test
-    public void anInvestorCanNotHaveAPasswordWithNoCapitalLetter(){
+    void anInvestorCanNotHaveAPasswordWithNoCapitalLetter() {
         String passwordWithoutCapital = "ihavenocapital";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
             Investor investorWithAPassWithNoCap = anyInvestorWithPassword(passwordWithoutCapital);
         });
-        assertBrokenConstraintWith(exception,"password");
+        assertBrokenConstraintWith(exception, "password");
     }
 
     @Test
-    public void anInvestorCanNotHaveAPasswordWithNoLowerCaseLetter(){
+    void anInvestorCanNotHaveAPasswordWithNoLowerCaseLetter() {
         String passwordWithoutLowerCase = "IHAVENOLOWER";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
             Investor investorWithAPassWithNoLowerCase = anyInvestorWithPassword(passwordWithoutLowerCase);
         });
-        assertBrokenConstraintWith(exception,"password");
+        assertBrokenConstraintWith(exception, "password");
     }
 
     @Test
-    public void anInvestorCanNotHaveAPasswordWithNoSpecialCharacter(){
+    void anInvestorCanNotHaveAPasswordWithNoSpecialCharacter() {
         String passwordWithoutSpecialChar = "IHaveNoSpecialChar";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
             Investor investorWithAPassWithNoSpecialChar = anyInvestorWithPassword(passwordWithoutSpecialChar);
         });
-        assertBrokenConstraintWith(exception,"password");
+        assertBrokenConstraintWith(exception, "password");
     }
 
     @Test
-    public void anInvestorShouldHaveAPasswordWithAtLeastSixCharactersOneLowerAndUpperCaseAndASpecialCharacter(){
+    void anInvestorShouldHaveAPasswordWithAtLeastSixCharactersOneLowerAndUpperCaseAndASpecialCharacter() {
         String validPassword = "ValidPassword@";
         Investor investorWithValidPass = anyInvestorWithPassword(validPassword);
 
@@ -195,7 +195,7 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorShouldHaveAMercadoPagoCVUWith22Characters(){
+    void anInvestorShouldHaveAMercadoPagoCVUWith22Characters() {
         String validCVU = "1234567890123456789012";
         Investor investorWithValidCVU = anyInvestorWithMercadoPagoCVU(validCVU);
 
@@ -203,16 +203,16 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorCanNotHaveAnInvalidCVU(){
+    void anInvestorCanNotHaveAnInvalidCVU() {
         String invalidCVU = "1234";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
             Investor investorWithInvalidCVU = anyInvestorWithMercadoPagoCVU(invalidCVU);
         });
-        assertBrokenConstraintWith(exception,"mercadoPagoCVU");
+        assertBrokenConstraintWith(exception, "mercadoPagoCVU");
     }
 
     @Test
-    public void anInvestorShouldHaveACryptoWalletAddressWith8Characters(){
+    void anInvestorShouldHaveACryptoWalletAddressWith8Characters() {
         String validCryptoWalletAddress = "12345678";
         Investor investorWithValidCryptoAddr = anyInvestorWithWalletAddress(validCryptoWalletAddress);
 
@@ -220,26 +220,26 @@ public class InvestorTest {
     }
 
     @Test
-    public void anInvestorCanNotHaveAnInvalidCryptoWalletAddress(){
+    void anInvestorCanNotHaveAnInvalidCryptoWalletAddress() {
         String invalidCryptoWalletAddress = "1234";
-        InvalidObjectException exception = assertThrows(InvalidObjectException.class,() -> {
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
             Investor investorWithInvalidWalletAddress = anyInvestorWithWalletAddress(invalidCryptoWalletAddress);
         });
-        assertBrokenConstraintWith(exception,"cryptoWalletAddress");
+        assertBrokenConstraintWith(exception, "cryptoWalletAddress");
     }
 
     @Test
-    public void anInvestorCannotBeCreatedWithNullFields() {
+    void anInvestorCannotBeCreatedWithNullFields() {
         Assertions.assertThatThrownBy(() ->
-        new Investor(
-                null,
-                "Trejo",
-                "trejo@gmail.com",
-                "Fake 123",
-                "p4ssw0rd",
-                "1234567891234567891234",
-                "12345678"
-        )).isInstanceOf(InvalidObjectException.class);
+                new Investor(
+                        null,
+                        "Trejo",
+                        "trejo@gmail.com",
+                        "Fake 123",
+                        "p4ssw0rd",
+                        "1234567891234567891234",
+                        "12345678"
+                )).isInstanceOf(InvalidObjectException.class);
     }
 
     private void assertBrokenConstraintWith(InvalidObjectException exception, String attribute) {

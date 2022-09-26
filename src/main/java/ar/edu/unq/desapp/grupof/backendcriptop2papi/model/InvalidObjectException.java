@@ -12,9 +12,9 @@ public class InvalidObjectException extends RuntimeException {
     private final Map<String, String> brokenConstraints;
 
     public InvalidObjectException(Set<ConstraintViolation<ValidatableEntity>> constraintViolations) {
-        var brokenConstraints = new HashMap<String, String>();
-        constraintViolations.stream().toList().forEach(constraintViolation -> addConstraintTo(brokenConstraints, constraintViolation));
-        this.brokenConstraints = brokenConstraints;
+        var constraints = new HashMap<String, String>();
+        constraintViolations.stream().toList().forEach(constraintViolation -> addConstraintTo(constraints, constraintViolation));
+        this.brokenConstraints = constraints;
     }
 
     private void addConstraintTo(HashMap<String, String> brokenConstraints, ConstraintViolation<ValidatableEntity> constraintViolation) {

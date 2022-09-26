@@ -26,7 +26,7 @@ public class MarketOrder {
     private final OrderType orderType;
     private final Double actualPrice;
     private final LocalDateTime dateTime;
-    private final Double ACCEPTED_PRICE_FLUCTUATION = 0.05d;
+    private static final Double ACCEPTED_PRICE_FLUCTUATION = 0.05d;
     private Boolean isTaken;
 
     // actualPrice probablemente no se guarda.

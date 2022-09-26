@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class MarketOrderTest {
+class MarketOrderTest {
 
     @Test
     @DisplayName("Market order is created correctly")
