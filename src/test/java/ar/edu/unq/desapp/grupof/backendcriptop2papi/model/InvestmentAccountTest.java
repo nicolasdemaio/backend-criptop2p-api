@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class InvestmentAccountTest {
+class InvestmentAccountTest {
 
     private InvestmentAccount investmentAccount;
     private InvestmentAccount anotherInvestmentAccount;
@@ -33,7 +33,7 @@ public class InvestmentAccountTest {
     void testAccountDoesNotContainOrdersWhenIsCreated() {
         InvestmentAccount investmentAccount = new InvestmentAccount(ANY_INVESTOR);
 
-        assertThat(investmentAccount.getMarketOrders().isEmpty()).isTrue();
+        assertThat(investmentAccount.getMarketOrders()).isEmpty();
     }
 
     @Test
@@ -45,7 +45,7 @@ public class InvestmentAccountTest {
 
         investmentAccount.placeMarketOrder(aMarketOrder);
 
-        assertThat(investmentAccount.getMarketOrders().contains(aMarketOrder)).isTrue();
+        assertThat(investmentAccount.getMarketOrders()).contains(aMarketOrder);
     }
 
     private MarketOrder anyMarketOrderIssuedBy(InvestmentAccount investmentAccount) {
@@ -76,14 +76,14 @@ public class InvestmentAccountTest {
 
         anotherInvestmentAccount.applyFor(aMarketOrder);
 
-        assertThat(investmentAccount.getOperations().size()).isEqualTo(1);
-        assertThat(anotherInvestmentAccount.getOperations().size()).isEqualTo(1);
+        assertThat(investmentAccount.getOperations()).hasSize(1);
+        assertThat(anotherInvestmentAccount.getOperations()).hasSize(1);
     }
 
     @Test
     @DisplayName("When an account is created, it does not contain performed operations")
     void testCreatedAccountDoesNotContainOperations() {
-        assertThat(investmentAccount.getOperations().isEmpty()).isTrue();
+        assertThat(investmentAccount.getOperations()).isEmpty();
     }
 
 }
