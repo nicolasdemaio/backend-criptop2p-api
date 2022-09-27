@@ -21,6 +21,7 @@ public class Transaction {
     @ManyToOne
     private CryptoQuotation cryptoQuotation;
 
+    private LocalDateTime timeStamp;
     private String destinationAddress;
 
     protected Transaction() { }
@@ -30,5 +31,6 @@ public class Transaction {
         this.action = action;
         this.destinationAddress = destinationAddress;
         this.cryptoQuotation = aCryptoQuotation;
+        this.timeStamp = transactionDateTime;
     }
 }

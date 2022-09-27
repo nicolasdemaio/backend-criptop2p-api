@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Entity
-public class InvestmentAccount implements Account {
+public class InvestmentAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -57,10 +57,10 @@ public class InvestmentAccount implements Account {
         int completedOperations = operations
                 .stream()
                 .filter(Operation::isCompleted)
-                .collect(Collectors.toList())
+                .toList()
                 .size();
         if (completedOperations != 0) {
-            reputation = Math.round(this.points / completedOperations);
+            reputation = this.points / completedOperations;
         }
         return reputation;
     }

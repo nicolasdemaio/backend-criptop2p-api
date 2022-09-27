@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class OperationStatus {
 
-    public final static OperationStatus COMPLETED = new CompletedStatus();
-    public final static OperationStatus IN_PROGRESS = new InProgressStatus();
-    public final static OperationStatus NEW = new NewOperationStatus();
-    public final static OperationStatus CANCELLED = new CancelledStatus();
+    public static final OperationStatus COMPLETED = new CompletedStatus();
+    public static final OperationStatus IN_PROGRESS = new InProgressStatus();
+    public static final OperationStatus NEW = new NewOperationStatus();
+    public static final OperationStatus CANCELLED = new CancelledStatus();
 
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)

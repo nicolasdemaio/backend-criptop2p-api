@@ -45,7 +45,7 @@ public class Operation {
         party = aParty;
         counterparty = aCounterParty;
         status = OperationStatus.NEW;
-        transactions = new ArrayList();
+        transactions = new ArrayList<>();
         cryptoQuotation = aCryptoQuotation;
         dateTimeOfOrigin = LocalDateTime.now();
     }

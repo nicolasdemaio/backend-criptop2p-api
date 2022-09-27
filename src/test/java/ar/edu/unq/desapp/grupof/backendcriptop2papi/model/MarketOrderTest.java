@@ -80,9 +80,10 @@ class MarketOrderTest {
         InvestmentAccount yetAnotherInvestmentAccount = new InvestmentAccount(anyInvestor());
 
         MarketOrder marketOrder = anyMarketOrderIssuedBy(investmentAccount);
-        marketOrder.beginAnOperationBy(anotherInvestmentAccount, anySuitableQuotationFor(marketOrder));
+        CryptoQuotation aQuotation = anySuitableQuotationFor(marketOrder);
+        marketOrder.beginAnOperationBy(anotherInvestmentAccount, aQuotation);
         assertThatThrownBy(
-                () -> marketOrder.beginAnOperationBy(yetAnotherInvestmentAccount, anySuitableQuotationFor(marketOrder)))
+                () -> marketOrder.beginAnOperationBy(yetAnotherInvestmentAccount, aQuotation))
                 .isInstanceOf(OrderAlreadyTakenException.class)
                 .hasMessage("This order is already taken");
     }

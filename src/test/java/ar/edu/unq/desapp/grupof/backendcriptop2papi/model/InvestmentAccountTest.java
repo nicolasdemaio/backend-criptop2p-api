@@ -90,13 +90,13 @@ class InvestmentAccountTest {
     @Test
     @DisplayName("When an account is created, it has 0 points")
     void testCreatedAccountDoesNotContainPoints() {
-        assertThat(investmentAccount.getPoints()).isEqualTo(0);
+        assertThat(investmentAccount.getPoints()).isZero();
     }
 
     @Test
     @DisplayName("When an account is created, it has 0 reputation")
     void testCreatedAccountDoesNotContainReputation() {
-        assertThat(investmentAccount.getReputation()).isEqualTo(0);
+        assertThat(investmentAccount.getReputation()).isZero();
     }
 
     @Test
@@ -123,7 +123,7 @@ class InvestmentAccountTest {
         // Assert
         Integer completedOperations = 2;
         Integer gainedPoints = 15;
-        Integer expectedReputation = Math.round(gainedPoints / completedOperations);
+        Integer expectedReputation = gainedPoints / completedOperations;
         assertThat(investmentAccount.getReputation()).isEqualTo(expectedReputation);
         assertThat(anotherInvestmentAccount.getReputation()).isEqualTo(expectedReputation);
     }

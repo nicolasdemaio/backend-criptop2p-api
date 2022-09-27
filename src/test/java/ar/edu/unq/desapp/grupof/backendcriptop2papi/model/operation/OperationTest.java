@@ -15,14 +15,14 @@ import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorTes
 import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.MarketOrderTestResource.anyMarketOrderIssuedBy;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OperationTest {
+class OperationTest {
 
     private InvestmentAccount partyAccount;
     private InvestmentAccount counterPartyAccount;
     private MarketOrder aMarketOrder;
     private Operation anOperation;
     private CryptoQuotation aQuotation;
-
+    private LocalDateTime now;
 
     @BeforeEach
     void initialize() {
@@ -31,6 +31,7 @@ public class OperationTest {
         aMarketOrder = anyMarketOrderIssuedBy(partyAccount);
         aQuotation = new CryptoQuotation(CryptoCurrency.BTCUSDT,1d,20.5d, LocalDateTime.now());
         anOperation = aMarketOrder.beginAnOperationBy(counterPartyAccount, aQuotation);
+        now = LocalDateTime.now();
     }
 
     @Test
@@ -94,7 +95,7 @@ public class OperationTest {
     void testCancelOperationTransactions() {
         Transaction generatedTransaction = anOperation.cancelBy(partyAccount);
 
-        assertThat(anOperation.getTransactions().size()).isEqualTo(1);
+        assertThat(anOperation.getTransactions()).hasSize(1);
         assertThat(generatedTransaction.getAction()).isEqualTo("Cancel");
     }
 
@@ -177,7 +178,7 @@ public class OperationTest {
     void testDestinationAddressOfSecondTransaction() {
         anOperation.transact(counterPartyAccount, LocalDateTime.now());
 
-        Transaction transaction = anOperation.transact(partyAccount, LocalDateTime.now());
+        Transaction transaction = anOperation.transact(partyAccount, now);
 
         assertThat(transaction.getDestinationAddress()).isEqualTo("N/A");
     }
@@ -186,15 +187,16 @@ public class OperationTest {
     @DisplayName("A completed operation cannot be transacted")
     void testCannotTransactACompletedOperation() {
         // Arrange
-        anOperation.transact(counterPartyAccount, LocalDateTime.now());
-        anOperation.transact(partyAccount, LocalDateTime.now());
+        anOperation.transact(counterPartyAccount, now);
+        anOperation.transact(partyAccount, now);
 
         // Act & Assert
 
-        Assertions.assertThatThrownBy(() -> anOperation.transact(counterPartyAccount, LocalDateTime.now()))
+        Assertions.assertThatThrownBy(() -> anOperation.transact(counterPartyAccount, now))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The operation cannot be transacted because its status is COMPLETED");
     }
+
 
     @Test
     @DisplayName("A cancelled operation cannot be transacted")
@@ -204,7 +206,7 @@ public class OperationTest {
 
         // Act & Assert
 
-        Assertions.assertThatThrownBy(() -> anOperation.transact(partyAccount, LocalDateTime.now()))
+        Assertions.assertThatThrownBy(() -> anOperation.transact(partyAccount, now))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The operation cannot be transacted because its status is CANCELLED");
     }
@@ -214,7 +216,7 @@ public class OperationTest {
     void testCanNotBeTransactedByThirdParty() {
         var thirdPartyAccount = new InvestmentAccount(anyInvestor());
 
-        Assertions.assertThatThrownBy(()->anOperation.transact(thirdPartyAccount, LocalDateTime.now()))
+        Assertions.assertThatThrownBy(()->anOperation.transact(thirdPartyAccount, now))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The operation cannot be transacted by a third party");
     }
@@ -223,7 +225,7 @@ public class OperationTest {
     @DisplayName("An operation cannot be transacted by party when its status is New Operation Status")
     void testCanNotBeTransactedByPartyWhenNew() {
 
-        Assertions.assertThatThrownBy(() -> anOperation.transact(partyAccount, LocalDateTime.now()))
+        Assertions.assertThatThrownBy(() -> anOperation.transact(partyAccount, now))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The party cannot transact until the counter party transacts");
     }
@@ -231,7 +233,7 @@ public class OperationTest {
     @DisplayName("An operation cannot be transacted by counterparty when its status is In Progress Status")
     void testCanNotBeTransactedByCounterPartyWhenInProgress() {
         anOperation.transact(counterPartyAccount, LocalDateTime.now());
-        Assertions.assertThatThrownBy(() -> anOperation.transact(counterPartyAccount, LocalDateTime.now()))
+        Assertions.assertThatThrownBy(() -> anOperation.transact(counterPartyAccount, now))
                 .isInstanceOf(InvalidOperationException.class)
                 .hasMessage("The counterparty cannot transact once it has already transacted");
     }
