@@ -1,36 +1,38 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
-import lombok.Getter;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrderPriceException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.NotSuitablePriceException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OrderAlreadyTakenException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-// 1. se toma por una cuenta
-// 2. esa cuenta transacciona contra la orden
-// 3. se crea la operacion en las cuentas parte y contraparte
-// 4. la orden no se usa mas, queda Tomada por esa cuenta.
-
-@Getter
+@Data
 @Entity
 public class MarketOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private final String cryptoCurrency;
+    @Enumerated(EnumType.STRING)
+    private CryptoCurrency cryptoCurrency;
     @ManyToOne
-    private final InvestmentAccount emitter;
-    private final Double nominalQuantity;
-    private final Double desiredPrice;
+    private InvestmentAccount emitter;
+    private Double nominalQuantity;
+    private Double desiredPrice;
     @ManyToOne
-    private final OrderType orderType;
-    private final Double actualPrice;
-    private final LocalDateTime dateTime;
+    private OrderType orderType;
+    private Double actualPrice;
+    private LocalDateTime dateTime;
     private static final Double ACCEPTED_PRICE_FLUCTUATION = 0.05d;
     private Boolean isTaken;
 
-    // actualPrice probablemente no se guarda.
-    public MarketOrder(String cryptoCurrency, InvestmentAccount emitter, Double nominalQuantity, Double desiredPrice, OrderType orderType, Double actualPrice, LocalDateTime dateTime) {
+
+    public MarketOrder(CryptoCurrency cryptoCurrency, InvestmentAccount emitter, Double nominalQuantity, Double desiredPrice, OrderType orderType, Double actualPrice, LocalDateTime dateTime) {
+        // Nico: extraería la validación a un objeto quiza
         validateThatPriceFluctuationIsAllowed(desiredPrice, actualPrice);
         this.cryptoCurrency = cryptoCurrency;
         this.emitter = emitter;
@@ -42,12 +44,29 @@ public class MarketOrder {
         isTaken = false;
     }
 
-    public void isTakenBy(InvestmentAccount anInvestmentAccount) {
+    protected MarketOrder() { }
+
+    public Operation beginAnOperationBy(InvestmentAccount anInvestmentAccount, CryptoQuotation currentQuotation) {
+        if (isTaken) throw new OrderAlreadyTakenException();
+        if (isEmitter(anInvestmentAccount)) throw new InvalidOperationException("An order cannot be taken by its emitter");
+        validateIfPriceIsAccordingToDesired(anInvestmentAccount, currentQuotation);
         isTaken = true;
         // Generate operation and give it to both accounts.
-        Operation operation = new Operation(this, emitter, anInvestmentAccount);
+        Operation operation = new Operation(this, emitter, anInvestmentAccount, currentQuotation);
         emitter.addOperation(operation);
         anInvestmentAccount.addOperation(operation);
+
+        return operation;
+    }
+
+    private void validateIfPriceIsAccordingToDesired(InvestmentAccount anInvestmentAccount, CryptoQuotation currentQuotation) {
+        if (! orderType.isSuitablePrice(currentQuotation, desiredPrice)){
+            Operation operation = new Operation(this, emitter, anInvestmentAccount, currentQuotation);
+            emitter.addOperation(operation);
+            anInvestmentAccount.addOperation(operation);
+            operation.systemCancel();
+            throw new NotSuitablePriceException("The current price of the asset does not fulfil the expectations from the emitter");
+        }
     }
 
     private void validateThatPriceFluctuationIsAllowed(Double desiredPrice, Double actualPrice) {
@@ -62,6 +81,10 @@ public class MarketOrder {
 
     private boolean isAboveAllowedPrice(Double desiredPrice, Double actualPrice) {
         return desiredPrice >= (actualPrice + actualPrice * ACCEPTED_PRICE_FLUCTUATION);
+    }
+
+    private boolean isEmitter(InvestmentAccount anInvestmentAccount){
+        return anInvestmentAccount.equals(this.emitter);
     }
 }
 

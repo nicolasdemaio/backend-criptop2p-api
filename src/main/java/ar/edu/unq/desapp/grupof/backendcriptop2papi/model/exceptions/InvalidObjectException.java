@@ -1,5 +1,6 @@
-package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
+package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.ValidatableEntity;
 import lombok.Getter;
 
 import javax.validation.ConstraintViolation;

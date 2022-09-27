@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidObjectException;
 import lombok.Data;
 
 import javax.persistence.Entity;
