@@ -2,7 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.7.3'
 	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 	id 'java'
-	id "org.sonarqube" version "3.4.0.2513"
+	id 'jacoco'
+	id 'org.sonarqube' version '3.4.0.2513'
 }
 
 group = 'ar.edu.unq.desapp.grupof'
@@ -37,6 +38,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation:2.4.0'
 }
 
+jacocoTestReport {
+	reports {
+		xml.enabled true
+	}
+}
+
+test.finalizedBy jacocoTestReport
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
 sonarqube {
 	properties {
 		property "sonar.projectKey", "nicolasdemaio_backend-criptop2p-api"
@@ -45,6 +58,6 @@ sonarqube {
 	}
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+tasks.named('sonarqube').configure {
+	dependsOn test
 }
