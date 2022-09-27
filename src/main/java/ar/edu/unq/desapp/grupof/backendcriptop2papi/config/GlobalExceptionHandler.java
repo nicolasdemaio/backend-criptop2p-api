@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.config;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.EmailAlreadyInUseException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.EmailAlreadyInUseException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.webservice.ApiMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
