@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, String>> registerUser(@RequestBody UserRegistrationForm form){
+    public ResponseEntity<Map<String, Object>> registerUser(@RequestBody UserRegistrationForm form){
         userService.registerUser(form);
         return new ApiMessage().response(HttpStatus.CREATED, "User successfully created");
     }

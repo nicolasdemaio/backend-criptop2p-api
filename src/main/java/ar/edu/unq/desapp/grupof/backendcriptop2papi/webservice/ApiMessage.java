@@ -7,8 +7,9 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 public class ApiMessage {
-    public ResponseEntity<Map<String, String>> response(HttpStatus status, String aMessage) {
-        Map<String, String> response =
+
+    public ResponseEntity<Map<String, Object>> response(HttpStatus status, Object aMessage) {
+        Map<String, Object> response =
                 Map.ofEntries(
                         Map.entry("message", aMessage),
                         Map.entry("timestamp", LocalDateTime.now().toString()),
