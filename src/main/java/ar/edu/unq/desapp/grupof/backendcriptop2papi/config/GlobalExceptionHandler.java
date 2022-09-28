@@ -31,14 +31,5 @@ public class GlobalExceptionHandler {
         return new ApiMessage().response(HttpStatus.BAD_REQUEST, error);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity<Map<String, Object>> onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        Map<String, String> error = new HashMap<>();
-        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
-            error.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        return new ApiMessage().response(HttpStatus.BAD_REQUEST, error);
-    }
-
 }
 

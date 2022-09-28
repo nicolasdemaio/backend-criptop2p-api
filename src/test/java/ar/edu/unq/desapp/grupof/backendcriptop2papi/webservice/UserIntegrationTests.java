@@ -44,6 +44,28 @@ class UserIntegrationTests {
     }
 
     @Test
+    void testBadRequestWhenRegisterUserWithUsedEmail() throws Exception {
+        UserRegistrationForm registrationForm = new UserRegistrationForm("nicolas", "de maio", "trejoA@gmail.com", "Bernal 1876", "Ndemaio123", "1234567891234567891234", "12345678");
+        String jsonForm = writer.writeValueAsString(registrationForm);
+
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonForm))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonForm))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void testInvalidUserThrowsBadRequest() throws Exception {
         UserRegistrationForm registrationForm = new UserRegistrationForm("nicolas", "de maio", "nico@gmail.com", "Bernal 1876", "Ndemaio123", "12345678912345678912", "12345678");
         String jsonForm = writer.writeValueAsString(registrationForm);
