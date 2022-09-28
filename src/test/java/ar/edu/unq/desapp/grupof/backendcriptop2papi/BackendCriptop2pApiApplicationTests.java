@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -8,7 +9,7 @@ class BackendCriptop2pApiApplicationTests {
 
 	@Test
 	void contextLoads() {
-		assert true;
+		Assertions.assertThat(true).isTrue();
 	}
 
 }
