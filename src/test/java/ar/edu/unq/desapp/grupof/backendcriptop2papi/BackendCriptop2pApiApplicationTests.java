@@ -8,6 +8,7 @@ class BackendCriptop2pApiApplicationTests {
 
 	@Test
 	void contextLoads() {
+		assert true;
 	}
 
 }
