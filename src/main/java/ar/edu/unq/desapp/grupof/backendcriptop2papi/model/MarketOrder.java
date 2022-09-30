@@ -32,7 +32,6 @@ public class MarketOrder {
 
 
     public MarketOrder(CryptoCurrency cryptoCurrency, InvestmentAccount emitter, Double nominalQuantity, Double desiredPrice, OrderType orderType, Double actualPrice, LocalDateTime dateTime) {
-        // Nico: extraería la validación a un objeto quiza
         validateThatPriceFluctuationIsAllowed(desiredPrice, actualPrice);
         this.cryptoCurrency = cryptoCurrency;
         this.emitter = emitter;

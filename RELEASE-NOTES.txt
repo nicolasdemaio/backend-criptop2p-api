@@ -1,0 +1,14 @@
+---------------------------------------------------------------------
+ENTREGA 1 TAG 1.0
+---------------------------------------------------------------------
+NEW FEATURES:
+* User registration service
+* SonarCloud integration with test coverage (JaCoCo)
+* GitHubActions tool for continuous integration
+* Deploy on Heroku (https://crypto-p2p.herokuapp.com/swagger-ui/)
+* API documentation with Swagger 3.0
+* Model logic implementation
+* 74 unit tests
+
+KNOWN ISSUES:
+* 1 known smells related with parent class referencing an instance of a subclass during its own initialization

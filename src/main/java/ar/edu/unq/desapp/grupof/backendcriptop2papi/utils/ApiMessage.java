@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupof.backendcriptop2papi.webservice;
+package ar.edu.unq.desapp.grupof.backendcriptop2papi.utils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

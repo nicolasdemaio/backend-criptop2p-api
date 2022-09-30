@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.webservice;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserRegistrationForm;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.UserService;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.ApiMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
