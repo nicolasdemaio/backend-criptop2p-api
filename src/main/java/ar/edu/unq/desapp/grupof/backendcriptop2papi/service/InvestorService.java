@@ -1,5 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.InvestorDTO;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserLoginRequest;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserRegistrationForm;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.EmailAlreadyInUseException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
@@ -8,16 +10,20 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestmentAccoun
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class InvestorService {
+
     private final InvestorRepository investorRepository;
     private final InvestmentAccountRepository accountRepository;
     private final ModelMapper modelMapper;
+    public static final String INCORRECT_EMAIL_OR_PASSWORD_ERROR_MESSAGE = "Email or password are incorrect";
 
     @Autowired
-    public UserService(InvestorRepository investorRepository, ModelMapper modelMapper, InvestmentAccountRepository accountRepository){
+    public InvestorService(InvestorRepository investorRepository, ModelMapper modelMapper, InvestmentAccountRepository accountRepository){
         this.investorRepository = investorRepository;
         this.modelMapper = modelMapper;
         this.accountRepository = accountRepository;
@@ -32,8 +38,21 @@ public class UserService {
         accountRepository.save(newAccount);
     }
 
+    public InvestorDTO loginUserWith(UserLoginRequest aRequest) {
+        var exception = new RuntimeException(INCORRECT_EMAIL_OR_PASSWORD_ERROR_MESSAGE);
+        Investor user = investorRepository.findInvestorByEmail(aRequest.getEmail()).orElseThrow(() -> exception);
+
+        if(!user.getPassword().equals(aRequest.getPassword())) throw exception;
+        return modelMapper.map(user, InvestorDTO.class);
+    }
+
     private void validateThatEmailIsNotInUse(String anEmail) {
         if (investorRepository.existsInvestorByEmail(anEmail)) throw new EmailAlreadyInUseException();
     }
 
+    public InvestorDTO authenticatedUser() {
+        final var email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Investor investor = investorRepository.findInvestorByEmail(email).get();
+        return modelMapper.map(investor, InvestorDTO.class);
+    }
 }

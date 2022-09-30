@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserIntegrationTests {
+class AuthIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,7 +36,7 @@ class UserIntegrationTests {
 
         mockMvc
                  .perform(MockMvcRequestBuilders
-                         .post("/api/users")
+                         .post("/api/users/register")
                          .contentType(MediaType.APPLICATION_JSON)
                          .content(jsonForm))
                  .andDo(print())
@@ -50,7 +50,7 @@ class UserIntegrationTests {
 
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/api/users")
+                        .post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonForm))
                 .andDo(print())
@@ -58,7 +58,7 @@ class UserIntegrationTests {
 
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/api/users")
+                        .post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonForm))
                 .andDo(print())
@@ -72,7 +72,7 @@ class UserIntegrationTests {
 
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/api/users")
+                        .post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonForm))
                 .andDo(print())
