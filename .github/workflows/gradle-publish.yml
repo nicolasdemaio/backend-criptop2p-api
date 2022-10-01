@@ -9,6 +9,7 @@ name: Gradle Package
 
 on:
   push:
+  pull_request:
     branches:
     - develop
     - master
