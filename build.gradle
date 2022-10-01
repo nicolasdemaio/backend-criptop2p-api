@@ -52,11 +52,17 @@ tasks.named('test') {
 }
 
 sonarqube {
+	var exclusions = List.of(
+			"**/config/*",
+			"**/exceptions/*"
+	)
+
 	properties {
 		property "sonar.projectKey", "nicolasdemaio_backend-criptop2p-api"
 		property "sonar.organization", "nicolasdemaio"
 		property "sonar.host.url", "https://sonarcloud.io"
-		property "sonar.exclusions", "'**/config/*.java', '**/exceptions/*'"
+		property "sonar.exclusions", exclusions
+
 	}
 }
 

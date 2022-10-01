@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,20 +40,25 @@ public class InvestorService {
     }
 
     public InvestorDTO loginUserWith(UserLoginRequest aRequest) {
-        var exception = new InvestorNotFoundException();
-        Investor user = investorRepository.findInvestorByEmail(aRequest.getEmail()).orElseThrow(() -> exception);
+        Investor user = getInvestorByEmail(aRequest.getEmail());
 
-        if(!user.getPassword().equals(aRequest.getPassword())) throw exception;
+        if(!user.hasAsPassword(aRequest.getPassword())) throw new InvestorNotFoundException();
         return modelMapper.map(user, InvestorDTO.class);
+    }
+
+    public InvestorDTO authenticatedUser(Authentication authentication) {
+        String email = authentication.getName();
+        Investor investor = getInvestorByEmail(email);
+        return modelMapper.map(investor, InvestorDTO.class);
     }
 
     private void validateThatEmailIsNotInUse(String anEmail) {
         if (investorRepository.existsInvestorByEmail(anEmail)) throw new EmailAlreadyInUseException();
     }
 
-    public InvestorDTO authenticatedUser(Authentication authentication) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Investor investor = investorRepository.findInvestorByEmail(email).get();
-        return modelMapper.map(investor, InvestorDTO.class);
+    private Investor getInvestorByEmail(String anEmail) {
+        return investorRepository
+                .findInvestorByEmail(anEmail)
+                .orElseThrow(InvestorNotFoundException::new;
     }
 }

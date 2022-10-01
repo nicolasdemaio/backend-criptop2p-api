@@ -13,9 +13,6 @@ import java.util.List;
 @Component
 public class JWTTokenManager {
 
-    @Autowired
-    public JWTTokenManager () { }
-
     public String generateTokenBasedOn(String anEmail) {
         String secretKey = "TOKEN_API";
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils

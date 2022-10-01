@@ -46,5 +46,9 @@ public class Investor extends ValidatableEntity {
         this.cryptoWalletAddress = cryptoWalletAddress;
         validate();
     }
+
+    public boolean hasAsPassword(String aPassword) {
+        return password.equals(aPassword);
+    }
 }
 

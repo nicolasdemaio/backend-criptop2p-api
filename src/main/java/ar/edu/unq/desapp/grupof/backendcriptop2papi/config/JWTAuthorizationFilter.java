@@ -10,25 +10,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
-    private final String HEADER = "Authorization";
-    private final String PREFIX = "Bearer ";
-    private final String SECRET = "TOKEN_API";
+    private static final String HEADER = "Authorization";
+    private static final String PREFIX = "Bearer ";
+    private static final String SECRET = "TOKEN_API";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         try {
-            if (isValidToken(request, response)) {
-                Claims claims = validateToken(request);
-                if (claims.get("authorities") != null) {
-                    setUpSpringAuthentication(claims);
-                } else {
-                    SecurityContextHolder.clearContext();
-                }
+            if (isValidToken(request)) {
+                configureContextWithHeaderFrom(request);
             } else {
                 SecurityContextHolder.clearContext();
             }
@@ -39,20 +33,27 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         }
     }
 
-    private Claims validateToken(HttpServletRequest request) {
-        String jwtToken = request.getHeader(HEADER).replace(PREFIX, "");
+    private void configureContextWithHeaderFrom(HttpServletRequest request) {
+        Claims claims = getClaimsFrom(request);
+        if (claims.get("authorities") != null) {
+            setUpSpringAuthentication(claims);
+        } else {
+            SecurityContextHolder.clearContext();
+        }
+    }
+
+    private Claims getClaimsFrom(HttpServletRequest aRequest) {
+        String jwtToken = aRequest.getHeader(HEADER).replace(PREFIX, "");
         return Jwts.parser().setSigningKey(SECRET.getBytes()).parseClaimsJws(jwtToken).getBody();
     }
 
     private void setUpSpringAuthentication(Claims claims) {
-        List<String> authorities = (List) claims.get("authorities");
-
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null,
-               new ArrayList<>());
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(claims.getSubject(), null, Collections.emptyList());
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
-    private boolean isValidToken(HttpServletRequest request, HttpServletResponse res) {
+    private boolean isValidToken(HttpServletRequest request) {
         String authenticationHeader = request.getHeader(HEADER);
         return authenticationHeader != null && authenticationHeader.startsWith(PREFIX);
     }

@@ -40,7 +40,7 @@ public class AuthController {
     }
 
     @PostMapping (path = "/login")
-    public ResponseEntity<?> loginUserWith(@RequestBody UserLoginRequest aRequest) {
+    public ResponseEntity<InvestorDTO> loginUserWith(@RequestBody UserLoginRequest aRequest) {
         InvestorDTO loggedUser = investorService.loginUserWith(aRequest);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -48,8 +48,8 @@ public class AuthController {
                 .body(loggedUser);
     }
 
-    @GetMapping (path = "/current")
-    public ResponseEntity<?> authenticatedUser(Authentication authentication) {
+    @GetMapping
+    public ResponseEntity<InvestorDTO> authenticatedUser(Authentication authentication) {
         InvestorDTO authenticatedUser = investorService.authenticatedUser(authentication);
         return ResponseEntity.status(HttpStatus.OK).body(authenticatedUser);
     }
