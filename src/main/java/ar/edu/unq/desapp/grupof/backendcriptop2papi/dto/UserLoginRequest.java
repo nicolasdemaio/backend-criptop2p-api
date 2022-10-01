@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter

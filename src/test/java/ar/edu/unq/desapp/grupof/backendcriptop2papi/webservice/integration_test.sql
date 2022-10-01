@@ -1,0 +1,1 @@
+INSERT INTO investor VALUES ("nicolas", "de maio", "nico@gmail.com", "Bernal 1876", "Ndemaio123", "1234567891234567891234", "12345678");

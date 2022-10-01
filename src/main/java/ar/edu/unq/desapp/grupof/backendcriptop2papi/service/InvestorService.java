@@ -6,6 +6,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserRegistrationForm;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.EmailAlreadyInUseException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Investor;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvestorNotFoundException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestmentAccountRepository;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestorRepository;
 import org.modelmapper.ModelMapper;
@@ -20,7 +21,6 @@ public class InvestorService {
     private final InvestorRepository investorRepository;
     private final InvestmentAccountRepository accountRepository;
     private final ModelMapper modelMapper;
-    public static final String INCORRECT_EMAIL_OR_PASSWORD_ERROR_MESSAGE = "Email or password are incorrect";
 
     @Autowired
     public InvestorService(InvestorRepository investorRepository, ModelMapper modelMapper, InvestmentAccountRepository accountRepository){
@@ -39,7 +39,7 @@ public class InvestorService {
     }
 
     public InvestorDTO loginUserWith(UserLoginRequest aRequest) {
-        var exception = new RuntimeException(INCORRECT_EMAIL_OR_PASSWORD_ERROR_MESSAGE);
+        var exception = new InvestorNotFoundException();
         Investor user = investorRepository.findInvestorByEmail(aRequest.getEmail()).orElseThrow(() -> exception);
 
         if(!user.getPassword().equals(aRequest.getPassword())) throw exception;
