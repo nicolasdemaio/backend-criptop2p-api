@@ -2,9 +2,11 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 @AllArgsConstructor
 public class UserRegistrationForm {
     private final String name;

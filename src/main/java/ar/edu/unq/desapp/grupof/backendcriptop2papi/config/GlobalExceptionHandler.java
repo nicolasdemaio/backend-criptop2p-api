@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.config;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.EmailAlreadyInUseException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvestorNotFoundException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.ApiMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,11 @@ public class GlobalExceptionHandler {
             error.put(violation.getPropertyPath().toString(), violation.getMessage());
         }
         return new ApiMessage().response(HttpStatus.BAD_REQUEST, error);
+    }
+
+    @ExceptionHandler(InvestorNotFoundException.class)
+    ResponseEntity<Map<String, Object>> investorNotFound(InvestorNotFoundException exception) {
+        return new ApiMessage().response(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
 }
