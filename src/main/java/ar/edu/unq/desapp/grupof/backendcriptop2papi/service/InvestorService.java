@@ -50,8 +50,8 @@ public class InvestorService {
         if (investorRepository.existsInvestorByEmail(anEmail)) throw new EmailAlreadyInUseException();
     }
 
-    public InvestorDTO authenticatedUser() {
-        final var email = SecurityContextHolder.getContext().getAuthentication().getName();
+    public InvestorDTO authenticatedUser(Authentication authentication) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Investor investor = investorRepository.findInvestorByEmail(email).get();
         return modelMapper.map(investor, InvestorDTO.class);
     }

@@ -49,9 +49,8 @@ public class AuthController {
     }
 
     @GetMapping (path = "/current")
-    @Authorization(value = "Authorization")
-    public ResponseEntity<?> authenticatedUser() {
-        InvestorDTO authenticatedUser = investorService.authenticatedUser();
+    public ResponseEntity<?> authenticatedUser(Authentication authentication) {
+        InvestorDTO authenticatedUser = investorService.authenticatedUser(authentication);
         return ResponseEntity.status(HttpStatus.OK).body(authenticatedUser);
     }
 

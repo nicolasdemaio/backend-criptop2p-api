@@ -50,7 +50,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null,
                new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(auth);
-
     }
 
     private boolean isValidToken(HttpServletRequest request, HttpServletResponse res) {
