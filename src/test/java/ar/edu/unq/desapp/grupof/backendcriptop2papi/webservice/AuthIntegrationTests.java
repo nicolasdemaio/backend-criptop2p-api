@@ -148,7 +148,7 @@ class AuthIntegrationTests {
     @Test
     @DisplayName("IT can get authenticated user by JWT token")
     void testGetAuthenticatedUserByToken() throws Exception {
-        String email = "nicoauth@gmail.com";
+        String email = "authuser@gmail.com";
         investorLoader.loadAnInvestorWithEmailAndPassword(email, VALID_PASSWORD);
 
         String token = new JWTTokenManager().generateTokenBasedOn(email);
