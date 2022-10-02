@@ -47,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     "/swagger-resources/**",
                     "/swagger-ui/**",
                     "/",
-                    "/console/**"
+                    "/h2-console/**"
             };
     }
 

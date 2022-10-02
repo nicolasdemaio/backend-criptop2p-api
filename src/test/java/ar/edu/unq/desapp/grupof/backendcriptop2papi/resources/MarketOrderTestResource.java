@@ -30,4 +30,9 @@ public class MarketOrderTestResource {
 
         return new MarketOrder(CryptoCurrency.ADAUSDT, investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
     }
+
+    public static MarketOrder anyMarketOrder() {
+        InvestmentAccount investmentAccount = new InvestmentAccount(InvestorTestResource.anyInvestor());
+        return anyMarketOrderIssuedBy(investmentAccount);
+    }
 }
