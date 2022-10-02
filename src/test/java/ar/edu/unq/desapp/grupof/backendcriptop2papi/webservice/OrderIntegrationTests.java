@@ -37,8 +37,8 @@ public class OrderIntegrationTests {
     }
 
     @Test
-    @DisplayName("When get active orders, but there are not registered orders, it returns an empty list")
-    void testGetActiveOrderReturnsEmptyList() throws Exception {
+    @DisplayName("When get active orders, it returns orders that are not taken and 200 OK")
+    void testGetActiveOrders() throws Exception {
         investorLoader.loadAnInvestorWithEmailAndPassword(VALID_EMAIL, VALID_PASSWORD);
         String token = new JWTTokenManager().generateTokenBasedOn(VALID_EMAIL);
 
@@ -47,8 +47,7 @@ public class OrderIntegrationTests {
                         .get("/api/orders")
                         .header("Authorization", token))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()", Matchers.is(0)));
+                .andExpect(status().isOk());
     }
 
 }
