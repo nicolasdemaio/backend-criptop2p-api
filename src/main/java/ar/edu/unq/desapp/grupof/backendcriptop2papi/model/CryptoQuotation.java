@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.RawQuote;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -27,5 +28,12 @@ public class CryptoQuotation {
         this.priceInDollars = priceInDollars;
         this.priceInPesos = priceInPesos;
         this.timeStamp = timeStamp;
+    }
+
+    public CryptoQuotation(RawQuote rawQuote, Double officialDollarQuotation, LocalDateTime timestamp){
+        this.cryptoCurrency = CryptoCurrency.valueOf(rawQuote.getSymbol());
+        this.priceInDollars = rawQuote.getPrice();
+        this.priceInPesos = rawQuote.getPrice() * officialDollarQuotation;
+        this.timeStamp = timestamp;
     }
 }

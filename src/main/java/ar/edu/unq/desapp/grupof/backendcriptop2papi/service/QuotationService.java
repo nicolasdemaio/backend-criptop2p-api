@@ -1,13 +1,12 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.CryptoQuotationDTO;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 import java.util.List;
 
 // TODO: test
@@ -15,35 +14,38 @@ import java.util.List;
 public class QuotationService {
 
     private CryptoQuoteAPIClient cryptoQuoteAPIClient;
-    private ModelMapper modelMapper;
+
+    private DollarConversionClient dollarClient;
 
     @Autowired
-    public QuotationService(CryptoQuoteAPIClient cryptoQuoteAPIClient, ModelMapper modelMapper) {
+    public QuotationService(CryptoQuoteAPIClient cryptoQuoteAPIClient, DollarConversionClient dollarClient) {
         this.cryptoQuoteAPIClient = cryptoQuoteAPIClient;
-        this.modelMapper = modelMapper;
+        this.dollarClient = dollarClient;
     }
 
-    /*
-     * Nota
-     * Pensé hacerlo asi pero puede cambiarse:
-     * le pido las RawQuotes (nombre y precio) al Client (le pega directo a la API)
-     *
-     * mapeo esas RawQuote a CryptoQuotation
-     * Necesita, a parte del nombre y precio (en dolares):
-     * Precio en pesos, dia y fecha de actualizacion.
-     * Para lo que es precio en pesos, necesitamos pegarle a la API del BRCA para saber
-     * la cotizacion del dolar y hacer la conversion.
-     *
-     * Capaz, un CurrencyClient que le pegue a la api que tiene que ver con monedas.
-     * Nos traemos la cotizacion y a un CryptoQuotationConverter le pasamos:
-     * la lista de RawQuotes y la cotizacion del dolar actual.
-     *
-     * Por ultimo: las mapeo a CryptoQuotationDTO para retornar
-     */
-    public List<CryptoQuotationDTO> getAllCryptoQuotations() {
+
+    public List<CryptoQuotation> getAllCryptoQuotations() {
         List<RawQuote> rawQuotes = cryptoQuoteAPIClient.getCryptoQuotations();
-        List<CryptoQuotation> quotations = null;
-        Type listType = new TypeToken<List<CryptoQuotationDTO>>() {}.getType();
-        return modelMapper.map(quotations, listType);
+
+        return convertRawQuotesIntoQuotations(rawQuotes);
     }
+
+    public CryptoQuotation getCryptoQuotation(CryptoCurrency currency){
+        RawQuote rawQuote = this.cryptoQuoteAPIClient.searchQuoteByCryptoCurrency(currency);
+        Double officialDollarPrice = this.dollarClient.getOfficialDollarPrice();
+        return new CryptoQuotation(rawQuote, officialDollarPrice, LocalDateTime.now());
+    }
+
+    private List<CryptoQuotation> convertRawQuotesIntoQuotations(List<RawQuote> rawQuotes){
+        Double officialDollarQuotation = dollarClient.getOfficialDollarPrice();
+
+        return rawQuotes.stream()
+                .map(quote -> new CryptoQuotation(quote,
+                officialDollarQuotation,
+                LocalDateTime.now()
+        ))
+                .toList();
+    }
+
+
 }
