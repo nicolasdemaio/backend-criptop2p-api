@@ -1,10 +1,12 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrderTypeException;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Map;
 
 @Data
 @Entity
@@ -21,7 +23,6 @@ public abstract class OrderType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
 
     public abstract String firstActionOfTransaction();
     public abstract String secondActionOfTransaction();

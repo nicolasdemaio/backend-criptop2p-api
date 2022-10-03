@@ -27,6 +27,7 @@ public class MarketOrderDTO {
     private Double desiredPrice;
     @JsonProperty("order_type")
     private OrderType orderType;
+    @JsonProperty("actual_price")
     private Double actualPrice;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     @JsonProperty("date_time")

@@ -54,7 +54,9 @@ tasks.named('test') {
 sonarqube {
 	var exclusions = List.of(
 			"**/config/*",
-			"**/exceptions/*"
+			"**/exceptions/*",
+			"**/utils/*",
+			"**/dto/*"
 	)
 
 	properties {

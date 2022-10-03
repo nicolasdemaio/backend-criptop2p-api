@@ -20,13 +20,9 @@ import java.util.List;
 public class OrderService {
 
     private OrderRepository orderRepository;
-
     private InvestmentAccountRepository investmentAccountRepository;
-
     private ModelMapper modelMapper;
-
     private QuotationService quotationService;
-
     private InvestorService investorService;
 
     @Autowired
@@ -38,10 +34,6 @@ public class OrderService {
         this.quotationService = quotationService;
     }
 
-
-    /**
-     * @return listado donde se muestran las intenciones activas de compra/venta
-     */
     public List<MarketOrderDTO> getActiveOrders() {
         List<MarketOrder> orders = orderRepository.findActiveOrders();
         return orders.stream().map(order -> modelMapper.map(order, MarketOrderDTO.class)).toList();
@@ -56,7 +48,7 @@ public class OrderService {
         MarketOrder createdMarketOrder = form.createMarketOrder(accountFromUser, currentPriceOfCrypto);
         accountFromUser.placeMarketOrder(createdMarketOrder);
 
-        investmentAccountRepository.save(accountFromUser); // ver si funciona cascade.
+        investmentAccountRepository.save(accountFromUser);
 
         return modelMapper.map(createdMarketOrder, MarketOrderDTO.class);
     }

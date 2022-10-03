@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class OrderIntegrationTests {
+class OrderIntegrationTests {
 
     public static final String VALID_EMAIL = "nicoo@gmail.com";
     @Autowired
@@ -50,7 +50,6 @@ public class OrderIntegrationTests {
     void setUp() {
         writer = new ObjectMapper().configure(SerializationFeature.WRAP_ROOT_VALUE, false).writer();
     }
-
 
     @Test
     @DisplayName("When try to get active orders without authentication, throws 403 error")

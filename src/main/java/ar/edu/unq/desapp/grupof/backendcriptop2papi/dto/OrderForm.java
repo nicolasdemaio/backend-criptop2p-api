@@ -1,35 +1,34 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.dto;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrderTypeException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.OrderTypeProvider;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class OrderForm {
+    @JsonProperty("crypto_currency")
     private CryptoCurrency cryptoCurrency;
+    @JsonProperty("nominal_quantity")
     private Double nominalQuantity;
+    @JsonProperty("desired_price")
     private Double desiredPrice;
-    private String operationType; //Ver si usar un builder.
-
-    private Map<String, OrderType> orderTypes;
+    @JsonProperty("operation_type")
+    private String operationType;
 
     public OrderForm(CryptoCurrency cryptoCurrency, Double nominalQuantity, Double desiredPrice, String operationType) {
         this.cryptoCurrency = cryptoCurrency;
         this.nominalQuantity = nominalQuantity;
         this.desiredPrice = desiredPrice;
         this.operationType = operationType;
-        this.orderTypes = Map.ofEntries(Map.entry("SALES", new SalesOrder()), Map.entry("PURCHASE", new PurchaseOrder()));
     }
 
-    public MarketOrder createMarketOrder(InvestmentAccount investMentAccount, Double actualPrice){
-        OrderType orderType = this.orderTypes.get(this.operationType);
-        if (orderType == null) throw new InvalidOrderTypeException();
+    public MarketOrder createMarketOrder(InvestmentAccount investMentAccount, Double actualPrice) {
+        OrderType orderType = OrderTypeProvider.getOrderTypeConsideringADescription(operationType);
 
         return new MarketOrder(
                 this.cryptoCurrency,
