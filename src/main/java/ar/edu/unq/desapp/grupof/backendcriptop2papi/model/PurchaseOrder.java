@@ -1,5 +1,8 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import javax.persistence.Entity;
+
+@Entity
 public class PurchaseOrder extends OrderType {
     @Override
     public String firstActionOfTransaction() {

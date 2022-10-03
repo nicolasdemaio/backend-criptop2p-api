@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class InvestorDTO {
-
+    private Long id;
     private String email;
 
 }

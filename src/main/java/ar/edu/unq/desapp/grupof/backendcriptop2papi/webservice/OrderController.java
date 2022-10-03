@@ -1,12 +1,12 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.webservice;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.MarketOrderDTO;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.OrderForm;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +27,11 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<List<MarketOrderDTO>> getActiveOrders() {
         return ResponseEntity.ok(orderService.getActiveOrders());
+    }
+
+    @PostMapping
+    public ResponseEntity<MarketOrderDTO> placeMarketOrder(@RequestBody OrderForm form, Authentication authentication){
+        return ResponseEntity.status(201).body(orderService.placeMarketOrder(form, authentication));
     }
 
 }

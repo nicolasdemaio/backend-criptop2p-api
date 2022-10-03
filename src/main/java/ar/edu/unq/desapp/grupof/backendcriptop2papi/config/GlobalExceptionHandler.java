@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.config;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.EmailAlreadyInUseException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrderTypeException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvestorNotFoundException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.ApiMessage;
 import org.springframework.http.HttpStatus;
@@ -35,5 +36,9 @@ public class GlobalExceptionHandler {
         return new ApiMessage().response(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
+    @ExceptionHandler(InvalidOrderTypeException.class)
+    ResponseEntity<Map<String, Object>> invalidOrderType(InvalidOrderTypeException exception) {
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
 }
 

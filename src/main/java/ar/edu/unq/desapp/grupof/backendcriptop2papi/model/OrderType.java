@@ -1,14 +1,22 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = SalesOrder.class, name = "sales order"),
+        @JsonSubTypes.Type(value = PurchaseOrder.class, name = "purchase order")
+})
 public abstract class OrderType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

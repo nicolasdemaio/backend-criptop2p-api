@@ -23,7 +23,7 @@ public class MarketOrder {
     private InvestmentAccount emitter;
     private Double nominalQuantity;
     private Double desiredPrice;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private OrderType orderType;
     private Double actualPrice;
     private LocalDateTime dateTime;
