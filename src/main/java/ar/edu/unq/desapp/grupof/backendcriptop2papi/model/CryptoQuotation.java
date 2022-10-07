@@ -3,10 +3,7 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.RawQuote;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 public class CryptoQuotation {
 
     @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private Integer id;
     @Enumerated(EnumType.STRING)
     private CryptoCurrency cryptoCurrency;

@@ -54,6 +54,12 @@ public class GlobalExceptionHandler {
     ResponseEntity<Map<String, Object>> invalidOrderPriceException(InvalidOrderPriceException exception) {
         return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
+
+    @ExceptionHandler(OrderAlreadyTakenException.class)
+    ResponseEntity<Map<String, Object>> orderAlreadyTakenException(OrderAlreadyTakenException exception) {
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
 }
 
 

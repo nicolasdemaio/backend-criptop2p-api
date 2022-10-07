@@ -19,7 +19,7 @@ public class InvestmentAccount {
     private List<MarketOrder> marketOrders;
     @OneToOne
     private Investor investor;
-    @OneToMany
+    @ManyToMany
     private List<Operation> operations;
 
     private Integer points;
