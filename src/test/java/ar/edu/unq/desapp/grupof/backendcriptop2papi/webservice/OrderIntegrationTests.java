@@ -133,12 +133,12 @@ class OrderIntegrationTests {
 
     private OrderForm anyPurchaseOrderForm(){
         Double validPrice = quotationService.getCryptoQuotation(CryptoCurrency.AAVEUSDT).getPriceInPesos();
-        return new OrderForm(CryptoCurrency.AAVEUSDT,1d,validPrice,"PURCHASE");
+        return new OrderForm(CryptoCurrency.AAVEUSDT.name(),1d,validPrice,"PURCHASE");
     }
 
     private OrderForm anySalesOrderForm(){
         Double validPrice = quotationService.getCryptoQuotation(CryptoCurrency.AAVEUSDT).getPriceInPesos();
-        return new OrderForm(CryptoCurrency.AAVEUSDT,1d,validPrice,"SALES");
+        return new OrderForm(CryptoCurrency.AAVEUSDT.name(),1d,validPrice,"SALES");
     }
 }
 
