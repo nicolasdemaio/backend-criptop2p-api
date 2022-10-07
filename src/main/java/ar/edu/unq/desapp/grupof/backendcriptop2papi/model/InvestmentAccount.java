@@ -15,7 +15,7 @@ public class InvestmentAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<MarketOrder> marketOrders;
     @OneToOne
     private Investor investor;

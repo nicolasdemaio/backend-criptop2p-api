@@ -23,7 +23,6 @@ public class QuotationService {
         this.dollarClient = dollarClient;
     }
 
-
     public List<CryptoQuotation> getAllCryptoQuotations() {
         List<RawQuote> rawQuotes = cryptoQuoteAPIClient.getCryptoQuotations();
 
