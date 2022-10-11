@@ -6,17 +6,13 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.OperationDTO;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserRegistrationForm;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidObjectException;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.*;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.*;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.InvestorService;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.OrderService;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.QuotationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -27,35 +23,44 @@ import java.util.List;
 class DataLoader implements CommandLineRunner {
 
     private InvestorService investorService;
-    private OrderService orderService;
     private QuotationService quotationService;
-
-    private InvestorRepository investorRepository;
     private InvestmentAccountRepository investmentAccountRepository;
     private OperationRepository operationRepository;
     private OrderRepository orderRepository;
-    private CryptoQuotationRepository cryptoQuotationRepository;
+    private OperationStatusRepository operationStatusRepository;
 
     @Autowired
-    public DataLoader(InvestorService investorService, QuotationService quotationService, OrderService orderService, InvestorRepository investorRepository, InvestmentAccountRepository investmentAccountRepository, OperationRepository operationRepository, OrderRepository orderRepository, CryptoQuotationRepository cryptoQuotationRepository) {
+    public DataLoader(InvestorService investorService, QuotationService quotationService, InvestmentAccountRepository investmentAccountRepository, OperationRepository operationRepository, OrderRepository orderRepository, OperationStatusRepository operationStatusRepository) {
         this.investorService = investorService;
         this.quotationService = quotationService;
-        this.orderService = orderService;
-        this.investorRepository = investorRepository;
         this.investmentAccountRepository = investmentAccountRepository;
         this.operationRepository = operationRepository;
         this.orderRepository = orderRepository;
-        this.cryptoQuotationRepository = cryptoQuotationRepository;
+        this.operationStatusRepository = operationStatusRepository;
     }
 
     @Override
     @Transactional
     public void run(String... args) {
+        loadOperationStatus();
+
         loadInvestors();
 
         List<MarketOrder> createdOrders = loadMarketOrders();
 
         loadOperationsForOrders(createdOrders);
+    }
+
+    private void loadOperationStatus() {
+        CancelledStatus cancelledStatus = new CancelledStatus();
+        CompletedStatus completedStatus = new CompletedStatus();
+        NewOperationStatus newStatus = new NewOperationStatus();
+        InProgressStatus inProgressStatus = new InProgressStatus();
+
+        operationStatusRepository.save(cancelledStatus);
+        operationStatusRepository.save(completedStatus);
+        operationStatusRepository.save(newStatus);
+        operationStatusRepository.save(inProgressStatus);
     }
 
     private void loadOperationsForOrders(List<MarketOrder> createdOrders) {
@@ -69,9 +74,9 @@ class DataLoader implements CommandLineRunner {
     private List<MarketOrder> loadMarketOrders() {
         List<InvestmentAccount> accounts = investmentAccountRepository.findAll();
 
-        MarketOrder createdOrder = saveMarketOrderFor(accounts.get(0), CryptoCurrency.ADAUSDT, new SalesOrder());
-        MarketOrder anotherOrder = saveMarketOrderFor(accounts.get(1), CryptoCurrency.ADAUSDT, new SalesOrder());
-        MarketOrder yetAnotherOrder = saveMarketOrderFor(accounts.get(2), CryptoCurrency.ADAUSDT, new PurchaseOrder());
+        MarketOrder createdOrder = saveMarketOrderFor(accounts.get(0), CryptoCurrency.AUDIOUSDT, new SalesOrder());
+        MarketOrder anotherOrder = saveMarketOrderFor(accounts.get(1), CryptoCurrency.AUDIOUSDT, new SalesOrder());
+        MarketOrder yetAnotherOrder = saveMarketOrderFor(accounts.get(2), CryptoCurrency.AUDIOUSDT, new PurchaseOrder());
 
         return List.of(createdOrder, anotherOrder, yetAnotherOrder);
     }

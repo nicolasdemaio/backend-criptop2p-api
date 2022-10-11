@@ -4,8 +4,11 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OperationNotCancellableException;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
+@Entity
 public class CancelledStatus extends OperationStatus {
     @Override
     public Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor, LocalDateTime transactionDateTime) {

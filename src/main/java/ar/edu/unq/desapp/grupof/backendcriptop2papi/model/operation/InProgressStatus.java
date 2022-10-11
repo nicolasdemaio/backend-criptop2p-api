@@ -6,8 +6,11 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.PointsIncrementer;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
+@Entity
 public class InProgressStatus extends OperationStatus {
 
     public InProgressStatus() {
