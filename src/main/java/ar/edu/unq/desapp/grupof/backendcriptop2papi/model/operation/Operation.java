@@ -80,4 +80,8 @@ public class Operation {
     public void systemCancel() {
         status.cancelBySystem(this);
     }
+
+    public boolean isActive() {
+        return status.isActive();
+    }
 }
