@@ -9,8 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Embeddable
 public abstract class OperationStatus {
 
     public static final OperationStatus COMPLETED = new CompletedStatus();
@@ -18,9 +17,7 @@ public abstract class OperationStatus {
     public static final OperationStatus NEW = new NewOperationStatus();
     public static final OperationStatus CANCELLED = new CancelledStatus();
 
-    @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
-    private Long id;
+    protected String status;
 
     public abstract Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor, LocalDateTime transactionDateTime);
 

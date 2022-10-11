@@ -5,11 +5,14 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.OrderType;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
 
-import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
-@Entity
 public class NewOperationStatus extends OperationStatus {
+
+    public NewOperationStatus() {
+        status = "NEW";
+    }
+
     @Override
     public Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor, LocalDateTime transactionDateTime) {
         validateIfTransactorIsCounterparty(anOperation, transactor);

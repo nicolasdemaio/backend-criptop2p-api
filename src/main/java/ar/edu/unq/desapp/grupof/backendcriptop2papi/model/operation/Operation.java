@@ -33,7 +33,10 @@ public class Operation {
     @ManyToOne (cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private CryptoQuotation cryptoQuotation;
 
-    @ManyToOne (cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @Embedded
+    @AttributeOverrides(value = {
+            @AttributeOverride(name = "status", column = @Column(nullable = false))
+    })
     private OperationStatus status;
 
     private LocalDateTime dateTimeOfOrigin;

@@ -6,11 +6,14 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.PointsIncrementer;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
 
-import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
-@Entity
 public class InProgressStatus extends OperationStatus {
+
+    public InProgressStatus() {
+        status = "IN_PROGRESS";
+    }
+
     @Override
     public Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor, LocalDateTime transactionDateTime) {
         validateIfTransactorIsParty(anOperation, transactor);
