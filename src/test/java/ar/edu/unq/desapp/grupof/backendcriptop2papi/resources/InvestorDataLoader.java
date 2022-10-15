@@ -23,4 +23,10 @@ public class InvestorDataLoader {
         investorRepository.save(investor);
         investmentAccountRepository.save(new InvestmentAccount(investor));
     }
+
+    public InvestmentAccount loadAnyInvestorAndGetAccount(){
+        Investor investor = InvestorTestResource.anyInvestor();
+        investorRepository.save(investor);
+        return investmentAccountRepository.save(new InvestmentAccount(investor));
+    }
 }
