@@ -4,14 +4,13 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Entity
 public class SalesOrder extends OrderType {
 
-    @Id
-    protected String type = "SALES";
-
+    public SalesOrder() {
+        type = "SALES";
+    }
 
     @Override
     public String firstActionOfTransaction() {
