@@ -1,11 +1,10 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.OrderType;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
 
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
@@ -21,7 +20,7 @@ public class NewOperationStatus extends OperationStatus {
         validateIfTransactorIsCounterparty(anOperation, transactor);
         Transaction transaction =
                 new Transaction(anOperation.getCounterparty(), orderType.firstActionOfTransaction(), orderType.destinationAddressFrom(anOperation.getCounterparty()), anOperation.getCryptoQuotation(), transactionDateTime);
-        anOperation.changeStatusTo(OperationStatus.IN_PROGRESS);
+        anOperation.changeStatusTo(OperationStatus.inProgress());
         return transaction;
     }
 

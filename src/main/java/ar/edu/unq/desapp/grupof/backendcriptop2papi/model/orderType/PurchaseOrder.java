@@ -1,9 +1,17 @@
-package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
+package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType;
+
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class PurchaseOrder extends OrderType {
+
+    @Id
+    protected String type = "PURCHASE";
+
     @Override
     public String firstActionOfTransaction() {
         return "Crypto asset has been sent.";

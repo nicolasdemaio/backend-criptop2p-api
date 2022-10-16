@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.dto;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.OrderType;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

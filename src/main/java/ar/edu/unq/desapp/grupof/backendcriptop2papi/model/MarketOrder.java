@@ -5,6 +5,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrde
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.NotSuitablePriceException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OrderAlreadyTakenException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ public class MarketOrder {
     private InvestmentAccount emitter;
     private Double nominalQuantity;
     private Double desiredPrice;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private OrderType orderType;
     private Double actualPrice;
     private LocalDateTime dateTime;

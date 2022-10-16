@@ -1,13 +1,20 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.dto;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.MarketOrder;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.CryptoCurrencyProvider;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.OrderTypeProvider;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
+
+import static ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.DoubleFormatter.f;
 
 @Getter
 @Setter
@@ -31,16 +38,16 @@ public class OrderForm {
     }
 
     public MarketOrder createMarketOrder(InvestmentAccount investMentAccount, Double actualPrice) {
-        OrderType orderType = OrderTypeProvider.getOrderTypeConsideringADescription(operationType);
+        OrderType orderType = OrderTypeProvider.getOrderTypeAccordingTo(operationType);
         CryptoCurrency cryptoAsset = getCryptoCurrency();
 
         return new MarketOrder(
                 cryptoAsset,
                 investMentAccount,
                 this.nominalQuantity,
-                this.desiredPrice,
+                f(this.desiredPrice),
                 orderType,
-                actualPrice,
+                f(actualPrice),
                 LocalDateTime.now()
         );
     }
