@@ -4,6 +4,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidCancellationException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OperationNotCancellableException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.PurchaseOrder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -49,7 +50,7 @@ class OperationTest {
     @Test
     @DisplayName("When an Operation is created its status is NewOperationStatus")
     void newStatusTest(){
-        assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.NEW);
+        assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.newOperation());
     }
 
     @Test
@@ -57,7 +58,7 @@ class OperationTest {
     void testFirstTransaction() {
         Transaction generatedTransaction = anOperation.transact(counterPartyAccount, LocalDateTime.now());
 
-        assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.IN_PROGRESS);
+        assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.inProgress());
         assertThat(generatedTransaction.getPartyAccount()).isEqualTo(counterPartyAccount);
     }
 
@@ -68,7 +69,7 @@ class OperationTest {
 
         Transaction generatedTransaction = anOperation.transact(partyAccount, LocalDateTime.now());
 
-        assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.COMPLETED);
+        assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.completed());
         assertThat(generatedTransaction.getPartyAccount()).isEqualTo(partyAccount);
     }
 
@@ -77,7 +78,7 @@ class OperationTest {
     void testCancelOperation() {
         anOperation.cancelBy(partyAccount);
 
-        assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.CANCELLED);
+        assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.cancelled());
     }
 
     @Test
@@ -111,7 +112,7 @@ class OperationTest {
     @Test
     @DisplayName("An operation can not be cancelled when its status is completed")
     void testCanNotCancelWhenIsCompleted() {
-        anOperation.changeStatusTo(OperationStatus.COMPLETED);
+        anOperation.changeStatusTo(OperationStatus.completed());
 
         Assertions.assertThatThrownBy(() -> anOperation.cancelBy(partyAccount))
                 .isInstanceOf(OperationNotCancellableException.class);
@@ -129,7 +130,7 @@ class OperationTest {
     @Test
     @DisplayName("An operation is completed when its status is Completed Status")
     void whenAnOperationHasStatusCompletedItIsCompleted() {
-        anOperation.changeStatusTo(OperationStatus.COMPLETED);
+        anOperation.changeStatusTo(OperationStatus.completed());
 
         Assertions.assertThat(anOperation.isCompleted()).isTrue();
     }
@@ -143,7 +144,7 @@ class OperationTest {
     @Test
     @DisplayName("An operation is not completed when its status is In Progress Status")
     void whenAnOperationHasInProgressStatusItIsNotCompleted() {
-        anOperation.changeStatusTo(OperationStatus.IN_PROGRESS);
+        anOperation.changeStatusTo(OperationStatus.inProgress());
 
         Assertions.assertThat(anOperation.isCompleted()).isFalse();
     }
@@ -151,7 +152,7 @@ class OperationTest {
     @Test
     @DisplayName("An operation is not completed when its status CancelledStatus Status")
     void whenAnOperationHasCancelledStatusItIsNotCompleted() {
-        anOperation.changeStatusTo(OperationStatus.CANCELLED);
+        anOperation.changeStatusTo(OperationStatus.cancelled());
 
         Assertions.assertThat(anOperation.isCompleted()).isFalse();
     }
@@ -243,13 +244,13 @@ class OperationTest {
     void testCancelBySystem() {
         anOperation.systemCancel();
 
-        assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.CANCELLED);
+        assertThat(anOperation.getStatus()).isEqualTo(OperationStatus.cancelled());
     }
 
     @Test
     @DisplayName("An operation can not be cancelled by system when its status is completed")
     void testCanNotCancelBySystemWhenIsCompleted() {
-        anOperation.changeStatusTo(OperationStatus.COMPLETED);
+        anOperation.changeStatusTo(OperationStatus.completed());
 
         Assertions.assertThatThrownBy(() -> anOperation.systemCancel())
                 .isInstanceOf(OperationNotCancellableException.class);
@@ -258,7 +259,7 @@ class OperationTest {
     @Test
     @DisplayName("An operation can not be cancelled by system when its status is cancelled")
     void testCanNotCancelBySystemWhenIsCancelled() {
-        anOperation.changeStatusTo(OperationStatus.CANCELLED);
+        anOperation.changeStatusTo(OperationStatus.cancelled());
 
         Assertions.assertThatThrownBy(() -> anOperation.systemCancel())
                 .isInstanceOf(OperationNotCancellableException.class);

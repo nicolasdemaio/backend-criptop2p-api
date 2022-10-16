@@ -1,8 +1,9 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.client.CryptoQuoteAPIClient;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.client.DollarConversionClient;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

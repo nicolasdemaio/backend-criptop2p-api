@@ -1,6 +1,9 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.resources;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.PurchaseOrder;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.SalesOrder;
 
 import java.time.LocalDateTime;
 

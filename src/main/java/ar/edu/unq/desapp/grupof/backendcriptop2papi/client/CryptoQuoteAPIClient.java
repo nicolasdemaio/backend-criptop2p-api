@@ -1,6 +1,7 @@
-package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
+package ar.edu.unq.desapp.grupof.backendcriptop2papi.client;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.RawQuote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -10,12 +11,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Component
-/**
- * Consumer of external API to fetch crypto quotations.
- * It returns 'raw quote' - object according to the response of API.
- * You should map your objects from this object.
- */
 public class CryptoQuoteAPIClient {
+    /**
+     * Consumer of external API to fetch crypto quotations.
+     * It returns 'raw quote' - object according to the response of API.
+     * You should map your objects from this object.
+     */
 
     private static final String URL = "https://api1.binance.com/api/v3/ticker/price";
 
@@ -46,7 +47,7 @@ public class CryptoQuoteAPIClient {
     private String currenciesSymbols() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append('[');
-        CryptoCurrency.symbols().stream().forEach(symbol -> stringBuilder.append("\"" + symbol + "\""));
+        CryptoCurrency.symbols().forEach(symbol -> stringBuilder.append("\"" + symbol + "\""));
         stringBuilder.append(']');
         return stringBuilder.toString().replaceAll("\"" + "\"", "\",\"");
     }

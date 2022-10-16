@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
+package ar.edu.unq.desapp.grupof.backendcriptop2papi.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

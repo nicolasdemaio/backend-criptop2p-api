@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
+package ar.edu.unq.desapp.grupof.backendcriptop2papi.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -30,7 +30,7 @@ public class DollarConversionClient {
         return obtainOfficialPrice(rawQuotations);
     }
 
-    public Double obtainOfficialPrice(List<RawDollarQuote> quotes){;
+    public Double obtainOfficialPrice(List<RawDollarQuote> quotes) {
         var officialDollarQuote = quotes.stream().filter(quote -> quote.getCasa().getNombre().equals("Dolar Oficial")).toList().get(0);
 
         return officialDollarQuote.getCasa().getSellingPrice();

@@ -1,9 +1,11 @@
-package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
+package ar.edu.unq.desapp.grupof.backendcriptop2papi.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import static ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.DoubleFormatter.f;
 
 @Setter
 @AllArgsConstructor
@@ -18,6 +20,6 @@ public class Casa {
     private String ventaCero;
     private String decimales;
     public Double getSellingPrice(){
-        return Double.valueOf(this.venta.replace(",","."));
+        return f(Double.valueOf(this.venta.replace(",",".")));
     }
 }

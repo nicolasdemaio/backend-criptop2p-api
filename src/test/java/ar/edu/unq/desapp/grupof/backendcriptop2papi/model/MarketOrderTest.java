@@ -4,6 +4,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOper
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrderPriceException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.NotSuitablePriceException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OrderAlreadyTakenException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.SalesOrder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

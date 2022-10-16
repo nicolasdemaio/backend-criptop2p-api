@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.client.CryptoQuoteAPIClient;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class CryptoQuoteAPIClientTest {
 
         List<String> expectedResult = CryptoCurrency.symbols();
 
-        List<String> foundQuotes = foundQuote.stream().map(quotation -> quotation.getSymbol()).toList();
+        List<String> foundQuotes = foundQuote.stream().map(RawQuote::getSymbol).toList();
 
         assertThat(foundQuotes).containsAll(expectedResult);
     }
