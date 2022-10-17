@@ -45,7 +45,7 @@ public class OrderService {
 
     public List<MarketOrderDTO> getActiveOrders() {
         List<MarketOrder> orders = orderRepository.findActiveOrders();
-        return orders.stream().map(order -> modelMapper.map(order, MarketOrderDTO.class)).toList();
+        return orders.stream().map(order -> MarketOrderDTO.fromModel(order)).toList();
     }
 
     @Transactional
@@ -59,7 +59,7 @@ public class OrderService {
 
         investmentAccountRepository.save(accountFromUser);
 
-        return modelMapper.map(createdMarketOrder, MarketOrderDTO.class);
+        return MarketOrderDTO.fromModel(createdMarketOrder);
     }
 
     @Transactional

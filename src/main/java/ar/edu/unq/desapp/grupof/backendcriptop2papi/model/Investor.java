@@ -50,5 +50,9 @@ public class Investor extends ValidatableEntity {
     public boolean hasAsPassword(String aPassword) {
         return password.equals(aPassword);
     }
+
+    public String getFullName() {
+        return name + " " + surname;
+    }
 }
 
