@@ -39,9 +39,7 @@ public class OperationDTO {
 
     private String investorFrom(InvestmentAccount investmentAccount) {
         Investor investor = investmentAccount.getInvestor();
-        String investorName = investor.getName();
-        String investorSurname = investor.getSurname();
-        return investorName + " " + investorSurname;
+        return investor.getFullName();
     }
 
     private String statusFrom(Operation operation) {

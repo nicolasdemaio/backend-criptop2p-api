@@ -35,7 +35,6 @@ class OrderServiceTest {
         orderService.getActiveOrders();
 
         verify(orderRepository).findActiveOrders();
-        verify(modelMapper, atLeastOnce()).map(marketOrder, MarketOrderDTO.class);
     }
 
 }

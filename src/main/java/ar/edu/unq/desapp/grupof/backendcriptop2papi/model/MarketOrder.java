@@ -86,6 +86,10 @@ public class MarketOrder {
     private boolean isEmitter(InvestmentAccount anInvestmentAccount){
         return anInvestmentAccount.equals(this.emitter);
     }
+
+    public Double getTotalAmount() {
+        return getNominalQuantity() * getDesiredPrice();
+    }
 }
 
 
