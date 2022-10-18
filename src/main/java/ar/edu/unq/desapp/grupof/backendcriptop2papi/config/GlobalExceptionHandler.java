@@ -65,6 +65,11 @@ public class GlobalExceptionHandler {
         return new ApiMessage().response(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
+    @ExceptionHandler(OperationNotFoundException.class)
+    ResponseEntity<Map<String, Object>> operationNotFoundException(OperationNotFoundException exception) {
+        return new ApiMessage().response(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
 }
 
 
