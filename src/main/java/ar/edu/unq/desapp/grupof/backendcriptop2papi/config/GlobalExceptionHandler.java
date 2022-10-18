@@ -60,6 +60,11 @@ public class GlobalExceptionHandler {
         return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
+    @ExceptionHandler(OrderNotFoundException.class)
+    ResponseEntity<Map<String, Object>> orderNotFoundException(OrderNotFoundException exception) {
+        return new ApiMessage().response(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
 }
 
 

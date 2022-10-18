@@ -4,7 +4,9 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.config.JWTTokenManager;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.OrderForm;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserRegistrationForm;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.SalesOrder;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorDataLoader;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.MarketOrderDataLoader;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.QuotationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -24,6 +26,8 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.text.MessageFormat;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,6 +44,9 @@ class OrderIntegrationTests {
 
     @Autowired
     private InvestorDataLoader investorLoader;
+
+    @Autowired
+    private MarketOrderDataLoader marketOrderLoader;
 
     @Autowired
     QuotationService quotationService;
@@ -129,6 +136,44 @@ class OrderIntegrationTests {
                         .header("Authorization", token))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Test Apply for an order")
+    void testApplyForOrder() throws Exception {
+        investorLoader.loadAnInvestorWithEmailAndPassword(VALID_EMAIL, VALID_PASSWORD);
+        String token = new JWTTokenManager().generateTokenBasedOn(VALID_EMAIL);
+
+        Long orderId = marketOrderLoader.loadAnyMarketOrderWithType(new SalesOrder()).getId();
+        String postUrl = MessageFormat.format("/api/orders/{0}", orderId);
+
+
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post(postUrl)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", token))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("Test Apply for an order that does not exist")
+    void testApplyForOrderThatDoesNotExist() throws Exception {
+        investorLoader.loadAnInvestorWithEmailAndPassword(VALID_EMAIL, VALID_PASSWORD);
+        String token = new JWTTokenManager().generateTokenBasedOn(VALID_EMAIL);
+
+        Long invalidId = 250l;
+        String postUrl = MessageFormat.format("/api/orders/{0}", invalidId);
+
+
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post(postUrl)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", token))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 
     private OrderForm anyPurchaseOrderForm(){

@@ -8,6 +8,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Investor;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.MarketOrder;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OrderNotFoundException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.CryptoQuotationRepository;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestmentAccountRepository;
@@ -65,7 +66,7 @@ public class OrderService {
     @Transactional
     public OperationDTO applyForOrder(Long aMarketOrderId, Authentication authentication){
         InvestorDTO loggedInvestor = investorService.authenticatedUser(authentication);
-        MarketOrder marketOrder = orderRepository.findById(aMarketOrderId).orElseThrow(() -> new RuntimeException("Cambiarlo"));
+        MarketOrder marketOrder = orderRepository.findById(aMarketOrderId).orElseThrow(() -> new OrderNotFoundException());
         InvestmentAccount accountFromUser = investmentAccountRepository.findInvestmentAccountByInvestor(loggedInvestor.getId());
         CryptoQuotation cryptoQuotation = quotationService.getCryptoQuotation(marketOrder.getCryptoCurrency());
 
