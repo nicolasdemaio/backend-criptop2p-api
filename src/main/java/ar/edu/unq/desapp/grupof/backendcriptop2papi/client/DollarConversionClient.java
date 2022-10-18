@@ -31,9 +31,9 @@ public class DollarConversionClient {
     }
 
     public Double obtainOfficialPrice(List<RawDollarQuote> quotes) {
-        var officialDollarQuote = quotes.stream().filter(quote -> quote.getCasa().getNombre().equals("Dolar Oficial")).toList().get(0);
+        var officialDollarQuote = quotes.stream().filter(quote -> quote.hasAsDescription("Dolar Oficial")).findFirst().get();
 
-        return officialDollarQuote.getCasa().getSellingPrice();
+        return officialDollarQuote.sellingPrice();
     }
 
 

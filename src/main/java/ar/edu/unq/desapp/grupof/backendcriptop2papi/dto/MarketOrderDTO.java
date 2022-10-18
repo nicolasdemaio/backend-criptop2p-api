@@ -51,7 +51,7 @@ public class MarketOrderDTO {
                         anOrder.getTotalAmount(),
                         anOrder.getDateTime(),
                         userInfoFrom(emitter),
-                        emitter.getOperations().size(),
+                        emitter.amountOfCompletedOperations(),
                         emitter.getReputation());
     }
 

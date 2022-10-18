@@ -10,4 +10,11 @@ import lombok.NoArgsConstructor;
 public class RawDollarQuote {
     private Casa casa;
 
+    public boolean hasAsDescription(String aDescription) {
+        return getCasa().getNombre().equals(aDescription);
+    }
+
+    public Double sellingPrice() {
+        return getCasa().getSellingPrice();
+    }
 }
