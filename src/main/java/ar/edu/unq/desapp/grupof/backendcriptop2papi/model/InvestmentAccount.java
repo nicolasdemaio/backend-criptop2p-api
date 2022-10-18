@@ -67,4 +67,8 @@ public class InvestmentAccount {
     public void addPoints(Integer anAmountOfPoints) {
         points += anAmountOfPoints;
     }
+
+    public Integer amountOfCompletedOperations() {
+        return (int) (operations.stream().filter(operation -> operation.isCompleted()).count());
+    }
 }
