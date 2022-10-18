@@ -1,16 +1,13 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.InvestorDTO;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.MarketOrderDTO;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.OperationDTO;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.OrderForm;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Investor;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.MarketOrder;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OrderNotFoundException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.CryptoQuotationRepository;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestmentAccountRepository;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.OperationRepository;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.OrderRepository;
@@ -31,17 +28,17 @@ public class OrderService {
     private ModelMapper modelMapper;
     private QuotationService quotationService;
     private InvestorService investorService;
-    private CryptoQuotationRepository quotationRepository;
+    private ContextService contextService;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, ModelMapper modelMapper, InvestorService investorService, InvestmentAccountRepository investmentAccountRepository, QuotationService quotationService, OperationRepository operationRepository, CryptoQuotationRepository quotationRepository) {
+    public OrderService(OrderRepository orderRepository, ModelMapper modelMapper, InvestorService investorService, InvestmentAccountRepository investmentAccountRepository, QuotationService quotationService, OperationRepository operationRepository,ContextService contextService) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
         this.investorService = investorService;
         this.investmentAccountRepository = investmentAccountRepository;
         this.quotationService = quotationService;
         this.operationRepository = operationRepository;
-        this.quotationRepository = quotationRepository;
+        this.contextService = contextService;
     }
 
     public List<MarketOrderDTO> getActiveOrders() {
@@ -51,26 +48,24 @@ public class OrderService {
 
     @Transactional
     public MarketOrderDTO placeMarketOrder(OrderForm form, Authentication authentication){
-        InvestorDTO loggedInvestor = investorService.authenticatedUser(authentication);
-        InvestmentAccount accountFromUser = investmentAccountRepository.findInvestmentAccountByInvestor(loggedInvestor.getId());
+        InvestmentAccount account = contextService.getCurrentAccount(authentication);
         Double currentPriceOfCrypto = quotationService.getCryptoQuotation(form.getCryptoCurrency()).getPriceInPesos();
 
-        MarketOrder createdMarketOrder = form.createMarketOrder(accountFromUser, currentPriceOfCrypto);
-        accountFromUser.placeMarketOrder(createdMarketOrder);
+        MarketOrder createdMarketOrder = form.createMarketOrder(account, currentPriceOfCrypto);
+        account.placeMarketOrder(createdMarketOrder);
 
-        investmentAccountRepository.save(accountFromUser);
+        investmentAccountRepository.save(account);
 
         return MarketOrderDTO.fromModel(createdMarketOrder);
     }
 
     @Transactional
     public OperationDTO applyForOrder(Long aMarketOrderId, Authentication authentication){
-        InvestorDTO loggedInvestor = investorService.authenticatedUser(authentication);
+        InvestmentAccount account = contextService.getCurrentAccount(authentication);
         MarketOrder marketOrder = orderRepository.findById(aMarketOrderId).orElseThrow(() -> new OrderNotFoundException());
-        InvestmentAccount accountFromUser = investmentAccountRepository.findInvestmentAccountByInvestor(loggedInvestor.getId());
         CryptoQuotation cryptoQuotation = quotationService.getCryptoQuotation(marketOrder.getCryptoCurrency());
 
-        Operation generatedOperation = accountFromUser.applyFor(marketOrder, cryptoQuotation);
+        Operation generatedOperation = account.applyFor(marketOrder, cryptoQuotation);
 
         generatedOperation = operationRepository.save(generatedOperation);
 

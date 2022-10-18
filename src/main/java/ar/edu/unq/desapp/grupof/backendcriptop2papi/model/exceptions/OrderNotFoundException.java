@@ -2,6 +2,6 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions;
 
 public class OrderNotFoundException extends RuntimeException{
     public OrderNotFoundException() {
-        super("Investor not found");
+        super("Order not found");
     }
 }
