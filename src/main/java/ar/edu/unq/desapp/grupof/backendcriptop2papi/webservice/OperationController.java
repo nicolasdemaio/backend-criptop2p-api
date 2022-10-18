@@ -30,4 +30,6 @@ public class OperationController {
         return ResponseEntity.status(HttpStatus.OK).body(operationService.getActiveOperationsFrom(SecurityContextHolder.getContext().getAuthentication()));
     }
 
+
+
 }

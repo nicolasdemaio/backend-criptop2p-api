@@ -33,7 +33,7 @@ public abstract class OperationStatus {
     public abstract Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor, LocalDateTime transactionDateTime);
 
     public Transaction cancel(Operation anOperation, InvestmentAccount anAccount) {
-        Transaction transaction = new Transaction(anAccount, "Cancel", "N/A", anOperation.getCryptoQuotation(), LocalDateTime.now());
+        Transaction transaction = new Transaction(anAccount, "Cancel", "N/A", anOperation.getCryptoQuotation(), LocalDateTime.now(), anOperation.getSourceOfOrigin());
         anOperation.changeStatusTo(OperationStatus.cancelled());
         return transaction;
     }

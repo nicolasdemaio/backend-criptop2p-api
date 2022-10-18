@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.resources;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.OrderRepository;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.QuotationService;
 import org.springframework.beans.factory.annotation.Autowired;

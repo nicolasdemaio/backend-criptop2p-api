@@ -2,17 +2,14 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.webservice;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.config.JWTTokenManager;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.OrderForm;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserRegistrationForm;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.SalesOrder;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.SalesOrder;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorDataLoader;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.MarketOrderDataLoader;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.QuotationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,15 +18,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.text.MessageFormat;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest

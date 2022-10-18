@@ -19,7 +19,7 @@ public class InProgressStatus extends OperationStatus {
     @Override
     public Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor, LocalDateTime transactionDateTime) {
         validateIfTransactorIsParty(anOperation, transactor);
-        Transaction transaction = new Transaction(anOperation.getParty(), orderType.secondActionOfTransaction(), "N/A", anOperation.getCryptoQuotation(), transactionDateTime);
+        Transaction transaction = new Transaction(anOperation.getParty(), orderType.secondActionOfTransaction(), "N/A", anOperation.getCryptoQuotation(), transactionDateTime, anOperation.getSourceOfOrigin());
         anOperation.changeStatusTo(OperationStatus.completed());
         increasePointsToAccountsOf(anOperation, transactionDateTime);
         return transaction;
