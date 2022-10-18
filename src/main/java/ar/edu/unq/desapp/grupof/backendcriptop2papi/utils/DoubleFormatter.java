@@ -8,7 +8,7 @@ public class DoubleFormatter {
      * @return formatted value
      */
     public static Double f(Double aValue) {
-        return Math.round(aValue*100.0)/100.0;
+        return Math.round(aValue*100.0) / 100.0;
     }
 
 }

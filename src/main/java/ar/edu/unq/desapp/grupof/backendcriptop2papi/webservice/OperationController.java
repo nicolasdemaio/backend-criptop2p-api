@@ -2,7 +2,6 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.webservice;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.OperationDTO;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.TransactionDTO;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.OperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,14 +22,20 @@ public class OperationController {
         this.operationService = operationService;
     }
 
-    @GetMapping(path = "")
+    @GetMapping
     public ResponseEntity<List<OperationDTO>> getActiveOperations() {
         return ResponseEntity.status(HttpStatus.OK).body(operationService.getActiveOperationsFrom(SecurityContextHolder.getContext().getAuthentication()));
     }
 
-    @PostMapping(path = "/{operationId}")
+    @PutMapping(path = "/{operationId}")
     public ResponseEntity<TransactionDTO> transact(@PathVariable Long operationId) {
         return ResponseEntity.status(HttpStatus.OK).body(operationService.transact(operationId, SecurityContextHolder.getContext().getAuthentication()));
+    }
+
+    // TODO: Testing
+    @PutMapping(path = "/{operationId}/cancel")
+    public ResponseEntity<TransactionDTO> cancelOperation(@PathVariable Long operationId) {
+        return ResponseEntity.status(HttpStatus.OK).body(operationService.cancelOperationById(operationId, SecurityContextHolder.getContext().getAuthentication()));
     }
 
 
