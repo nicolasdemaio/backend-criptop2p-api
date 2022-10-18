@@ -163,8 +163,6 @@ class OrderIntegrationTests {
         investorLoader.loadAnInvestorWithEmailAndPassword(VALID_EMAIL, VALID_PASSWORD);
         String token = new JWTTokenManager().generateTokenBasedOn(VALID_EMAIL);
 
-        Long orderId = marketOrderLoader.loadAnyMarketOrderWithType(new SalesOrder()).getId(); //TODO: Ver por que si sacas esta linea rompe?????
-
         Long invalidId = 250l;
         String postUrl = MessageFormat.format("/api/orders/{0}", invalidId);
 
