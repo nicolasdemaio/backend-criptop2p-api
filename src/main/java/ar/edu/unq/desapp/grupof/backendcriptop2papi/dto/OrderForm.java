@@ -7,6 +7,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.CryptoCurrencyProvider;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.OrderTypeProvider;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 
 import static ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.DoubleFormatter.f;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor

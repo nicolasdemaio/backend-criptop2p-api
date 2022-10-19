@@ -14,6 +14,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.InvestorService;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.QuotationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -21,6 +22,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
+@Profile("prod") // TODO: Ver si a la hora de deployar, sube estos datos tambien a Heroku.
+    // En el caso que no, ver como hacer de setearle a mano el profile
 class DataLoader implements CommandLineRunner {
 
     private InvestorService investorService;
