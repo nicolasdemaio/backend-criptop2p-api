@@ -28,12 +28,21 @@ public class TradeStatisticsService {
         this.quotationService = quotationService;
     }
 
+    /**
+     * Generates a statistic report describing the traded volume from an investor
+     * @param investorId
+     * @return InvestorStatistic
+     */
     public InvestorStatistic getStatisticsFrom(Long investorId) {
         InvestmentAccount requestedAccount = investmentAccountRepository.findInvestmentAccountByInvestor(investorId);
         if (requestedAccount == null) throw new InvestorNotFoundException();
 
+        return this.generateStatisticReportFor(requestedAccount);
+    }
+
+    private InvestorStatistic generateStatisticReportFor (InvestmentAccount investmentAccount) {
         List<Operation> completedOperations =
-                requestedAccount
+                investmentAccount
                         .getOperations()
                         .stream()
                         .filter(operation -> operation.isCompleted())
@@ -41,36 +50,38 @@ public class TradeStatisticsService {
 
         Double totalQuantityInDollars = completedOperations.stream().mapToDouble(operation -> getQuantityInDollars(operation)).sum();
         Double totalQuantityInPesos = completedOperations.stream().mapToDouble(operation -> getQuantityInPesos(operation)).sum();
+        List<AssetStatistic> assetStatistics = this.generateAssetStatistics(completedOperations);
 
-
-        // HashMap (CryptoCurrency -> AssetStatistic)
-        Map<CryptoCurrency, AssetStatistic> assetStatistics = new HashMap<>();
-
-        completedOperations.forEach(operation -> {
-            CryptoCurrency cryptoCurrency = operation.getCryptoQuotation().getCryptoCurrency();
-            CryptoQuotation currentQuotation = this.quotationService.getCryptoQuotation(cryptoCurrency);
-            Double nominalQuantity = operation.getSourceOfOrigin().getNominalQuantity();
-            if (assetStatistics.containsKey(cryptoCurrency)){
-                AssetStatistic assetStatistic = assetStatistics.get(cryptoCurrency);
-                assetStatistic.addNominalQuantity(nominalQuantity);
-            } else {
-                assetStatistics.put(cryptoCurrency,
-                        new AssetStatistic(
-                                cryptoCurrency,
-                                nominalQuantity,
-                                currentQuotation.getPriceInDollars(),
-                                currentQuotation.getPriceInPesos()
-
-                        )
-                );
-            }
-
-        });
-
-
-
-        return new InvestorStatistic(LocalDateTime.now(), totalQuantityInDollars, totalQuantityInPesos, assetStatistics.values().stream().toList());
+        return new InvestorStatistic(LocalDateTime.now(), totalQuantityInDollars, totalQuantityInPesos, assetStatistics);
     }
+
+    private List<AssetStatistic> generateAssetStatistics (List<Operation> operations) {
+        Map<CryptoCurrency, AssetStatistic> assetStatistics = new HashMap<>();
+        operations.forEach(operation -> {
+            updateAssetStatistics(assetStatistics, operation);
+        });
+        return assetStatistics.values().stream().toList();
+    }
+
+    private void updateAssetStatistics(Map<CryptoCurrency, AssetStatistic> assetStatistics, Operation operation) {
+        CryptoCurrency cryptoCurrency = operation.getCryptoQuotation().getCryptoCurrency();
+        Double nominalQuantity = operation.getSourceOfOrigin().getNominalQuantity();
+        if (assetStatistics.containsKey(cryptoCurrency)){
+            AssetStatistic assetStatistic = assetStatistics.get(cryptoCurrency);
+            assetStatistic.addNominalQuantity(nominalQuantity);
+        } else {
+            CryptoQuotation currentQuotation = this.quotationService.getCryptoQuotation(cryptoCurrency);
+            assetStatistics.put(cryptoCurrency,
+                    new AssetStatistic(
+                            cryptoCurrency,
+                            nominalQuantity,
+                            currentQuotation.getPriceInDollars(),
+                            currentQuotation.getPriceInPesos()
+                    )
+            );
+        }
+    }
+
 
     private Double getQuantityInDollars(Operation operation){
         return operation.getSourceOfOrigin().getNominalQuantity() * operation.getCryptoQuotation().getPriceInDollars();
