@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.client;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidCryptoCurrencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -31,7 +32,12 @@ public class DollarConversionClient {
     }
 
     public Double obtainOfficialPrice(List<RawDollarQuote> quotes) {
-        var officialDollarQuote = quotes.stream().filter(quote -> quote.hasAsDescription("Dolar Oficial")).findFirst().get();
+        var officialDollarQuote =
+                quotes
+                        .stream()
+                        .filter(quote -> quote.hasAsDescription("Dolar Oficial"))
+                        .findFirst()
+                        .orElseThrow(() -> new InvalidCryptoCurrencyException());
 
         return officialDollarQuote.sellingPrice();
     }

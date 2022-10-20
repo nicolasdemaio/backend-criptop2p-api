@@ -69,6 +69,6 @@ public class InvestmentAccount {
     }
 
     public Integer amountOfCompletedOperations() {
-        return (int) (operations.stream().filter(operation -> operation.isCompleted()).count());
+        return (int) (operations.stream().filter(Operation::isCompleted).count());
     }
 }

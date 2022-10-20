@@ -1,7 +1,5 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.OperationDTO;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.TransactionDTO;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.OperationStatus;
@@ -11,23 +9,20 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class OperationServiceTest {
+class OperationServiceTest {
 
     @Mock
     private OperationRepository operationRepository;

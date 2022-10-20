@@ -20,6 +20,6 @@ public enum CryptoCurrency {
     AUDIOUSDT;
 
     public static List<String> symbols() {
-        return Arrays.stream(values()).map(cryptoCurrency -> cryptoCurrency.name()).toList();
+        return Arrays.stream(values()).map(Enum::name).toList();
     }
 }

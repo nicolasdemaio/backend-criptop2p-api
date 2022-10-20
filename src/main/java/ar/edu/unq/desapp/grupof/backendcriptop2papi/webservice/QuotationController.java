@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.reflect.Type;
 import java.util.List;
 
-// TODO: TEST
 @RestController
 @RequestMapping(path = "/api/quotations")
 public class QuotationController {

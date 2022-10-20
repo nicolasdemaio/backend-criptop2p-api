@@ -3,7 +3,6 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.InvestorDTO;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestmentAccountRepository;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;

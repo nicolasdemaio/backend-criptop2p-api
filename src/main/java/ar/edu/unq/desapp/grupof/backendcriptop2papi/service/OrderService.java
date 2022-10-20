@@ -25,16 +25,12 @@ public class OrderService {
     private OrderRepository orderRepository;
     private OperationRepository operationRepository;
     private InvestmentAccountRepository investmentAccountRepository;
-    private ModelMapper modelMapper;
     private QuotationService quotationService;
-    private InvestorService investorService;
     private ContextService contextService;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, ModelMapper modelMapper, InvestorService investorService, InvestmentAccountRepository investmentAccountRepository, QuotationService quotationService, OperationRepository operationRepository,ContextService contextService) {
+    public OrderService(OrderRepository orderRepository, InvestmentAccountRepository investmentAccountRepository, QuotationService quotationService, OperationRepository operationRepository,ContextService contextService) {
         this.orderRepository = orderRepository;
-        this.modelMapper = modelMapper;
-        this.investorService = investorService;
         this.investmentAccountRepository = investmentAccountRepository;
         this.quotationService = quotationService;
         this.operationRepository = operationRepository;
@@ -43,7 +39,7 @@ public class OrderService {
 
     public List<MarketOrderDTO> getActiveOrders() {
         List<MarketOrder> orders = orderRepository.findActiveOrders();
-        return orders.stream().map(order -> MarketOrderDTO.fromModel(order)).toList();
+        return orders.stream().map(MarketOrderDTO::fromModel).toList();
     }
 
     @Transactional
@@ -62,7 +58,7 @@ public class OrderService {
     @Transactional
     public OperationDTO applyForOrder(Long aMarketOrderId, Authentication authentication){
         InvestmentAccount account = contextService.getCurrentAccount(authentication);
-        MarketOrder marketOrder = orderRepository.findById(aMarketOrderId).orElseThrow(() -> new OrderNotFoundException());
+        MarketOrder marketOrder = orderRepository.findById(aMarketOrderId).orElseThrow(OrderNotFoundException::new);
         CryptoQuotation cryptoQuotation = quotationService.getCryptoQuotation(marketOrder.getCryptoCurrency());
 
         Operation generatedOperation = account.applyFor(marketOrder, cryptoQuotation);
