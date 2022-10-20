@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface OperationRepository extends JpaRepository<Operation, Long> {
 
-    // TODO: improve query filtering by operation status
     @Query("from Operation operation where operation.party.id = :accountId OR operation.counterparty.id = :accountId")
     List<Operation> findActiveOperationsByAccountId(@Param("accountId") Long anAccountId);
 }

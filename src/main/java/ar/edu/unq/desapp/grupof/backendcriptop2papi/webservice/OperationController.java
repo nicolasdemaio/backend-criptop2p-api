@@ -32,7 +32,6 @@ public class OperationController {
         return ResponseEntity.status(HttpStatus.OK).body(operationService.transact(operationId, SecurityContextHolder.getContext().getAuthentication()));
     }
 
-    // TODO: Testing
     @PutMapping(path = "/{operationId}/cancel")
     public ResponseEntity<TransactionDTO> cancelOperation(@PathVariable Long operationId) {
         return ResponseEntity.status(HttpStatus.OK).body(operationService.cancelOperationById(operationId, SecurityContextHolder.getContext().getAuthentication()));
