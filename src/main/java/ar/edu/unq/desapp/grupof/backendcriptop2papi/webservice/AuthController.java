@@ -2,8 +2,10 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.webservice;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.config.JWTTokenManager;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.InvestorDTO;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.InvestorInformationDTO;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserLoginRequest;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserRegistrationForm;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.AccountService;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.InvestorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,11 +22,13 @@ public class AuthController {
 
     private final InvestorService investorService;
     private final JWTTokenManager jwtTokenManager;
+    private final AccountService accountService;
 
     @Autowired
-    public AuthController(InvestorService investorService, JWTTokenManager aJwtTokenManager) {
+    public AuthController(InvestorService investorService, JWTTokenManager aJwtTokenManager, AccountService accountService) {
         this.investorService = investorService;
         jwtTokenManager = aJwtTokenManager;
+        this.accountService = accountService;
     }
 
     @PostMapping (path = "/register")
@@ -43,10 +48,15 @@ public class AuthController {
                 .body(loggedUser);
     }
 
-    @GetMapping
+    @GetMapping (path = "/logged")
     public ResponseEntity<InvestorDTO> authenticatedUser() {
         InvestorDTO authenticatedUser = investorService.authenticatedUser(SecurityContextHolder.getContext().getAuthentication());
         return ResponseEntity.status(HttpStatus.OK).body(authenticatedUser);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<InvestorInformationDTO>> getRegisteredUsers() {
+        return ResponseEntity.ok(accountService.getInvestors());
     }
 
 }
