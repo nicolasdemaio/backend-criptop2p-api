@@ -37,7 +37,7 @@ public class DollarConversionClient {
                         .stream()
                         .filter(quote -> quote.hasAsDescription("Dolar Oficial"))
                         .findFirst()
-                        .orElseThrow(() -> new InvalidCryptoCurrencyException());
+                        .orElseThrow(InvalidCryptoCurrencyException::new);
 
         return officialDollarQuote.sellingPrice();
     }

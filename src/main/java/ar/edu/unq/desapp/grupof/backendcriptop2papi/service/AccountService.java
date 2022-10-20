@@ -19,6 +19,6 @@ public class AccountService {
 
     public List<InvestorInformationDTO> getInvestors() {
         var accounts = investmentAccountRepository.findAll();
-        return accounts.stream().map(account -> InvestorInformationDTO.fromModel(account)).toList();
+        return accounts.stream().map(InvestorInformationDTO::fromModel).toList();
     }
 }
