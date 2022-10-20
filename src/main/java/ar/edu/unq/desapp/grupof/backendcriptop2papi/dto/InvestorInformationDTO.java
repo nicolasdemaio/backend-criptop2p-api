@@ -20,7 +20,7 @@ public class InvestorInformationDTO {
     public InvestorInformationDTO(InvestmentAccount account) {
         name = account.getInvestor().getName();
         surname = account.getInvestor().getSurname();
-        numberOfOperations = account.getOperations().size();
+        numberOfOperations = account.amountOfCompletedOperations();
         reputation = account.getReputation();
     }
 }
