@@ -50,7 +50,8 @@ public class OrderService {
         MarketOrder createdMarketOrder = form.createMarketOrder(account, currentPriceOfCrypto);
         account.placeMarketOrder(createdMarketOrder);
 
-        investmentAccountRepository.save(account);
+        //investmentAccountRepository.save(account);
+        createdMarketOrder = orderRepository.save(createdMarketOrder);
 
         return MarketOrderDTO.fromModel(createdMarketOrder);
     }

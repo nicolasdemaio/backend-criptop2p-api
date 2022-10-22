@@ -70,6 +70,16 @@ public class GlobalExceptionHandler {
         return new ApiMessage().response(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
+    @ExceptionHandler(InvalidOperationException.class)
+    ResponseEntity<Map<String, Object>> invalidOperationException(InvalidOperationException exception) {
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(OperationNotCancellableException.class)
+    ResponseEntity<Map<String, Object>> operationNotCancellableException(OperationNotCancellableException exception) {
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
 }
 
 
