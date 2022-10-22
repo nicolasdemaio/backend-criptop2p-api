@@ -1,8 +1,10 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OperationNotCancellableException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
 
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
@@ -14,6 +16,10 @@ public class CancelledStatus extends OperationStatus {
         throw new InvalidOperationException("The operation cannot be transacted because its status is CANCELLED");
     }
 
+    public CancelledStatus() {
+        status = "CANCELLED";
+    }
+
     @Override
     public Transaction cancel(Operation anOperation, InvestmentAccount anAccount) {
         throw new OperationNotCancellableException();
@@ -22,5 +28,10 @@ public class CancelledStatus extends OperationStatus {
     @Override
     public void cancelBySystem(Operation anOperation) {
         throw new OperationNotCancellableException();
+    }
+
+    @Override
+    public boolean isActive() {
+        return false;
     }
 }

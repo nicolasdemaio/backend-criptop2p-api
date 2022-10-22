@@ -1,6 +1,9 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.resources;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.PurchaseOrder;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.SalesOrder;
 
 import java.time.LocalDateTime;
 
@@ -29,5 +32,10 @@ public class MarketOrderTestResource {
         LocalDateTime aDateTime = LocalDateTime.now();
 
         return new MarketOrder(CryptoCurrency.ADAUSDT, investmentAccount, 0.1d, desiredPrice, orderType, actualPrice, aDateTime);
+    }
+
+    public static MarketOrder anyMarketOrder() {
+        InvestmentAccount investmentAccount = new InvestmentAccount(InvestorTestResource.anyInvestor());
+        return anyMarketOrderIssuedBy(investmentAccount);
     }
 }

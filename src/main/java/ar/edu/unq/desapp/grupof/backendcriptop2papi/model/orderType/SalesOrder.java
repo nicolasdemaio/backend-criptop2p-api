@@ -1,6 +1,17 @@
-package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
+package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
+
+import javax.persistence.Entity;
+
+@Entity
 public class SalesOrder extends OrderType {
+
+    public SalesOrder() {
+        type = "SALES";
+    }
+
     @Override
     public String firstActionOfTransaction() {
         return "Money has been sent.";

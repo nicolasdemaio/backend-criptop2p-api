@@ -1,9 +1,10 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.config;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.EmailAlreadyInUseException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.*;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.ApiMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -29,5 +30,56 @@ public class GlobalExceptionHandler {
         return new ApiMessage().response(HttpStatus.BAD_REQUEST, error);
     }
 
+    @ExceptionHandler(InvestorNotFoundException.class)
+    ResponseEntity<Map<String, Object>> investorNotFound(InvestorNotFoundException exception) {
+        return new ApiMessage().response(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+    @ExceptionHandler(InvalidOrderTypeException.class)
+    ResponseEntity<Map<String, Object>> invalidOrderType(InvalidOrderTypeException exception) {
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(InvalidCryptoCurrencyException.class)
+    ResponseEntity<Map<String, Object>> invalidCryptoCurrency(InvalidCryptoCurrencyException exception){
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    ResponseEntity<Map<String, Object>> parsingException(HttpMessageNotReadableException exception) {
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(InvalidOrderPriceException.class)
+    ResponseEntity<Map<String, Object>> invalidOrderPriceException(InvalidOrderPriceException exception) {
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(OrderAlreadyTakenException.class)
+    ResponseEntity<Map<String, Object>> orderAlreadyTakenException(OrderAlreadyTakenException exception) {
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    ResponseEntity<Map<String, Object>> orderNotFoundException(OrderNotFoundException exception) {
+        return new ApiMessage().response(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+    @ExceptionHandler(OperationNotFoundException.class)
+    ResponseEntity<Map<String, Object>> operationNotFoundException(OperationNotFoundException exception) {
+        return new ApiMessage().response(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+    @ExceptionHandler(InvalidOperationException.class)
+    ResponseEntity<Map<String, Object>> invalidOperationException(InvalidOperationException exception) {
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(OperationNotCancellableException.class)
+    ResponseEntity<Map<String, Object>> operationNotCancellableException(OperationNotCancellableException exception) {
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
 }
+
 

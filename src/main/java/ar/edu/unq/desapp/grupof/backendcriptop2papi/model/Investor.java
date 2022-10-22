@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 public class Investor extends ValidatableEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank @Size(min=3,max=30, message = "The name must contain min. 3 characters and max. 30 characters.")
     private String name;
@@ -45,6 +45,14 @@ public class Investor extends ValidatableEntity {
         this.mercadoPagoCVU = mercadoPagoCVU;
         this.cryptoWalletAddress = cryptoWalletAddress;
         validate();
+    }
+
+    public boolean hasAsPassword(String aPassword) {
+        return password.equals(aPassword);
+    }
+
+    public String getFullName() {
+        return name + " " + surname;
     }
 }
 

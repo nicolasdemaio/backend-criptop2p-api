@@ -5,6 +5,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOrde
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.NotSuitablePriceException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OrderAlreadyTakenException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 public class MarketOrder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
     private CryptoCurrency cryptoCurrency;
@@ -84,6 +85,10 @@ public class MarketOrder {
 
     private boolean isEmitter(InvestmentAccount anInvestmentAccount){
         return anInvestmentAccount.equals(this.emitter);
+    }
+
+    public Double getTotalAmount() {
+        return getNominalQuantity() * getDesiredPrice();
     }
 }
 

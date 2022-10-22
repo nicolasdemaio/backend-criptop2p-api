@@ -13,13 +13,13 @@ import java.util.List;
 public class InvestmentAccount {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<MarketOrder> marketOrders;
     @OneToOne
     private Investor investor;
-    @OneToMany
+    @ManyToMany
     private List<Operation> operations;
 
     private Integer points;
@@ -66,5 +66,9 @@ public class InvestmentAccount {
 
     public void addPoints(Integer anAmountOfPoints) {
         points += anAmountOfPoints;
+    }
+
+    public Integer amountOfCompletedOperations() {
+        return (int) (operations.stream().filter(Operation::isCompleted).count());
     }
 }

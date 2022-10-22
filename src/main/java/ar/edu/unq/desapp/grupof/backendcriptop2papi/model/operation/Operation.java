@@ -18,19 +18,19 @@ import java.util.List;
 public class Operation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @OneToOne (cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private MarketOrder sourceOfOrigin;
-    @ManyToOne
+    @ManyToOne (cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private InvestmentAccount party;
-    @ManyToOne
+    @ManyToOne (cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private InvestmentAccount counterparty;
 
-    @OneToMany
+    @OneToMany (cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Transaction> transactions;
 
-    @ManyToOne
+    @ManyToOne (cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private CryptoQuotation cryptoQuotation;
 
     @ManyToOne
@@ -44,7 +44,7 @@ public class Operation {
         sourceOfOrigin = anOrder;
         party = aParty;
         counterparty = aCounterParty;
-        status = OperationStatus.NEW;
+        status = OperationStatus.newOperation();
         transactions = new ArrayList<>();
         cryptoQuotation = aCryptoQuotation;
         dateTimeOfOrigin = LocalDateTime.now();
@@ -65,7 +65,7 @@ public class Operation {
         return processedTransaction;
     }
 
-    void changeStatusTo(OperationStatus aStatus) {
+    public void changeStatusTo(OperationStatus aStatus) {
         status = aStatus;
     }
 
@@ -79,5 +79,9 @@ public class Operation {
 
     public void systemCancel() {
         status.cancelBySystem(this);
+    }
+
+    public boolean isActive() {
+        return status.isActive();
     }
 }

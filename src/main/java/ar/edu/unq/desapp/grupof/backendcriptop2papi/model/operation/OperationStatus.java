@@ -1,32 +1,41 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.OrderType;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
 import lombok.Data;
+import lombok.Generated;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class OperationStatus {
 
-    public static final OperationStatus COMPLETED = new CompletedStatus();
-    public static final OperationStatus IN_PROGRESS = new InProgressStatus();
-    public static final OperationStatus NEW = new NewOperationStatus();
-    public static final OperationStatus CANCELLED = new CancelledStatus();
+    public static OperationStatus completed() {
+        return new CompletedStatus();
+    }
+    public static OperationStatus inProgress() {
+        return new InProgressStatus();
+    }
+    public static OperationStatus cancelled() {
+        return new CancelledStatus();
+    }
+    public static OperationStatus newOperation() {
+        return new NewOperationStatus();
+    }
 
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
-    private Long id;
+    protected String status;
 
     public abstract Transaction processTransactionFor(Operation anOperation, OrderType orderType, InvestmentAccount transactor, LocalDateTime transactionDateTime);
 
     public Transaction cancel(Operation anOperation, InvestmentAccount anAccount) {
-        Transaction transaction = new Transaction(anAccount, "Cancel", "N/A", anOperation.getCryptoQuotation(), LocalDateTime.now());
-        anOperation.changeStatusTo(OperationStatus.CANCELLED);
+        Transaction transaction = new Transaction(anAccount, "Cancel", "N/A", anOperation.getCryptoQuotation(), LocalDateTime.now(), anOperation.getSourceOfOrigin());
+        anOperation.changeStatusTo(OperationStatus.cancelled());
         return transaction;
     }
 
@@ -35,6 +44,25 @@ public abstract class OperationStatus {
     }
 
     public void cancelBySystem(Operation anOperation) {
-        anOperation.changeStatusTo(OperationStatus.CANCELLED);
+        anOperation.changeStatusTo(OperationStatus.cancelled());
+    }
+
+    public boolean isActive() {
+        return true;
+    }
+
+    @Override
+    @Generated
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OperationStatus that = (OperationStatus) o;
+        return Objects.equals(status, that.status);
+    }
+
+    @Override
+    @Generated
+    public int hashCode() {
+        return Objects.hash(status);
     }
 }

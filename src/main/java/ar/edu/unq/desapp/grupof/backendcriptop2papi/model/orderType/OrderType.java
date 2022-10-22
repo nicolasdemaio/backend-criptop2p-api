@@ -1,19 +1,18 @@
-package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
+package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 import lombok.Data;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Data
 @Entity
 public abstract class OrderType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
+    @Id
+    protected String type;
 
     public abstract String firstActionOfTransaction();
     public abstract String secondActionOfTransaction();

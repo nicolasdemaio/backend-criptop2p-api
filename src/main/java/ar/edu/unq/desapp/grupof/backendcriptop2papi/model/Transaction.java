@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Transaction {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -24,13 +24,19 @@ public class Transaction {
     private LocalDateTime timeStamp;
     private String destinationAddress;
 
+    private Double nominalQuantity;
+
+    private Double operationAmount;
+
     protected Transaction() { }
 
-    public Transaction(InvestmentAccount anAccount, String action, String destinationAddress, CryptoQuotation aCryptoQuotation, LocalDateTime transactionDateTime) {
+    public Transaction(InvestmentAccount anAccount, String action, String destinationAddress, CryptoQuotation aCryptoQuotation, LocalDateTime transactionDateTime, MarketOrder marketOrder) {
         this.partyAccount = anAccount;
         this.action = action;
         this.destinationAddress = destinationAddress;
         this.cryptoQuotation = aCryptoQuotation;
         this.timeStamp = transactionDateTime;
+        this.nominalQuantity = marketOrder.getNominalQuantity();
+        this.operationAmount = marketOrder.getTotalAmount();
     }
 }

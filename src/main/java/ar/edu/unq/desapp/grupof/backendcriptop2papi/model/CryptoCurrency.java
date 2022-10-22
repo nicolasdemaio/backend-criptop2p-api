@@ -1,5 +1,8 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum CryptoCurrency {
     ALICEUSDT,
     MATICUSDT,
@@ -16,4 +19,7 @@ public enum CryptoCurrency {
     TRXUSDT,
     AUDIOUSDT;
 
+    public static List<String> symbols() {
+        return Arrays.stream(values()).map(Enum::name).toList();
     }
+}
