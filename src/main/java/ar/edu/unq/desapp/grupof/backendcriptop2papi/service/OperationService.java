@@ -7,6 +7,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OperationNotFoundException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.OperationRepository;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,14 @@ public class OperationService {
 
     private OperationRepository operationRepository;
     private ContextService contextService;
+    private TransactionRepository transactionRepository;
 
     @Autowired
-    public OperationService(OperationRepository operationRepository, ContextService contextService) {
+    public OperationService(OperationRepository operationRepository, ContextService contextService,
+                            TransactionRepository transactionRepository) {
         this.operationRepository = operationRepository;
         this.contextService = contextService;
+        this.transactionRepository = transactionRepository;
     }
 
     @Transactional
@@ -43,22 +47,24 @@ public class OperationService {
 
         Operation operationToBeTransacted = getOperationById(operationId);
 
-        Transaction generatedTransaction = operationToBeTransacted.transact(investmentAccount, LocalDateTime.now());
+        Transaction transaction = operationToBeTransacted.transact(investmentAccount, LocalDateTime.now());
 
+        transaction = transactionRepository.save(transaction);
         operationRepository.save(operationToBeTransacted); //Asumo que se guarda la transaction por cascade
 
-        return TransactionDTO.fromModel(generatedTransaction);
+        return TransactionDTO.fromModel(transaction);
     }
 
     public TransactionDTO cancelOperationById(Long operationId, Authentication authentication) {
         InvestmentAccount investmentAccount = contextService.getCurrentAccount(authentication);
         Operation operation = getOperationById(operationId);
 
-        Transaction generatedTransaction = operation.cancelBy(investmentAccount);
+        Transaction transaction = operation.cancelBy(investmentAccount);
 
+        transaction = transactionRepository.save(transaction);
         operationRepository.save(operation);
 
-        return TransactionDTO.fromModel(generatedTransaction);
+        return TransactionDTO.fromModel(transaction);
     }
 
     public Operation getOperationById(Long anOperationId) {

@@ -13,7 +13,7 @@ import static ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.DoubleFormatter
 public class CryptoQuotation {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
     @Enumerated(EnumType.STRING)
     private CryptoCurrency cryptoCurrency;

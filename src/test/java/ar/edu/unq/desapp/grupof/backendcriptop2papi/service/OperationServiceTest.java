@@ -4,6 +4,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.Operation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation.OperationStatus;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.OperationRepository;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.TransactionRepository;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.MarketOrderTestResource;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 
@@ -33,10 +35,13 @@ class OperationServiceTest {
     @Mock
     private Operation operation;
 
+    @Mock
+    private TransactionRepository transactionRepository;
+
     @InjectMocks
     private OperationService operationService;
 
-    private final Long operationId = 1l;
+    private final Long operationId = 1L;
     private MarketOrder marketOrder;
     private InvestmentAccount account;
     private Transaction transaction;
@@ -45,7 +50,8 @@ class OperationServiceTest {
     void setUp() {
         marketOrder = MarketOrderTestResource.anyMarketOrder();
         account = marketOrder.getEmitter();
-        account.setId(1l);
+        account.setId(1L);
+
 
         when(contextService.getCurrentAccount(authentication)).thenReturn(account);
         transaction = new Transaction(
@@ -62,6 +68,7 @@ class OperationServiceTest {
         when(operationRepository.findById(operationId)).thenReturn(Optional.of(operation));
 
         when(operation.cancelBy(account)).thenReturn(transaction);
+        when(transactionRepository.save(any())).thenReturn(transaction);
 
         operationService.cancelOperationById(operationId, authentication);
 
@@ -73,6 +80,7 @@ class OperationServiceTest {
     void test_transactAnOperationByLoggedInAccount() {
         when(operationRepository.findById(operationId)).thenReturn(Optional.of(operation));
         when(operation.transact(any(), any())).thenReturn(transaction);
+        when(transactionRepository.save(any())).thenReturn(transaction);
 
         operationService.transact(operationId, authentication);
 
@@ -82,7 +90,7 @@ class OperationServiceTest {
 
     @Test
     void test_getActiveOperationsByInvestor() {
-        when(operation.getId()).thenReturn(1l);
+        when(operation.getId()).thenReturn(1L);
         when(operation.getCryptoQuotation()).thenReturn(new CryptoQuotation(CryptoCurrency.BNBUSDT, 123d, 123d, LocalDateTime.now()));
         when(operation.getSourceOfOrigin()).thenReturn(marketOrder);
         when(operation.getParty()).thenReturn(marketOrder.getEmitter());

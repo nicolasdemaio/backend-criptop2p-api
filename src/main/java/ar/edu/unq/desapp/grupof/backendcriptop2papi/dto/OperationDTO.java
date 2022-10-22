@@ -43,7 +43,7 @@ public class OperationDTO {
     }
 
     private String statusFrom(Operation operation) {
-        return operation.getStatus().toString();
+        return operation.getStatus().getStatus();
     }
 
     private CryptoQuotationDTO cryptoQuotation(Operation operation) {
