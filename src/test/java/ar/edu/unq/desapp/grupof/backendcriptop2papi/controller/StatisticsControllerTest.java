@@ -4,7 +4,6 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.controller;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.InvestorStatistic;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.TradeStatisticsService;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.webservice.TradeStatisticsController;
-import io.swagger.models.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
-public class StatisticsControllerTest {
+class StatisticsControllerTest {
 
     @Mock
     private TradeStatisticsService tradeStatisticsService;
