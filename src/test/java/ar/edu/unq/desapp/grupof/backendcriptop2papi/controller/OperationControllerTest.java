@@ -2,10 +2,8 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.controller;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.OperationDTO;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.TransactionDTO;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.OperationService;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.webservice.OperationController;
-import io.swagger.models.Response;
 import org.assertj.core.api.AbstractComparableAssert;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-public class OperationControllerTest {
+class OperationControllerTest {
     @Mock
     private OperationService operationService;
 
