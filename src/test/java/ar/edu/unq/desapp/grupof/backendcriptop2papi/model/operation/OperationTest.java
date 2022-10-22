@@ -289,5 +289,10 @@ class OperationTest {
         Assertions.assertThat(counterPartyAccount.getPoints()).isEqualTo(5);
     }
 
+    @Test
+    void whenOperationIsCreatedItsStatusIsActive() {
+        assertThat(anOperation.isActive()).isTrue();
+    }
+
 
 }
