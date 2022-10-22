@@ -48,12 +48,6 @@ public class AuthController {
                 .body(loggedUser);
     }
 
-    @GetMapping (path = "/logged")
-    public ResponseEntity<InvestorDTO> authenticatedUser() {
-        InvestorDTO authenticatedUser = investorService.authenticatedUser(SecurityContextHolder.getContext().getAuthentication());
-        return ResponseEntity.status(HttpStatus.OK).body(authenticatedUser);
-    }
-
     @GetMapping()
     public ResponseEntity<List<InvestorInformationDTO>> getRegisteredUsers() {
         return ResponseEntity.ok(accountService.getInvestors());

@@ -4,6 +4,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
 import lombok.Data;
+import lombok.Generated;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -51,6 +52,7 @@ public abstract class OperationStatus {
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -59,6 +61,7 @@ public abstract class OperationStatus {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(status);
     }
