@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,21 +45,19 @@ public class TradeStatisticsService {
                 investmentAccount
                         .getOperations()
                         .stream()
-                        .filter(operation -> operation.isCompleted())
+                        .filter(Operation::isCompleted)
                         .toList();
 
-        Double totalQuantityInDollars = completedOperations.stream().mapToDouble(operation -> getQuantityInDollars(operation)).sum();
-        Double totalQuantityInPesos = completedOperations.stream().mapToDouble(operation -> getQuantityInPesos(operation)).sum();
+        Double totalQuantityInDollars = completedOperations.stream().mapToDouble(this::getQuantityInDollars).sum();
+        Double totalQuantityInPesos = completedOperations.stream().mapToDouble(this::getQuantityInPesos).sum();
         List<AssetStatistic> assetStatistics = this.generateAssetStatistics(completedOperations);
 
         return new InvestorStatistic(LocalDateTime.now(), totalQuantityInDollars, totalQuantityInPesos, assetStatistics);
     }
 
     private List<AssetStatistic> generateAssetStatistics (List<Operation> operations) {
-        Map<CryptoCurrency, AssetStatistic> assetStatistics = new HashMap<>();
-        operations.forEach(operation -> {
-            updateAssetStatistics(assetStatistics, operation);
-        });
+        Map<CryptoCurrency, AssetStatistic> assetStatistics = new EnumMap<> (CryptoCurrency.class);
+        operations.forEach(operation -> updateAssetStatistics(assetStatistics, operation));
         return assetStatistics.values().stream().toList();
     }
 
@@ -81,7 +79,6 @@ public class TradeStatisticsService {
             );
         }
     }
-
 
     private Double getQuantityInDollars(Operation operation){
         return operation.getSourceOfOrigin().getNominalQuantity() * operation.getCryptoQuotation().getPriceInDollars();
