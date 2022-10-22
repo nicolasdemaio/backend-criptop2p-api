@@ -88,8 +88,9 @@ class DataLoader implements CommandLineRunner {
         MarketOrder createdOrder = saveMarketOrderFor(accounts.get(0), CryptoCurrency.AUDIOUSDT, new SalesOrder());
         MarketOrder anotherOrder = saveMarketOrderFor(accounts.get(1), CryptoCurrency.AUDIOUSDT, new SalesOrder());
         MarketOrder yetAnotherOrder = saveMarketOrderFor(accounts.get(2), CryptoCurrency.AUDIOUSDT, new PurchaseOrder());
+        MarketOrder evenAnotherOrder = saveMarketOrderFor(accounts.get(2), CryptoCurrency.AUDIOUSDT, new PurchaseOrder());
 
-        return List.of(createdOrder, anotherOrder, yetAnotherOrder);
+        return List.of(createdOrder, anotherOrder, yetAnotherOrder, evenAnotherOrder);
     }
 
     private void loadInvestors() {

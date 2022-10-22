@@ -18,7 +18,7 @@ import java.util.List;
 public class Operation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne (cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private MarketOrder sourceOfOrigin;

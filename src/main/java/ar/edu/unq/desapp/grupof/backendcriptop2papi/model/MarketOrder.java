@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class MarketOrder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
     private CryptoCurrency cryptoCurrency;
