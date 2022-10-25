@@ -309,7 +309,7 @@ class OperationTest {
         LocalDateTime fromTime = LocalDateTime.now().minusMinutes(20L);
         LocalDateTime toTime = LocalDateTime.now().plusMinutes(20L);
 
-        Assertions.assertThat(anOperation.wasOriginatedBetween(fromTime,toTime)).isTrue();
+        org.junit.jupiter.api.Assertions.assertTrue(anOperation.wasOriginatedBetween(fromTime,toTime));
     }
 
     @Test
@@ -317,7 +317,7 @@ class OperationTest {
         LocalDateTime fromTime = LocalDateTime.now().minusMinutes(20L);
         LocalDateTime toTime = fromTime.plusMinutes(1L);
 
-        Assertions.assertThat(anOperation.wasOriginatedBetween(fromTime,toTime)).isFalse();
+        org.junit.jupiter.api.Assertions.assertFalse(anOperation.wasOriginatedBetween(fromTime,toTime));
     }
 
 
