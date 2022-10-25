@@ -15,7 +15,7 @@ NEW FEATURES:
 * Get traded volume of crypto asses from an user between two dates
 * Integration tests
 * Get registered users
-* +31 Unit tests
+* +34 Unit tests (108 tests in total)
 
 NOTES:
 * Fixed known issue of previous release
