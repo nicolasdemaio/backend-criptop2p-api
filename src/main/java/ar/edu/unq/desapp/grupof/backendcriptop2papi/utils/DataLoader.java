@@ -22,8 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
-@Profile("prod") // TODO: Ver si a la hora de deployar, sube estos datos tambien a Heroku.
-    // En el caso que no, ver como hacer de setearle a mano el profile
+@Profile("prod")
 class DataLoader implements CommandLineRunner {
 
     private InvestorService investorService;
@@ -56,6 +55,8 @@ class DataLoader implements CommandLineRunner {
         List<MarketOrder> createdOrders = loadMarketOrders();
 
         loadOperationsForOrders(createdOrders);
+
+        completeAnOperation();
     }
 
     private void loadOrderTypes() {
@@ -118,5 +119,14 @@ class DataLoader implements CommandLineRunner {
         investmentAccount.placeMarketOrder(createdMarketOrder);
 
         return orderRepository.save(createdMarketOrder);
+    }
+
+    private void completeAnOperation() {
+        Operation operation = operationRepository.findAll().get(2);
+
+        operation.transact(operation.getCounterparty(), LocalDateTime.now());
+        operation.transact(operation.getParty(), LocalDateTime.now());
+
+        operationRepository.save(operation);
     }
 }

@@ -80,6 +80,11 @@ public class GlobalExceptionHandler {
         return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
+    @ExceptionHandler(InvalidDateException.class)
+    ResponseEntity<Map<String, Object>> invalidDateException(InvalidDateException exception) {
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
 }
 
 

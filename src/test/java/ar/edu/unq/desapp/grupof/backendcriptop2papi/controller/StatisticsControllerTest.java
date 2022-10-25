@@ -14,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
+
 @ExtendWith(MockitoExtension.class)
 class StatisticsControllerTest {
 
@@ -27,9 +29,12 @@ class StatisticsControllerTest {
     void getStatisticsTest() {
         Long investorId = 1L;
         InvestorStatistic investorStatistic = Mockito.mock(InvestorStatistic.class);
-        Mockito.when(tradeStatisticsService.getStatisticsFrom(investorId)).thenReturn(investorStatistic);
+        LocalDateTime fromTime = LocalDateTime.now().minusMinutes(20L);
+        LocalDateTime toTime = fromTime.plusMinutes(1L);
 
-        ResponseEntity<InvestorStatistic> response = tradeStatisticsController.getStatisticsFrom(investorId);
+        Mockito.when(tradeStatisticsService.getStatisticsFrom(investorId, fromTime, toTime)).thenReturn(investorStatistic);
+
+        ResponseEntity<InvestorStatistic> response = tradeStatisticsController.getStatisticsFrom(investorId, fromTime, toTime);
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }

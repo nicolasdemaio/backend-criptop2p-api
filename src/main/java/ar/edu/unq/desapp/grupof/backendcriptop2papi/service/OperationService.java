@@ -50,7 +50,7 @@ public class OperationService {
         Transaction transaction = operationToBeTransacted.transact(investmentAccount, LocalDateTime.now());
 
         transaction = transactionRepository.save(transaction);
-        operationRepository.save(operationToBeTransacted); //Asumo que se guarda la transaction por cascade
+        operationRepository.save(operationToBeTransacted);
 
         return TransactionDTO.fromModel(transaction);
     }
