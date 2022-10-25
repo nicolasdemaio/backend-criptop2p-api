@@ -5,6 +5,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidCanc
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.MarketOrder;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidDateException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
 import lombok.Getter;
 
@@ -83,5 +84,10 @@ public class Operation {
 
     public boolean isActive() {
         return status.isActive();
+    }
+
+    public boolean wasOriginatedBetween(LocalDateTime from, LocalDateTime to) {
+        if (from.isAfter(to)) throw new InvalidDateException();
+        return this.getDateTimeOfOrigin().isAfter(from) && this.getDateTimeOfOrigin().isBefore(to);
     }
 }

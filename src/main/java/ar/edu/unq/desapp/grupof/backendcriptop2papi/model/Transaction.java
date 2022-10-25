@@ -5,7 +5,6 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-// Puede ser como un registro, transaccion de quien a quien. de cuanto, en que fecha ...
 @Entity
 @Data
 public class Transaction {

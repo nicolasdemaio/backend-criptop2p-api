@@ -30,22 +30,24 @@ public class TradeStatisticsService {
 
     /**
      * Generates a statistic report describing the traded volume from an investor
-     * @param investorId
+     * @param investorId Long
+     * @param from LocalDateTime
+     * @param to LocalDateTime
      * @return InvestorStatistic
      */
-    public InvestorStatistic getStatisticsFrom(Long investorId) {
+    public InvestorStatistic getStatisticsFrom(Long investorId, LocalDateTime from, LocalDateTime to) {
         InvestmentAccount requestedAccount = investmentAccountRepository.findInvestmentAccountByInvestor(investorId);
         if (requestedAccount == null) throw new InvestorNotFoundException();
 
-        return this.generateStatisticReportFor(requestedAccount);
+        return this.generateStatisticReportFor(requestedAccount, from, to);
     }
 
-    private InvestorStatistic generateStatisticReportFor (InvestmentAccount investmentAccount) {
+    private InvestorStatistic generateStatisticReportFor (InvestmentAccount investmentAccount, LocalDateTime from, LocalDateTime to) {
         List<Operation> completedOperations =
                 investmentAccount
                         .getOperations()
                         .stream()
-                        .filter(Operation::isCompleted)
+                        .filter(operation -> operation.isCompleted() && operation.wasOriginatedBetween(from, to))
                         .toList();
 
         Double totalQuantityInDollars = completedOperations.stream().mapToDouble(this::getQuantityInDollars).sum();

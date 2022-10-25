@@ -5,10 +5,9 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.TradeStatisticsServi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping(path = "/api/stats")
@@ -22,8 +21,8 @@ public class TradeStatisticsController {
     }
 
     @PostMapping(path = "/{investorId}")
-    public ResponseEntity<InvestorStatistic> getStatisticsFrom(@PathVariable Long investorId) {
-        return ResponseEntity.status(HttpStatus.OK).body(tradeStatisticsService.getStatisticsFrom(investorId));
+    public ResponseEntity<InvestorStatistic> getStatisticsFrom(@PathVariable Long investorId, @RequestParam LocalDateTime from, @RequestParam LocalDateTime to) {
+        return ResponseEntity.status(HttpStatus.OK).body(tradeStatisticsService.getStatisticsFrom(investorId, from, to));
     }
 
 }

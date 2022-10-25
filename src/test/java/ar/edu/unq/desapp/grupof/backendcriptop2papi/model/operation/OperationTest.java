@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.*;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidCancellationException;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidDateException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.OperationNotCancellableException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.PurchaseOrder;
@@ -293,6 +294,33 @@ class OperationTest {
     void whenOperationIsCreatedItsStatusIsActive() {
         assertThat(anOperation.isActive()).isTrue();
     }
+
+    @Test
+    void testWasOriginatedBetweenWithFromDateAfterToDateThrowsInvalidDateException(){
+        LocalDateTime toTime = LocalDateTime.now();
+        LocalDateTime fromTime = toTime.plusMinutes(20L);
+        Assertions.assertThatThrownBy(() -> anOperation.wasOriginatedBetween(fromTime, toTime))
+                .isInstanceOf(InvalidDateException.class)
+                .hasMessage("The second date can not be before the first one");
+    }
+
+    @Test
+    void testWasOriginatedBetweenWhenTheOperationIsBetweenThoseDates(){
+        LocalDateTime fromTime = LocalDateTime.now().minusMinutes(20L);
+        LocalDateTime toTime = LocalDateTime.now().plusMinutes(20L);
+
+        org.junit.jupiter.api.Assertions.assertTrue(anOperation.wasOriginatedBetween(fromTime,toTime));
+    }
+
+    @Test
+    void testWasOriginatedBetweenWhenTheOperationIsNotBetweenThoseDates(){
+        LocalDateTime fromTime = LocalDateTime.now().minusMinutes(20L);
+        LocalDateTime toTime = fromTime.plusMinutes(1L);
+
+        org.junit.jupiter.api.Assertions.assertFalse(anOperation.wasOriginatedBetween(fromTime,toTime));
+    }
+
+
 
 
 }
