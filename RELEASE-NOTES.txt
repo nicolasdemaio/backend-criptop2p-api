@@ -1,4 +1,27 @@
 ---------------------------------------------------------------------
+ENTREGA 2 TAG 2.0
+---------------------------------------------------------------------
+NEW FEATURES:
+* Documentation with Swagger of new endpoints
+* JWT Authentication and request filter
+* Test data on booting application 
+* H2 SQL to persist data
+* Formatted doubles values: 2 decimal places
+* List of crypto quotations
+* Allow an user to place a market order
+* Get active market orders list
+* Process the transction informed by an user
+* Get active operations from logged in user
+* Get traded volume of crypto asses from an user between two dates
+* Integration tests
+* Get registered users
+* +31 Unit tests
+
+NOTES:
+* Fixed known issue of previous release
+* Problematics API calls have been mocked
+
+---------------------------------------------------------------------
 ENTREGA 1 TAG 1.0
 ---------------------------------------------------------------------
 NEW FEATURES:
