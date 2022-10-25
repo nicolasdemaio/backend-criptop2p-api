@@ -21,8 +21,8 @@ public class TradeStatisticsController {
     }
 
     @PostMapping(path = "/{investorId}")
-    public ResponseEntity<InvestorStatistic> getStatisticsFrom(@PathVariable Long investorId, @RequestParam LocalDateTime from, @RequestParam LocalDateTime to) {
-        return ResponseEntity.status(HttpStatus.OK).body(tradeStatisticsService.getStatisticsFrom(investorId, from, to));
+    public ResponseEntity<InvestorStatistic> getStatisticsFrom(@PathVariable Long investorId) {
+        return ResponseEntity.status(HttpStatus.OK).body(tradeStatisticsService.getStatisticsFrom(investorId));
     }
 
 }

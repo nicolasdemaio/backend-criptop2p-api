@@ -29,12 +29,10 @@ class StatisticsControllerTest {
     void getStatisticsTest() {
         Long investorId = 1L;
         InvestorStatistic investorStatistic = Mockito.mock(InvestorStatistic.class);
-        LocalDateTime fromTime = LocalDateTime.now().minusMinutes(20L);
-        LocalDateTime toTime = fromTime.plusMinutes(1L);
 
-        Mockito.when(tradeStatisticsService.getStatisticsFrom(investorId, fromTime, toTime)).thenReturn(investorStatistic);
+        Mockito.when(tradeStatisticsService.getStatisticsFrom(investorId)).thenReturn(investorStatistic);
 
-        ResponseEntity<InvestorStatistic> response = tradeStatisticsController.getStatisticsFrom(investorId, fromTime, toTime);
+        ResponseEntity<InvestorStatistic> response = tradeStatisticsController.getStatisticsFrom(investorId);
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }

@@ -39,7 +39,7 @@ class TradeStatisticsServiceTest {
     @Test
     void testGetReportThrowsExceptionForInvalidInvestmentAccountId() {
         Assertions.assertThatThrownBy(() ->
-                tradeStatisticsService.getStatisticsFrom(1L, LocalDateTime.now(), LocalDateTime.now()))
+                tradeStatisticsService.getStatisticsFrom(1L))
                 .isInstanceOf(InvestorNotFoundException.class);
     }
 
@@ -51,7 +51,7 @@ class TradeStatisticsServiceTest {
         when(investmentAccountRepository.findInvestmentAccountByInvestor(1L)).thenReturn(account);
 
         InvestorStatistic investorStatistic =
-                tradeStatisticsService.getStatisticsFrom(1L, LocalDateTime.now(), LocalDateTime.now());
+                tradeStatisticsService.getStatisticsFrom(1L);
 
         assertThat(investorStatistic.getAssetStatistics()).isEmpty();
         assertThat(investorStatistic.getTotalQuantityInDollars()).isZero();
@@ -69,7 +69,7 @@ class TradeStatisticsServiceTest {
         when(investmentAccountRepository.findInvestmentAccountByInvestor(1L)).thenReturn(account);
 
         InvestorStatistic investorStatistic =
-                tradeStatisticsService.getStatisticsFrom(1L, LocalDateTime.now(), LocalDateTime.now());
+                tradeStatisticsService.getStatisticsFrom(1L);
 
         assertThat(investorStatistic.getAssetStatistics()).isNotEmpty();
         assertThat(investorStatistic.getTotalQuantityInDollars()).isOne();
@@ -86,7 +86,6 @@ class TradeStatisticsServiceTest {
         when(cryptoQuotation.getCryptoCurrency()).thenReturn(CryptoCurrency.AAVEUSDT);
 
         Operation operation = Mockito.mock(Operation.class);
-        when(operation.wasOriginatedBetween(any(), any())).thenReturn(true);
         when(operation.isCompleted()).thenReturn(true);
 
         when(order.getNominalQuantity()).thenReturn(1d);
