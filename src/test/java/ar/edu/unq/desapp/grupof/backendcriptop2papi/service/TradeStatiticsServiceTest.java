@@ -1,6 +1,5 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.AssetStatistic;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.InvestorStatistic;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
@@ -17,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +38,7 @@ class TradeStatisticsServiceTest {
     @Test
     void testGetReportThrowsExceptionForInvalidInvestmentAccountId() {
         Assertions.assertThatThrownBy(() ->
-                tradeStatisticsService.getStatisticsFrom(1L))
+                tradeStatisticsService.getStatisticsFrom(1L, LocalDate.now(), LocalDate.now()))
                 .isInstanceOf(InvestorNotFoundException.class);
     }
 
@@ -51,7 +50,7 @@ class TradeStatisticsServiceTest {
         when(investmentAccountRepository.findInvestmentAccountByInvestor(1L)).thenReturn(account);
 
         InvestorStatistic investorStatistic =
-                tradeStatisticsService.getStatisticsFrom(1L);
+                tradeStatisticsService.getStatisticsFrom(1L, LocalDate.now(), LocalDate.now());
 
         assertThat(investorStatistic.getAssetStatistics()).isEmpty();
         assertThat(investorStatistic.getTotalQuantityInDollars()).isZero();
@@ -69,7 +68,7 @@ class TradeStatisticsServiceTest {
         when(investmentAccountRepository.findInvestmentAccountByInvestor(1L)).thenReturn(account);
 
         InvestorStatistic investorStatistic =
-                tradeStatisticsService.getStatisticsFrom(1L);
+                tradeStatisticsService.getStatisticsFrom(1L, LocalDate.now(), LocalDate.now());
 
         assertThat(investorStatistic.getAssetStatistics()).isNotEmpty();
         assertThat(investorStatistic.getTotalQuantityInDollars()).isOne();
@@ -86,6 +85,7 @@ class TradeStatisticsServiceTest {
         when(cryptoQuotation.getCryptoCurrency()).thenReturn(CryptoCurrency.AAVEUSDT);
 
         Operation operation = Mockito.mock(Operation.class);
+        when(operation.wasOriginatedBetween(any(), any())).thenReturn(true);
         when(operation.isCompleted()).thenReturn(true);
 
         when(order.getNominalQuantity()).thenReturn(1d);

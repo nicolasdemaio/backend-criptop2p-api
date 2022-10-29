@@ -11,10 +11,12 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestmentAccoun
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class TradeStatisticsService {
@@ -31,21 +33,23 @@ public class TradeStatisticsService {
     /**
      * Generates a statistic report describing the traded volume from an investor
      * @param investorId Long
+     * @param from LocalDateTime
+     * @param to LocalDateTime
      * @return InvestorStatistic
      */
-    public InvestorStatistic getStatisticsFrom(Long investorId) {
+    public InvestorStatistic getStatisticsFrom(Long investorId, LocalDate from, LocalDate to) {
         InvestmentAccount requestedAccount = investmentAccountRepository.findInvestmentAccountByInvestor(investorId);
         if (requestedAccount == null) throw new InvestorNotFoundException();
 
-        return this.generateStatisticReportFor(requestedAccount);
+        return this.generateStatisticReportFor(requestedAccount, from, to);
     }
 
-    private InvestorStatistic generateStatisticReportFor (InvestmentAccount investmentAccount) {
+    private InvestorStatistic generateStatisticReportFor (InvestmentAccount investmentAccount, LocalDate from, LocalDate to) {
         List<Operation> completedOperations =
                 investmentAccount
                         .getOperations()
                         .stream()
-                        .filter(Operation::isCompleted)
+                        .filter(operation -> operation.isCompleted() && operation.wasOriginatedBetween(from, to))
                         .toList();
 
         Double totalQuantityInDollars = completedOperations.stream().mapToDouble(this::getQuantityInDollars).sum();
