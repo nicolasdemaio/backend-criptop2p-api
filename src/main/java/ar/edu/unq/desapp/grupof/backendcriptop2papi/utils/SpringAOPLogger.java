@@ -5,6 +5,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
@@ -27,7 +28,6 @@ public class SpringAOPLogger {
         final Logger logger = getLogger(targetClass);
         try {
             final String className = targetClass.getSimpleName();
-            logger.info(getPreMessage(joinPoint, className));
             final StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             final Object retVal = joinPoint.proceed();
@@ -40,41 +40,33 @@ public class SpringAOPLogger {
         }
     }
 
-    private static String getPreMessage(final JoinPoint joinPoint, final String className) {
-        var param = Arrays.stream(joinPoint.getSignature().getName().split(".")).toList();
-        var paramObject = param.size() > 1 ? param.get(param.size() - 1) : "";
-        final StringBuilder builder = new StringBuilder()
-                .append("Entered in ").append(className).append(".")
-                .append(paramObject)
-                .append("(");
-        appendTo(builder, joinPoint);
-        return builder
-                .append(")")
-                .toString();
-    }
-
     private static String getPostMessage(final JoinPoint joinPoint, final String className, final long millis) {
+        var authentication =
+                SecurityContextHolder.getContext().getAuthentication() != null ?
+                SecurityContextHolder.getContext().getAuthentication().getName() : "";
+        var params =
+                Arrays.stream(joinPoint.getArgs())
+                        .map(a -> a.toString())
+                        .map(a -> {
+                            var b = a.replace(".", "/").split("/");
+                            return b.length > 1 ? Arrays.stream(b).toList().get(b.length - 1): "";
+                        }).toList();
         return new StringBuilder()
-                .append("Exit from ").append(className).append(".")
+                .append(authentication)
+                .append(" ; ")
                 .append(joinPoint.getSignature().getName())
-                .append("(..); Execution time: ")
+                .append("(")
+                .append(params)
+                .append(")")
+                .append(" ; ")
+                .append("Execution time: ")
                 .append(millis)
-                .append(" ms;")
+                .append(" ms.")
                 .toString();
     }
 
     private static String getErrorMessage(final Throwable ex) {
         return ex.getMessage();
-    }
-
-    private static void appendTo(final StringBuilder builder, final JoinPoint joinPoint) {
-        final Object[] args = joinPoint.getArgs();
-        for ( int i = 0; i < args.length; i++ ) {
-            if ( i != 0 ) {
-                builder.append(", ");
-            }
-            builder.append(args[i]);
-        }
     }
 
 }
