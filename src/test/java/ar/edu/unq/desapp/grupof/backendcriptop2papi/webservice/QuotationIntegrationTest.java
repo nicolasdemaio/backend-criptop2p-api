@@ -5,6 +5,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.config.JWTTokenManager;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorDataLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,6 +31,7 @@ class QuotationIntegrationTest {
     private static final String VALID_PASSWORD = "V@lid123password";
     private static final Integer NUMBER_OF_QUOTATIONS = 14;
 
+    @DisplayName("Get all crypto quotations test")
     @Test
     void getAllQuotationsTest() throws Exception {
         String email = "nicoauth@gmail.com";
