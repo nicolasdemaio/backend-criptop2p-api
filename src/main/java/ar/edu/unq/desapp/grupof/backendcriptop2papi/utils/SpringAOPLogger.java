@@ -43,10 +43,10 @@ public class SpringAOPLogger {
     private static String getPostMessage(final JoinPoint joinPoint, final String className, final long millis) {
         var authentication =
                 SecurityContextHolder.getContext().getAuthentication() != null ?
-                SecurityContextHolder.getContext().getAuthentication().getName() : "";
+                SecurityContextHolder.getContext().getAuthentication().getName() : "system";
         var params =
                 Arrays.stream(joinPoint.getArgs())
-                        .map(a -> a.toString())
+                        .map(Object::toString)
                         .map(a -> {
                             var b = a.replace(".", "/").split("/");
                             return b.length > 1 ? Arrays.stream(b).toList().get(b.length - 1): "";
