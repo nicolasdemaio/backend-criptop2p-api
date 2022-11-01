@@ -7,6 +7,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserLoginRequest;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.UserRegistrationForm;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.AccountService;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.InvestorService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class AuthController {
         this.accountService = accountService;
     }
 
+    @Operation (summary = "Register an User")
     @PostMapping (path = "/register")
     public ResponseEntity<Map.Entry<String, Object>> registerUser(@RequestBody UserRegistrationForm form){
         investorService.registerUser(form);
@@ -38,6 +40,7 @@ public class AuthController {
                 .body(Map.entry("message", "User successfully created"));
     }
 
+    @Operation (summary = "Login with email and password")
     @PostMapping (path = "/login")
     public ResponseEntity<InvestorDTO> loginUserWith(@RequestBody UserLoginRequest aRequest) {
         InvestorDTO loggedUser = investorService.loginUserWith(aRequest);
@@ -47,6 +50,7 @@ public class AuthController {
                 .body(loggedUser);
     }
 
+    @Operation (summary = "Get the list of registered Users")
     @GetMapping()
     public ResponseEntity<List<InvestorInformationDTO>> getRegisteredUsers() {
         return ResponseEntity.ok(accountService.getInvestors());

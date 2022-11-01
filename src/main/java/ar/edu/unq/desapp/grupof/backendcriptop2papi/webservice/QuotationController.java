@@ -3,6 +3,7 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.webservice;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.CryptoQuotationDTO;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.QuotationService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class QuotationController {
         this.modelMapper = modelMapper;
     }
 
+    @Operation (summary = "Get a List of Quotations for every Cryptocurrency")
     @GetMapping
     public ResponseEntity<List<CryptoQuotation>> getCryptoQuotations() {
         List<CryptoQuotation> quotations = quotationService.getAllCryptoQuotations();
