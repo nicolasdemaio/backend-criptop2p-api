@@ -37,6 +37,7 @@ dependencies {
 	// https://mavenlibs.com/maven/dependency/org.modelmapper/modelmapper
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.0'
 	implementation 'org.springframework.boot:spring-boot-starter-validation:2.4.0'
+	testImplementation 'com.tngtech.archunit:archunit:1.0.0'
 }
 
 jacocoTestReport {
