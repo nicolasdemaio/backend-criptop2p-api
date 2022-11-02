@@ -1,5 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence;
 
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
@@ -13,7 +15,7 @@ import java.time.Duration;
 public class QuotesCache {
 
     CacheManager cacheManager;
-    Cache<Long, String> cache;
+    Cache<CryptoCurrency, CryptoQuotation> cache;
 
     public QuotesCache() {
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
@@ -24,7 +26,7 @@ public class QuotesCache {
                 cacheManager.createCache(
                         "quotesCache",
                         CacheConfigurationBuilder
-                                .newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(200))
+                                .newCacheConfigurationBuilder(CryptoCurrency.class, CryptoQuotation.class, ResourcePoolsBuilder.heap(200))
                                 .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(10)))
                                 .build()
                 );
@@ -32,18 +34,18 @@ public class QuotesCache {
         cacheManager.close();
     }
 
-    public void put(Object aKey, Object aValue) {
+    public void put(CryptoCurrency aKey, CryptoQuotation aValue) {
         cacheManager.init();
         cache.put(aKey, aValue);
         cacheManager.close();
     }
 
-    public Object get(Object aKey) {
+    public Object get(CryptoCurrency aKey) {
         cacheManager.init();
         Object retrievedObject = cache.get(aKey);
         if (retrievedObject == null) throw new RuntimeException("Invalid object key: " + aKey);
-        return retrievedObject;
         cacheManager.close();
+        return retrievedObject;
     }
 
 }
