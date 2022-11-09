@@ -8,9 +8,15 @@ import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ExpiryPolicyBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
+import org.hibernate.FetchNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class QuotationsCache {
@@ -21,8 +27,6 @@ public class QuotationsCache {
     public QuotationsCache() {
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
 
-        //cacheManager.init();
-
         cache =
                 cacheManager.createCache(
                         "quotesCache",
@@ -31,22 +35,21 @@ public class QuotationsCache {
                                 .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(10)))
                                 .build()
                 );
-
-        //cacheManager.close();
     }
 
     public void put(CryptoCurrency aKey, CryptoQuotation aValue) {
-        //cacheManager.init();
         cache.put(aKey, aValue);
-        //cacheManager.close();
     }
 
-    public Object get(CryptoCurrency aKey) {
-        //cacheManager.init();
-        Object retrievedObject = cache.get(aKey);
-        if (retrievedObject == null) throw new RuntimeException("Invalid object key: " + aKey);
-        //cacheManager.close();
+    public CryptoQuotation get(CryptoCurrency aKey) {
+        CryptoQuotation retrievedObject = cache.get(aKey);
+        if (retrievedObject == null) throw new FetchNotFoundException("CryptoQuotation", aKey);
         return retrievedObject;
     }
 
+    public List<CryptoQuotation> getAll() {
+        Set<CryptoCurrency> cryptoCurrencies = Arrays.stream(CryptoCurrency.values()).collect(Collectors.toSet());
+        Map<CryptoCurrency, CryptoQuotation> quotationsMap = cache.getAll(cryptoCurrencies);
+        return quotationsMap.values().stream().toList();
+    }
 }

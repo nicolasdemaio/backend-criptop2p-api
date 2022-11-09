@@ -27,13 +27,12 @@ public class QuotationsUpdater {
         this.quotationRecordRepository = quotationRecordRepository;
     }
 
-    @Scheduled(fixedRate = 30, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(fixedRate = 10, timeUnit = TimeUnit.MINUTES)
     public void updateQuotationsOnCache() {
-        List<CryptoQuotation> quotations = quotationService.getAllCryptoQuotations();
-        System.out.println("pase");
+        List<CryptoQuotation> quotations = quotationService.getOnlineCryptoQuotations();
         quotations.forEach(quotation -> {
             quotationsCache.put(quotation.getCryptoCurrency(),quotation);
-            quotationRecordRepository.save(quotation);
+            quotationRecordRepository.save(new QuotationRecord(quotation));
         });
     }
 
