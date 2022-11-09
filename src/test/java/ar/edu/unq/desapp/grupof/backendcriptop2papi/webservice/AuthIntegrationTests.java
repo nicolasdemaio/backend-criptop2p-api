@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class AuthIntegrationTests {
 
     @Autowired
@@ -31,7 +33,7 @@ class AuthIntegrationTests {
 
     private ObjectWriter writer;
 
-    private static final String VALID_PASSWORD = "V@lid123password";
+    private static final String VALID_PASSWORD = "V@lid1234password";
 
     @Autowired
     private InvestorDataLoader investorLoader;
@@ -44,7 +46,7 @@ class AuthIntegrationTests {
     @Test
     @DisplayName("IT can register a new user")
     void testRegisterNewUser() throws Exception {
-        UserRegistrationForm registrationForm = registrationFormWithEmailAndPassword("nicoregister@gmail.com", VALID_PASSWORD);
+        UserRegistrationForm registrationForm = registrationFormWithEmailAndPassword("nicoregiister@gmail.com", VALID_PASSWORD);
         String jsonForm = writer.writeValueAsString(registrationForm);
 
         mockMvc

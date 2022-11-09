@@ -6,6 +6,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.OperationService;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.webservice.OperationController;
 import org.assertj.core.api.AbstractComparableAssert;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +38,11 @@ class OperationControllerTest {
     void setUp(){
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+    }
+
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test
