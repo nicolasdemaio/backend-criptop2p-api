@@ -8,19 +8,20 @@ import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ExpiryPolicyBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
-import org.ehcache.expiry.Expirations;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
-public class QuotesCache {
+@Component
+public class QuotationsCache {
 
     CacheManager cacheManager;
     Cache<CryptoCurrency, CryptoQuotation> cache;
 
-    public QuotesCache() {
+    public QuotationsCache() {
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
 
-        cacheManager.init();
+        //cacheManager.init();
 
         cache =
                 cacheManager.createCache(
@@ -31,20 +32,20 @@ public class QuotesCache {
                                 .build()
                 );
 
-        cacheManager.close();
+        //cacheManager.close();
     }
 
     public void put(CryptoCurrency aKey, CryptoQuotation aValue) {
-        cacheManager.init();
+        //cacheManager.init();
         cache.put(aKey, aValue);
-        cacheManager.close();
+        //cacheManager.close();
     }
 
     public Object get(CryptoCurrency aKey) {
-        cacheManager.init();
+        //cacheManager.init();
         Object retrievedObject = cache.get(aKey);
         if (retrievedObject == null) throw new RuntimeException("Invalid object key: " + aKey);
-        cacheManager.close();
+        //cacheManager.close();
         return retrievedObject;
     }
 
