@@ -6,8 +6,9 @@ import java.util.regex.Pattern;
 
 public class PasswordFormatValidator {
 
-    private final String REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\\-]]).{6,}$";
-    private final String ERROR_MESSAGE = "Password must contain 1 lowercase, 1 uppercase 1 special character and at " +
+    private static final String REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\\-]]).{6,}$";
+    private static final String ERROR_MESSAGE = "Password must contain 1 lowercase, 1 uppercase 1 special character and " +
+            "at " +
             "least 6 characters.";
 
     public void validate(String aPassword) {
