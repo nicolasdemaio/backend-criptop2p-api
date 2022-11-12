@@ -2,11 +2,13 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.client.CryptoQuoteAPIClient;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.client.DollarConversionClient;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.RawQuote;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,12 +25,14 @@ public class QuotationService {
         this.dollarClient = dollarClient;
     }
 
+    @Transactional
     public List<CryptoQuotation> getAllCryptoQuotations() {
         List<RawQuote> rawQuotes = cryptoQuoteAPIClient.getCryptoQuotations();
 
         return convertRawQuotesIntoQuotations(rawQuotes);
     }
 
+    @Transactional
     public CryptoQuotation getCryptoQuotation(CryptoCurrency currency){
         RawQuote rawQuote = this.cryptoQuoteAPIClient.searchQuoteByCryptoCurrency(currency);
         Double officialDollarPrice = this.dollarClient.getOfficialDollarPrice();

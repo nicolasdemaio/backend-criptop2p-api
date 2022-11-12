@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.client.CryptoQuoteAPIClient;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.client.DollarConversionClient;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.RawQuote;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
 import org.assertj.core.api.Assertions;

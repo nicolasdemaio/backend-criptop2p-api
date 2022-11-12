@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class InvestorService {
 
@@ -28,6 +30,7 @@ public class InvestorService {
         this.accountRepository = accountRepository;
     }
 
+    @Transactional
     public void registerUser(UserRegistrationForm form){
         validateThatEmailIsNotInUse(form.getEmail());
         Investor newInvestor = modelMapper.map(form,Investor.class);
@@ -37,6 +40,7 @@ public class InvestorService {
         accountRepository.save(newAccount);
     }
 
+    @Transactional
     public InvestorDTO loginUserWith(UserLoginRequest aRequest) {
         Investor user = getInvestorByEmail(aRequest.getEmail());
 
@@ -44,6 +48,7 @@ public class InvestorService {
         return modelMapper.map(user, InvestorDTO.class);
     }
 
+    @Transactional
     public InvestorDTO authenticatedUser(Authentication authentication) {
         String email = authentication.getName();
         Investor investor = getInvestorByEmail(email);
