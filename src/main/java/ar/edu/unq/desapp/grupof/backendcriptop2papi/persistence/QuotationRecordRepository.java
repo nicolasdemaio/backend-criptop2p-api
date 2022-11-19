@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface QuotationRecordRepository extends JpaRepository<QuotationRecord, Long> {
 
-    @Query("from QuotationRecord q where q.timeStamp <= :dateTime AND q.cryptoCurrency = :cryptoCurrency")
+    @Query("from QuotationRecord q where q.timeStamp >= :dateTime AND q.cryptoCurrency = :cryptoCurrency")
     List<QuotationRecord> getQuotationsWithTimeStampBefore(@Param("cryptoCurrency") CryptoCurrency cryptoCurrency, @Param(
             "dateTime") LocalDateTime localDateTime);
 }
