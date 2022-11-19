@@ -9,9 +9,11 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Investor;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvestorNotFoundException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestmentAccountRepository;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestorRepository;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.validator.PasswordFormatValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,18 +24,22 @@ public class InvestorService {
     private final InvestorRepository investorRepository;
     private final InvestmentAccountRepository accountRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public InvestorService(InvestorRepository investorRepository, ModelMapper modelMapper, InvestmentAccountRepository accountRepository){
+    public InvestorService(InvestorRepository investorRepository, ModelMapper modelMapper,
+                           InvestmentAccountRepository accountRepository, PasswordEncoder passwordEncoder){
         this.investorRepository = investorRepository;
         this.modelMapper = modelMapper;
         this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public void registerUser(UserRegistrationForm form){
         validateThatEmailIsNotInUse(form.getEmail());
-        Investor newInvestor = modelMapper.map(form,Investor.class);
+        new PasswordFormatValidator().validate(form.getPassword());
+        Investor newInvestor = form.toModelUsing(passwordEncoder);
         InvestmentAccount newAccount = new InvestmentAccount(newInvestor);
 
         investorRepository.save(newInvestor);
@@ -44,9 +50,15 @@ public class InvestorService {
     public InvestorDTO loginUserWith(UserLoginRequest aRequest) {
         Investor user = getInvestorByEmail(aRequest.getEmail());
 
-        if(!user.hasAsPassword(aRequest.getPassword())) throw new InvestorNotFoundException();
+        verifyThatPasswordMatches(aRequest, user);
         return modelMapper.map(user, InvestorDTO.class);
     }
+
+
+    private void verifyThatPasswordMatches(UserLoginRequest aRequest, Investor user) {
+        if(!passwordEncoder.matches(aRequest.getPassword(), user.getPassword())) throw new InvestorNotFoundException();
+    }
+
 
     @Transactional
     public InvestorDTO authenticatedUser(Authentication authentication) {

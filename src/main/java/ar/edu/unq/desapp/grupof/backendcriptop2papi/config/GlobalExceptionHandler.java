@@ -30,6 +30,11 @@ public class GlobalExceptionHandler {
         return new ApiMessage().response(HttpStatus.BAD_REQUEST, error);
     }
 
+    @ExceptionHandler(InvalidObjectException.class)
+    ResponseEntity<Map<String, Object>> onObjectCreationException(InvalidObjectException e) {
+        return new ApiMessage().response(HttpStatus.BAD_REQUEST, e.getBrokenConstraints());
+    }
+
     @ExceptionHandler(InvestorNotFoundException.class)
     ResponseEntity<Map<String, Object>> investorNotFound(InvestorNotFoundException exception) {
         return new ApiMessage().response(HttpStatus.NOT_FOUND, exception.getMessage());
