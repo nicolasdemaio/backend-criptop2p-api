@@ -27,7 +27,7 @@ public class Investor extends ValidatableEntity {
     private String email;
     @NotBlank @Size(min=10,max=30, message = "The address must contain min. 10 characters and max. 30 characters.")
     private String address;
-    @NotBlank (message = "The password must not be empty.")
+    @NotBlank @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\\-]]).{6,}$", message="Password must contain 1 lowercase, 1 uppercase 1 special character and at least 6 characters.")
     private String password;
     @NotBlank @Pattern(regexp= "^\\d{22}$", message="Mercado Pago CVU size must be equals to 22 digits.")
     private String mercadoPagoCVU;
@@ -45,6 +45,10 @@ public class Investor extends ValidatableEntity {
         this.mercadoPagoCVU = mercadoPagoCVU;
         this.cryptoWalletAddress = cryptoWalletAddress;
         validate();
+    }
+
+    public boolean hasAsPassword(String aPassword) {
+        return password.equals(aPassword);
     }
 
     public String getFullName() {

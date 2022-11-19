@@ -5,7 +5,6 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestmentAccoun
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -18,7 +17,6 @@ public class AccountService {
         this.investmentAccountRepository = investmentAccountRepository;
     }
 
-    @Transactional
     public List<InvestorInformationDTO> getInvestors() {
         var accounts = investmentAccountRepository.findAll();
         return accounts.stream().map(InvestorInformationDTO::fromModel).toList();

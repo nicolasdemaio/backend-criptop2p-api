@@ -42,7 +42,6 @@ public class OperationService {
         return operations.stream().map(OperationDTO::fromModel).toList();
     }
 
-    @Transactional
     public TransactionDTO transact(Long operationId, Authentication authentication) {
         InvestmentAccount investmentAccount = contextService.getCurrentAccount(authentication);
 
@@ -56,7 +55,6 @@ public class OperationService {
         return TransactionDTO.fromModel(transaction);
     }
 
-    @Transactional
     public TransactionDTO cancelOperationById(Long operationId, Authentication authentication) {
         InvestmentAccount investmentAccount = contextService.getCurrentAccount(authentication);
         Operation operation = getOperationById(operationId);
@@ -69,7 +67,6 @@ public class OperationService {
         return TransactionDTO.fromModel(transaction);
     }
 
-    @Transactional
     public Operation getOperationById(Long anOperationId) {
         return operationRepository.findById(anOperationId).orElseThrow(OperationNotFoundException::new);
     }

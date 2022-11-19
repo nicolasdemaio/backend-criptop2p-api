@@ -152,9 +152,37 @@ class InvestorTest {
     }
 
     @Test
-    void anInvestorCanNotHaveAnEmptyPassword() {
+    void anInvestorCanNotHaveAPasswordWithLessThanSixCharacters() {
+        String passwordWithLessThanSixCharac = "Less";
         InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
-            Investor investorWithAPassWithLessThan6Characters = anyInvestorWithPassword(" ");
+            Investor investorWithAPassWithLessThan6Characters = anyInvestorWithPassword(passwordWithLessThanSixCharac);
+        });
+        assertBrokenConstraintWith(exception, "password");
+    }
+
+    @Test
+    void anInvestorCanNotHaveAPasswordWithNoCapitalLetter() {
+        String passwordWithoutCapital = "ihavenocapital";
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
+            Investor investorWithAPassWithNoCap = anyInvestorWithPassword(passwordWithoutCapital);
+        });
+        assertBrokenConstraintWith(exception, "password");
+    }
+
+    @Test
+    void anInvestorCanNotHaveAPasswordWithNoLowerCaseLetter() {
+        String passwordWithoutLowerCase = "IHAVENOLOWER";
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
+            Investor investorWithAPassWithNoLowerCase = anyInvestorWithPassword(passwordWithoutLowerCase);
+        });
+        assertBrokenConstraintWith(exception, "password");
+    }
+
+    @Test
+    void anInvestorCanNotHaveAPasswordWithNoSpecialCharacter() {
+        String passwordWithoutSpecialChar = "IHaveNoSpecialChar";
+        InvalidObjectException exception = assertThrows(InvalidObjectException.class, () -> {
+            Investor investorWithAPassWithNoSpecialChar = anyInvestorWithPassword(passwordWithoutSpecialChar);
         });
         assertBrokenConstraintWith(exception, "password");
     }

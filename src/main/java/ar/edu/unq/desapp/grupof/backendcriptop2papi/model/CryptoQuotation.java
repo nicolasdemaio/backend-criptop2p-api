@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model;
 
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.RawQuote;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.RawQuote;
 import lombok.Data;
 
 import javax.persistence.*;

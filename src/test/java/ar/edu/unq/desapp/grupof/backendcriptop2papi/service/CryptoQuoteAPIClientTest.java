@@ -1,7 +1,6 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.client.CryptoQuoteAPIClient;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.RawQuote;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

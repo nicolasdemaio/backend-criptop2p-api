@@ -11,7 +11,6 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.InvestmentAccoun
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.EnumMap;
@@ -38,7 +37,6 @@ public class TradeStatisticsService {
      * @param to LocalDateTime
      * @return InvestorStatistic
      */
-    @Transactional
     public InvestorStatistic getStatisticsFrom(Long investorId, LocalDate from, LocalDate to) {
         InvestmentAccount requestedAccount = investmentAccountRepository.findInvestmentAccountByInvestor(investorId);
         if (requestedAccount == null) throw new InvestorNotFoundException();
