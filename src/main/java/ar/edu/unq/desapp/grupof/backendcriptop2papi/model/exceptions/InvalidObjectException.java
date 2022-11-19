@@ -18,10 +18,20 @@ public class InvalidObjectException extends RuntimeException {
         this.brokenConstraints = constraints;
     }
 
+    public InvalidObjectException(String fieldName, String errorMessage) {
+        this.brokenConstraints = Map.ofEntries(
+                Map.entry(fieldName, errorMessage)
+        );
+    }
+
     private void addConstraintTo(HashMap<String, String> brokenConstraints, ConstraintViolation<ValidatableEntity> constraintViolation) {
         brokenConstraints.put(
                 constraintViolation.getPropertyPath().toString(),
                 constraintViolation.getMessage()
         );
+    }
+
+    public String getMessage() {
+        return getBrokenConstraints().toString();
     }
 }

@@ -7,7 +7,7 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.SalesOrder;
 
 import java.util.Map;
 
-public class OrderTypeProvider {
+public class OrderTypeFactory {
 
     public static OrderType getOrderTypeAccordingTo(String anOrderType) {
         Map<String, OrderType> orderTypes = Map.ofEntries(Map.entry("SALES", new SalesOrder()), Map.entry("PURCHASE", new PurchaseOrder()));
