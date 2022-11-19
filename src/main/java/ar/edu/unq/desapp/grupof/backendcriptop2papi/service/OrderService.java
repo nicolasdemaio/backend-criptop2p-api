@@ -33,6 +33,7 @@ public class OrderService {
         this.contextService = contextService;
     }
 
+    @Transactional
     public List<MarketOrderDTO> getActiveOrders() {
         List<MarketOrder> orders = orderRepository.findActiveOrders();
         return orders.stream().map(MarketOrderDTO::fromModel).toList();
