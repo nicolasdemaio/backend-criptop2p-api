@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.client.CryptoQuoteAPIClient;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.client.DollarConversionClient;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.RawQuote;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.persistence.QuotationRecordRepository;
@@ -11,6 +12,7 @@ import org.hibernate.FetchNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,6 +36,7 @@ public class QuotationService {
         this.quotationsCache = quotationsCache;
     }
 
+    @Transactional
     public List<QuotationRecord> getLast24HourQuotations(CryptoCurrency cryptoCurrency) {
         return quotationRecordRepository.getQuotationsWithTimeStampBefore(
                 cryptoCurrency,
@@ -41,6 +44,7 @@ public class QuotationService {
         );
     }
 
+    @Transactional
     /**
      * Fetch cached crypto quotations.
      * In case of empty results, fetch quotations from API Client.
@@ -56,6 +60,7 @@ public class QuotationService {
         return cryptoQuotations;
     }
 
+    @Transactional
     /**
      * Fetch crypto quotations from API Client >> Binance
      * return list of Crypto Quotations
@@ -65,6 +70,7 @@ public class QuotationService {
         return convertRawQuotesIntoQuotations(rawQuotes);
     }
 
+    @Transactional
     public CryptoQuotation getCryptoQuotation(CryptoCurrency currency){
         CryptoQuotation quotation;
         try {

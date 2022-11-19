@@ -16,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class InvestorService {
 
@@ -33,6 +35,7 @@ public class InvestorService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public void registerUser(UserRegistrationForm form){
         validateThatEmailIsNotInUse(form.getEmail());
         new PasswordFormatValidator().validate(form.getPassword());
@@ -43,6 +46,7 @@ public class InvestorService {
         accountRepository.save(newAccount);
     }
 
+    @Transactional
     public InvestorDTO loginUserWith(UserLoginRequest aRequest) {
         Investor user = getInvestorByEmail(aRequest.getEmail());
 
@@ -50,6 +54,7 @@ public class InvestorService {
         return modelMapper.map(user, InvestorDTO.class);
     }
 
+    @Transactional
     public InvestorDTO authenticatedUser(Authentication authentication) {
         String email = authentication.getName();
         Investor investor = getInvestorByEmail(email);

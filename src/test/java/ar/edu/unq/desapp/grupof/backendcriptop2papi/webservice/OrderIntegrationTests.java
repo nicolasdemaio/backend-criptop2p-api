@@ -5,12 +5,11 @@ import ar.edu.unq.desapp.grupof.backendcriptop2papi.client.DollarConversionClien
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.config.JWTTokenManager;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.OrderForm;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.OrderType;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.orderType.SalesOrder;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorDataLoader;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.MarketOrderDataLoader;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.QuotationService;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.RawQuote;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.RawQuote;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -181,7 +180,7 @@ class OrderIntegrationTests {
         investorLoader.loadAnInvestorWithEmailAndPassword(VALID_EMAIL, VALID_PASSWORD);
         String token = new JWTTokenManager().generateTokenBasedOn(VALID_EMAIL);
 
-        Long invalidId = 250l;
+        Long invalidId = 250L;
         String postUrl = MessageFormat.format("/api/orders/{0}", invalidId);
 
 

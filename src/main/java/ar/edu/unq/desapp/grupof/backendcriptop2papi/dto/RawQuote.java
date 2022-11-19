@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupof.backendcriptop2papi.service;
+package ar.edu.unq.desapp.grupof.backendcriptop2papi.dto;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.utils.DoubleFormatter;
 import lombok.AllArgsConstructor;
