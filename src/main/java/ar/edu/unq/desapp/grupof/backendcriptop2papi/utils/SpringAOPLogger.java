@@ -50,7 +50,7 @@ public class SpringAOPLogger {
                         .map(Object::toString)
                         .map(a -> {
                             var b = a.replace(".", "/").split("/");
-                            return b.length > 1 ? Arrays.stream(b).toList().get(b.length - 1): "";
+                            return b.length > 1 ? Arrays.stream(b).toList().get(b.length - 1): b[0];
                         }).toList();
         return new StringBuilder()
                 .append(authentication)
