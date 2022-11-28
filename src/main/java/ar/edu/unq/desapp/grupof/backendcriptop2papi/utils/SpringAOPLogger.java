@@ -4,7 +4,8 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
@@ -25,7 +26,7 @@ public class SpringAOPLogger {
     )
     public Object logMethod(final ProceedingJoinPoint joinPoint) throws Throwable {
         final Class<?> targetClass = joinPoint.getTarget().getClass();
-        final Logger logger = getLogger(targetClass);
+        Logger logger = LogManager.getLogger(targetClass);
         try {
             final String className = targetClass.getSimpleName();
             final StopWatch stopWatch = new StopWatch();
@@ -54,7 +55,7 @@ public class SpringAOPLogger {
         return new StringBuilder()
                 .append(authentication)
                 .append(" ; ")
-                .append(joinPoint.getSignature().getName())
+                .append(className + "." + joinPoint.getSignature().getName())
                 .append("(")
                 .append(params)
                 .append(")")

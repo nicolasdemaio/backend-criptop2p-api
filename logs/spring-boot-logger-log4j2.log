@@ -1,0 +1,61 @@
+2022-11-27 23:24:40,010 INFO o.h.v.i.u.Version [background-preinit] HV000001: Hibernate Validator 6.2.4.Final
+2022-11-27 23:24:40,045 INFO o.s.b.StartupInfoLogger [restartedMain] Starting BackendCriptop2pApiApplication using Java 17.0.4.1 on DESKTOP-J5MALAR with PID 244 (D:\Programming\backend-criptop2p-api\build\classes\java\main started by Nicolas in D:\Programming\backend-criptop2p-api)
+2022-11-27 23:24:40,050 INFO o.s.b.SpringApplication [restartedMain] The following 1 profile is active: "prod"
+2022-11-27 23:24:40,099 INFO o.s.b.l.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-11-27 23:24:40,100 INFO o.s.b.l.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-11-27 23:24:40,918 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-11-27 23:24:40,985 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 60 ms. Found 9 JPA repository interfaces.
+2022-11-27 23:24:41,631 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2022-11-27 23:24:41,638 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2022-11-27 23:24:41,638 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2022-11-27 23:24:41,639 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-11-27 23:24:41,719 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-11-27 23:24:41,719 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1616 ms
+2022-11-27 23:24:41,751 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+2022-11-27 23:24:41,849 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+2022-11-27 23:24:41,859 INFO o.s.b.a.h.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2022-11-27 23:24:41,941 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-11-27 23:24:42,001 INFO o.h.j.i.u.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-11-27 23:24:42,039 INFO o.h.Version [restartedMain] HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-11-27 23:24:42,142 INFO o.h.a.c.r.j.JavaReflectionManager [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-11-27 23:24:42,225 INFO o.h.d.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-11-27 23:24:42,915 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-11-27 23:24:42,922 INFO o.s.o.j.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-11-27 23:24:43,172 INFO o.e.c.EhcacheManager [restartedMain] Cache 'quotesCache' created in EhcacheManager.
+2022-11-27 23:24:44,151 WARN o.s.b.a.s.s.UserDetailsServiceAutoConfiguration [restartedMain] 
+
+Using generated security password: 5aac113e-dea2-4aca-adc8-b834e4f58b54
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2022-11-27 23:24:44,258 INFO o.s.s.w.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@34a259f9, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1059cc2d, org.springframework.security.web.context.SecurityContextPersistenceFilter@33f41135, org.springframework.security.web.header.HeaderWriterFilter@4b0a39a6, org.springframework.security.web.authentication.logout.LogoutFilter@6c5b43e, ar.edu.unq.desapp.grupof.backendcriptop2papi.config.JWTAuthorizationFilter@6cf63ccc, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@599c08b5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3d2a3cf6, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1ff560e6, org.springframework.security.web.session.SessionManagementFilter@548d897e, org.springframework.security.web.access.ExceptionTranslationFilter@198112c, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3ed34bef]
+2022-11-27 23:24:44,453 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2022-11-27 23:24:44,665 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2022-11-27 23:24:44,684 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2022-11-27 23:24:44,973 INFO o.s.b.StartupInfoLogger [restartedMain] Started BackendCriptop2pApiApplication in 5.34 seconds (JVM running for 6.124)
+2022-11-27 23:24:45,286 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; InvestorService.registerUser([UserRegistrationForm@32ed4bc0]) ; Execution time: 222 ms.
+2022-11-27 23:24:45,402 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; InvestorService.registerUser([UserRegistrationForm@5864eafe]) ; Execution time: 115 ms.
+2022-11-27 23:24:45,489 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; InvestorService.registerUser([UserRegistrationForm@437bea86]) ; Execution time: 86 ms.
+2022-11-27 23:24:46,440 INFO a.e.u.d.g.b.u.SpringAOPLogger [scheduling-1] system ; CryptoQuoteAPIClient.getCryptoQuotations([]) ; Execution time: 1459 ms.
+2022-11-27 23:24:46,656 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; CryptoQuoteAPIClient.searchQuoteByCryptoCurrency([]) ; Execution time: 1162 ms.
+2022-11-27 23:24:47,166 INFO a.e.u.d.g.b.u.SpringAOPLogger [scheduling-1] system ; DollarConversionClient.getOfficialDollarPrice([]) ; Execution time: 725 ms.
+2022-11-27 23:24:47,167 INFO a.e.u.d.g.b.u.SpringAOPLogger [scheduling-1] system ; QuotationService.getOnlineCryptoQuotations([]) ; Execution time: 2188 ms.
+2022-11-27 23:24:47,186 INFO a.e.u.d.g.b.u.SpringAOPLogger [scheduling-1] system ; QuotationsUpdater.updateQuotationsOnCache([]) ; Execution time: 2214 ms.
+2022-11-27 23:24:47,384 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; DollarConversionClient.getOfficialDollarPrice([]) ; Execution time: 726 ms.
+2022-11-27 23:24:47,384 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; QuotationService.getCryptoQuotation([]) ; Execution time: 1890 ms.
+2022-11-27 23:24:47,389 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; QuotationService.getCryptoQuotation([]) ; Execution time: 0 ms.
+2022-11-27 23:24:47,391 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; QuotationService.getCryptoQuotation([]) ; Execution time: 0 ms.
+2022-11-27 23:24:47,393 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; QuotationService.getCryptoQuotation([]) ; Execution time: 0 ms.
+2022-11-27 23:24:47,397 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; QuotationService.getCryptoQuotation([]) ; Execution time: 0 ms.
+2022-11-27 23:24:47,403 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; QuotationService.getCryptoQuotation([]) ; Execution time: 0 ms.
+2022-11-27 23:24:47,407 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; QuotationService.getCryptoQuotation([]) ; Execution time: 0 ms.
+2022-11-27 23:24:47,423 INFO a.e.u.d.g.b.u.SpringAOPLogger [restartedMain] system ; DataLoader.run([String;@8a4c39e]) ; Execution time: 2444 ms.
+2022-11-27 23:25:46,252 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-11-27 23:25:46,252 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2022-11-27 23:25:46,253 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 1 ms
+2022-11-27 23:25:46,428 INFO a.e.u.d.g.b.u.SpringAOPLogger [http-nio-8080-exec-1] anonymousUser ; InvestorService.loginUserWith([UserLoginRequest@2488246d]) ; Execution time: 118 ms.
+2022-11-27 23:25:46,466 INFO a.e.u.d.g.b.u.SpringAOPLogger [http-nio-8080-exec-1] anonymousUser ; AuthController.loginUserWith([UserLoginRequest@2488246d]) ; Execution time: 158 ms.
+2022-11-27 23:26:00,198 INFO a.e.u.d.g.b.u.SpringAOPLogger [http-nio-8080-exec-2] pepe.juarez@gmail.com ; QuotationService.getAllCryptoQuotations([]) ; Execution time: 1 ms.
+2022-11-27 23:26:00,201 INFO a.e.u.d.g.b.u.SpringAOPLogger [http-nio-8080-exec-2] pepe.juarez@gmail.com ; QuotationController.getCryptoQuotations([]) ; Execution time: 7 ms.
+2022-11-27 23:26:56,017 INFO a.e.u.d.g.b.u.SpringAOPLogger [http-nio-8080-exec-3] pepe.juarez@gmail.com ; QuotationService.getLast24HourQuotations([]) ; Execution time: 3 ms.
+2022-11-27 23:26:56,019 INFO a.e.u.d.g.b.u.SpringAOPLogger [http-nio-8080-exec-3] pepe.juarez@gmail.com ; QuotationController.getLast24HourQuotations([]) ; Execution time: 5 ms.
