@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.client;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoCurrency;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.service.RawQuote;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.dto.RawQuote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static ar.edu.unq.desapp.grupof.backendcriptop2papi.resources.InvestorTestResource.anyInvestor;
@@ -297,8 +298,8 @@ class OperationTest {
 
     @Test
     void testWasOriginatedBetweenWithFromDateAfterToDateThrowsInvalidDateException(){
-        LocalDateTime toTime = LocalDateTime.now();
-        LocalDateTime fromTime = toTime.plusMinutes(20L);
+        LocalDate toTime = LocalDate.now();
+        LocalDate fromTime = toTime.plusDays(20L);
         Assertions.assertThatThrownBy(() -> anOperation.wasOriginatedBetween(fromTime, toTime))
                 .isInstanceOf(InvalidDateException.class)
                 .hasMessage("The second date can not be before the first one");
@@ -306,16 +307,16 @@ class OperationTest {
 
     @Test
     void testWasOriginatedBetweenWhenTheOperationIsBetweenThoseDates(){
-        LocalDateTime fromTime = LocalDateTime.now().minusMinutes(20L);
-        LocalDateTime toTime = LocalDateTime.now().plusMinutes(20L);
+        LocalDate fromTime = LocalDate.now().minusDays(1);
+        LocalDate toTime = LocalDate.now().plusDays(1);
 
         org.junit.jupiter.api.Assertions.assertTrue(anOperation.wasOriginatedBetween(fromTime,toTime));
     }
 
     @Test
     void testWasOriginatedBetweenWhenTheOperationIsNotBetweenThoseDates(){
-        LocalDateTime fromTime = LocalDateTime.now().minusMinutes(20L);
-        LocalDateTime toTime = fromTime.plusMinutes(1L);
+        LocalDate fromTime = LocalDate.now().minusDays(20L);
+        LocalDate toTime = fromTime.plusDays(1L);
 
         org.junit.jupiter.api.Assertions.assertFalse(anOperation.wasOriginatedBetween(fromTime,toTime));
     }

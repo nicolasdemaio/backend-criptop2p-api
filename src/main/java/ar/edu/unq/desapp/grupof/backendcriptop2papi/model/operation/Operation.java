@@ -1,15 +1,16 @@
 package ar.edu.unq.desapp.grupof.backendcriptop2papi.model.operation;
 
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.CryptoQuotation;
-import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidCancellationException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.InvestmentAccount;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.MarketOrder;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.Transaction;
+import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidCancellationException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidDateException;
 import ar.edu.unq.desapp.grupof.backendcriptop2papi.model.exceptions.InvalidOperationException;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +87,12 @@ public class Operation {
         return status.isActive();
     }
 
-    public boolean wasOriginatedBetween(LocalDateTime from, LocalDateTime to) {
+    public boolean wasOriginatedBetween(LocalDate from, LocalDate to) {
         if (from.isAfter(to)) throw new InvalidDateException();
-        return this.getDateTimeOfOrigin().isAfter(from) && this.getDateTimeOfOrigin().isBefore(to);
+        return dateOfOrigin().isAfter(from) && dateOfOrigin().isBefore(to);
+    }
+
+    private LocalDate dateOfOrigin() {
+        return dateTimeOfOrigin.toLocalDate();
     }
 }

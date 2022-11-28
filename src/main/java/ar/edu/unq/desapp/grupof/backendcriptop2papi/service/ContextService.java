@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ContextService {
 
@@ -19,6 +21,7 @@ public class ContextService {
         this.investorService = investorService;
     }
 
+    @Transactional
     public InvestmentAccount getCurrentAccount(Authentication authentication) {
         InvestorDTO loggedInvestor = investorService.authenticatedUser(authentication);
         return investmentAccountRepository.findInvestmentAccountByInvestor(loggedInvestor.getId());
