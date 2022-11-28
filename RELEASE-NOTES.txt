@@ -1,4 +1,17 @@
 ---------------------------------------------------------------------
+ENTREGA 3 TAG 3.0
+---------------------------------------------------------------------
+NEW FEATURES:
+*Implemented Scheduler to bring quotations every 10 minutes to our cache
+*EhCache implementation
+*Architectural tests added
+*Improved Swagger documentation
+*Added password encriptation
+*Show last 24 hours quotations for a given crypto asset
+*Get all crypto quotations (high performance)
+*Audit logs implemented (Time stamp, User, Method, Parameters, Execution Time with Log4j)
+
+---------------------------------------------------------------------
 ENTREGA 2 TAG 2.0
 ---------------------------------------------------------------------
 NEW FEATURES:
